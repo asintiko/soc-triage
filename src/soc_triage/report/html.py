@@ -29,6 +29,7 @@ h3 { margin: 28px 0 10px; font-size: 16px; }
 p { margin: 0 0 12px; max-width: 76ch; }
 p.muted { color: var(--muted); font-size: 14px; }
 code { font: 13px/1.5 var(--mono); background: var(--wash); padding: 1px 5px; border-radius: 3px; overflow-wrap: anywhere; }
+code.nw { white-space: nowrap; }
 strong { font-weight: 650; }
 .facts { display: flex; flex-wrap: wrap; gap: 1px; margin: 0; background: var(--line); border: 1px solid var(--line); }
 .facts div { flex: 1 1 200px; padding: 12px 14px; background: var(--paper); min-width: 0; }
@@ -75,7 +76,9 @@ def _inline(cell: Cell) -> str:
     parts = []
     for item in inlines(cell):
         if isinstance(item, Code):
-            parts.append(f"<code>{escape(item.text)}</code>")
+            # короткие значения (id техники, ip, логин) не рвем посреди слова
+            short = ' class="nw"' if len(item.text) <= 26 and " " not in item.text else ""
+            parts.append(f"<code{short}>{escape(item.text)}</code>")
         elif isinstance(item, Strong):
             parts.append(f"<strong>{escape(item.text)}</strong>")
         elif isinstance(item, Badge):
