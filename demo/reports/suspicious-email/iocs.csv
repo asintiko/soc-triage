@@ -1,0 +1,16 @@
+type,value,seen_in
+url,hxxp://203[.]0[.]113[.]77/examplebank/verify.php?id=8841,"text body, HTML body, link"
+url,hxxp://examplebank[.]example[.]account-check[.]test/login,"HTML body, link"
+url,hxxps://examplebank[.]example/help,"HTML body, link"
+url,hxxp://203[.]0[.]113[.]77/o.gif?m=8841,"HTML body, img source"
+url,hxxps://examplebank[.]example/secure-login,"HTML body, text"
+url,hxxp://account-check[.]test/collect.php,"attachment Statement_November.pdf.html, form action"
+ip,203[.]0[.]113[.]77,link host
+domain,account-check[.]test,link host
+domain,examplebank[.]example,link host
+email,security[@]examplebank[.]example,From (can be forged)
+email,examplebank.support[@]freemail[.]test,Reply-To
+email,bounce-7731[@]mail[.]promo-sender[.]test,Return-Path
+sha256,b44ce1060fff459d29ae614caca0ec1340d69fdc97127912bf3221e24a5bb670,attachment Statement_November.pdf.html
+md5,66116c4e1c12106a844a94c3fef97ee4,attachment Statement_November.pdf.html
+filename,Statement_November.pdf.html,attachment

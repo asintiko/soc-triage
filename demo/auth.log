@@ -1,0 +1,556 @@
+2026-11-09T00:17:01.000000+05:00 web-01 CRON[1410]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T00:17:02.000000+05:00 web-01 CRON[1410]: pam_unix(cron:session): session closed for user root
+2026-11-09T01:17:01.000000+05:00 web-01 CRON[1433]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T01:17:02.000000+05:00 web-01 CRON[1433]: pam_unix(cron:session): session closed for user root
+2026-11-09T02:17:01.000000+05:00 web-01 CRON[1468]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T02:17:02.000000+05:00 web-01 CRON[1468]: pam_unix(cron:session): session closed for user root
+2026-11-09T03:17:01.000000+05:00 web-01 CRON[1503]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T03:17:02.000000+05:00 web-01 CRON[1503]: pam_unix(cron:session): session closed for user root
+2026-11-09T03:49:41.670121+05:00 web-01 sshd[3220]: Invalid user oracle from 198.51.100.123 port 57308
+2026-11-09T03:49:42.020121+05:00 web-01 sshd[3220]: Failed password for invalid user oracle from 198.51.100.123 port 57308 ssh2
+2026-11-09T03:49:42.720121+05:00 web-01 sshd[3220]: Connection closed by invalid user oracle 198.51.100.123 port 57308 [preauth]
+2026-11-09T03:50:47.857195+05:00 web-01 sshd[3435]: Invalid user guest from 198.51.100.202 port 41375
+2026-11-09T03:50:48.207195+05:00 web-01 sshd[3435]: Failed password for invalid user guest from 198.51.100.202 port 41375 ssh2
+2026-11-09T03:50:48.907195+05:00 web-01 sshd[3435]: Connection closed by invalid user guest 198.51.100.202 port 41375 [preauth]
+2026-11-09T04:17:01.000000+05:00 web-01 CRON[1512]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T04:17:02.000000+05:00 web-01 CRON[1512]: pam_unix(cron:session): session closed for user root
+2026-11-09T05:04:03.130507+05:00 web-01 sshd[2841]: Invalid user user from 198.51.100.238 port 38881
+2026-11-09T05:04:03.480507+05:00 web-01 sshd[2841]: Failed password for invalid user user from 198.51.100.238 port 38881 ssh2
+2026-11-09T05:04:04.180507+05:00 web-01 sshd[2841]: Connection closed by invalid user user 198.51.100.238 port 38881 [preauth]
+2026-11-09T05:04:06.438856+05:00 web-01 sshd[2855]: Invalid user admin from 198.51.100.238 port 55047
+2026-11-09T05:04:06.788856+05:00 web-01 sshd[2855]: Failed password for invalid user admin from 198.51.100.238 port 55047 ssh2
+2026-11-09T05:04:07.488856+05:00 web-01 sshd[2855]: Connection closed by invalid user admin 198.51.100.238 port 55047 [preauth]
+2026-11-09T05:14:30.944986+05:00 web-01 sshd[2828]: Invalid user admin from 192.0.2.246 port 59626
+2026-11-09T05:14:31.294986+05:00 web-01 sshd[2828]: Failed password for invalid user admin from 192.0.2.246 port 59626 ssh2
+2026-11-09T05:14:31.994986+05:00 web-01 sshd[2828]: Connection closed by invalid user admin 192.0.2.246 port 59626 [preauth]
+2026-11-09T05:17:01.000000+05:00 web-01 CRON[1529]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T05:17:02.000000+05:00 web-01 CRON[1529]: pam_unix(cron:session): session closed for user root
+2026-11-09T06:17:01.000000+05:00 web-01 CRON[1567]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T06:17:02.000000+05:00 web-01 CRON[1567]: pam_unix(cron:session): session closed for user root
+2026-11-09T07:17:01.000000+05:00 web-01 CRON[1596]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T07:17:02.000000+05:00 web-01 CRON[1596]: pam_unix(cron:session): session closed for user root
+2026-11-09T07:24:42.224469+05:00 web-01 sshd[3059]: Invalid user admin from 198.51.100.148 port 54007
+2026-11-09T07:24:42.574469+05:00 web-01 sshd[3059]: Failed password for invalid user admin from 198.51.100.148 port 54007 ssh2
+2026-11-09T07:24:43.274469+05:00 web-01 sshd[3059]: Connection closed by invalid user admin 198.51.100.148 port 54007 [preauth]
+2026-11-09T07:24:44.952063+05:00 web-01 sshd[3085]: Invalid user oracle from 198.51.100.148 port 45819
+2026-11-09T07:24:45.302063+05:00 web-01 sshd[3085]: Failed password for invalid user oracle from 198.51.100.148 port 45819 ssh2
+2026-11-09T07:24:46.002063+05:00 web-01 sshd[3085]: Connection closed by invalid user oracle 198.51.100.148 port 45819 [preauth]
+2026-11-09T07:46:00.824935+05:00 web-01 sshd[3835]: Invalid user pi from 198.51.100.203 port 40299
+2026-11-09T07:46:01.174935+05:00 web-01 sshd[3835]: Failed password for invalid user pi from 198.51.100.203 port 40299 ssh2
+2026-11-09T07:46:01.874935+05:00 web-01 sshd[3835]: Connection closed by invalid user pi 198.51.100.203 port 40299 [preauth]
+2026-11-09T08:16:47.938007+05:00 web-01 sshd[3765]: Invalid user ubnt from 198.51.100.213 port 57977
+2026-11-09T08:16:48.288007+05:00 web-01 sshd[3765]: Failed password for invalid user ubnt from 198.51.100.213 port 57977 ssh2
+2026-11-09T08:16:48.988007+05:00 web-01 sshd[3765]: Connection closed by invalid user ubnt 198.51.100.213 port 57977 [preauth]
+2026-11-09T08:17:01.000000+05:00 web-01 CRON[1635]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T08:17:02.000000+05:00 web-01 CRON[1635]: pam_unix(cron:session): session closed for user root
+2026-11-09T09:05:00.417512+05:00 web-01 sshd[1973]: Accepted publickey for alice from 10.0.5.12 port 53171 ssh2: ED25519 SHA256:stwJrLlk6SnDvu72Lz/O2+yh19DcQGN28S9dP68gzn9
+2026-11-09T09:05:00.597512+05:00 web-01 sshd[1973]: pam_unix(sshd:session): session opened for user alice(uid=1000) by (uid=0)
+2026-11-09T09:05:00.677512+05:00 web-01 systemd-logind[812]: New session 211 of user alice.
+2026-11-09T09:12:00.282580+05:00 web-01 sudo:   alice : TTY=pts/0 ; PWD=/home/alice ; USER=root ; COMMAND=/usr/bin/systemctl status nginx
+2026-11-09T09:12:00.322580+05:00 web-01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by alice(uid=1000)
+2026-11-09T09:12:03.282580+05:00 web-01 sudo: pam_unix(sudo:session): session closed for user root
+2026-11-09T09:17:01.000000+05:00 web-01 CRON[1673]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T09:17:02.000000+05:00 web-01 CRON[1673]: pam_unix(cron:session): session closed for user root
+2026-11-09T10:03:10.724662+05:00 web-01 sshd[3192]: Invalid user admin from 198.51.100.109 port 47593
+2026-11-09T10:03:11.074662+05:00 web-01 sshd[3192]: Failed password for invalid user admin from 198.51.100.109 port 47593 ssh2
+2026-11-09T10:03:11.774662+05:00 web-01 sshd[3192]: Connection closed by invalid user admin 198.51.100.109 port 47593 [preauth]
+2026-11-09T10:15:00.329668+05:00 web-01 sshd[2028]: Accepted publickey for deploy from 10.0.5.20 port 46405 ssh2: ED25519 SHA256:+Rc8QlK1URn0xTZwBNxJGstDD8pm5pP/7VTa3r6dIzE
+2026-11-09T10:15:00.509668+05:00 web-01 sshd[2028]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by (uid=0)
+2026-11-09T10:15:00.589668+05:00 web-01 systemd-logind[812]: New session 213 of user deploy.
+2026-11-09T10:16:00.679670+05:00 web-01 sudo:   deploy : TTY=pts/1 ; PWD=/srv/app ; USER=root ; COMMAND=/usr/bin/systemctl reload nginx
+2026-11-09T10:16:00.719670+05:00 web-01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by deploy(uid=1000)
+2026-11-09T10:16:02.679670+05:00 web-01 sudo: pam_unix(sudo:session): session closed for user root
+2026-11-09T10:17:01.000000+05:00 web-01 CRON[1707]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T10:17:02.000000+05:00 web-01 CRON[1707]: pam_unix(cron:session): session closed for user root
+2026-11-09T10:19:00.329668+05:00 web-01 sshd[2028]: pam_unix(sshd:session): session closed for user deploy
+2026-11-09T10:40:00.417512+05:00 web-01 sshd[1973]: pam_unix(sshd:session): session closed for user alice
+2026-11-09T10:43:43.455243+05:00 web-01 sshd[3365]: Invalid user oracle from 192.0.2.233 port 56861
+2026-11-09T10:43:43.805243+05:00 web-01 sshd[3365]: Failed password for invalid user oracle from 192.0.2.233 port 56861 ssh2
+2026-11-09T10:43:44.505243+05:00 web-01 sshd[3365]: Connection closed by invalid user oracle 192.0.2.233 port 56861 [preauth]
+2026-11-09T10:43:46.021639+05:00 web-01 sshd[3401]: Invalid user admin from 192.0.2.233 port 38219
+2026-11-09T10:43:46.371639+05:00 web-01 sshd[3401]: Failed password for invalid user admin from 192.0.2.233 port 38219 ssh2
+2026-11-09T10:43:47.071639+05:00 web-01 sshd[3401]: Connection closed by invalid user admin 192.0.2.233 port 38219 [preauth]
+2026-11-09T11:02:00.990315+05:00 web-01 sshd[2734]: Accepted publickey for root from 10.0.5.12 port 47893 ssh2: ED25519 SHA256:rrso9g+pgE+RC9ug7ZvjzmbG0Im9Lp+oruXJWgxNbD7
+2026-11-09T11:02:01.170315+05:00 web-01 sshd[2734]: pam_unix(sshd:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T11:02:01.250315+05:00 web-01 systemd-logind[812]: New session 221 of user root.
+2026-11-09T11:08:00.990315+05:00 web-01 sshd[2734]: pam_unix(sshd:session): session closed for user root
+2026-11-09T11:17:01.000000+05:00 web-01 CRON[1747]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T11:17:02.000000+05:00 web-01 CRON[1747]: pam_unix(cron:session): session closed for user root
+2026-11-09T11:30:00.048434+05:00 web-01 sshd[2065]: Accepted publickey for deploy from 10.0.5.20 port 45136 ssh2: ED25519 SHA256:G5Y9CQbRUXxi21KxnXsWh7/1k7Wp94PjMbdAL6q0XDt
+2026-11-09T11:30:00.228434+05:00 web-01 sshd[2065]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by (uid=0)
+2026-11-09T11:30:00.308434+05:00 web-01 systemd-logind[812]: New session 214 of user deploy.
+2026-11-09T11:31:00.369785+05:00 web-01 sudo:   deploy : TTY=pts/1 ; PWD=/srv/app ; USER=root ; COMMAND=/usr/bin/systemctl reload nginx
+2026-11-09T11:31:00.409785+05:00 web-01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by deploy(uid=1000)
+2026-11-09T11:31:02.369785+05:00 web-01 sudo: pam_unix(sudo:session): session closed for user root
+2026-11-09T11:34:00.048434+05:00 web-01 sshd[2065]: pam_unix(sshd:session): session closed for user deploy
+2026-11-09T12:17:01.000000+05:00 web-01 CRON[1778]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T12:17:02.000000+05:00 web-01 CRON[1778]: pam_unix(cron:session): session closed for user root
+2026-11-09T12:28:18.347764+05:00 web-01 sshd[3646]: Invalid user guest from 192.0.2.217 port 57360
+2026-11-09T12:28:18.697764+05:00 web-01 sshd[3646]: Failed password for invalid user guest from 192.0.2.217 port 57360 ssh2
+2026-11-09T12:28:19.397764+05:00 web-01 sshd[3646]: Connection closed by invalid user guest 192.0.2.217 port 57360 [preauth]
+2026-11-09T13:17:01.000000+05:00 web-01 CRON[1796]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T13:17:02.000000+05:00 web-01 CRON[1796]: pam_unix(cron:session): session closed for user root
+2026-11-09T13:40:00.455103+05:00 web-01 sshd[1988]: Accepted publickey for alice from 10.0.5.12 port 57906 ssh2: ED25519 SHA256:liBET6+uZh+7/3Elo6M4h5X29Ii/vMY0S5BLA5KZfPF
+2026-11-09T13:40:00.635103+05:00 web-01 sshd[1988]: pam_unix(sshd:session): session opened for user alice(uid=1000) by (uid=0)
+2026-11-09T13:40:00.715103+05:00 web-01 systemd-logind[812]: New session 212 of user alice.
+2026-11-09T13:44:05.433784+05:00 web-01 sshd[3613]: Invalid user oracle from 192.0.2.177 port 33111
+2026-11-09T13:44:05.783784+05:00 web-01 sshd[3613]: Failed password for invalid user oracle from 192.0.2.177 port 33111 ssh2
+2026-11-09T13:44:06.483784+05:00 web-01 sshd[3613]: Connection closed by invalid user oracle 192.0.2.177 port 33111 [preauth]
+2026-11-09T13:49:07.188197+05:00 web-01 sshd[3557]: Invalid user pi from 192.0.2.227 port 35494
+2026-11-09T13:49:07.538197+05:00 web-01 sshd[3557]: Failed password for invalid user pi from 192.0.2.227 port 35494 ssh2
+2026-11-09T13:49:08.238197+05:00 web-01 sshd[3557]: Connection closed by invalid user pi 192.0.2.227 port 35494 [preauth]
+2026-11-09T13:49:10.332874+05:00 web-01 sshd[3576]: Invalid user admin from 192.0.2.227 port 40566
+2026-11-09T13:49:10.682874+05:00 web-01 sshd[3576]: Failed password for invalid user admin from 192.0.2.227 port 40566 ssh2
+2026-11-09T13:49:11.382874+05:00 web-01 sshd[3576]: Connection closed by invalid user admin 192.0.2.227 port 40566 [preauth]
+2026-11-09T13:52:00.163278+05:00 web-01 sudo:   alice : TTY=pts/0 ; PWD=/home/alice ; USER=root ; COMMAND=/usr/bin/journalctl -u nginx --since today
+2026-11-09T13:52:00.203278+05:00 web-01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by alice(uid=1000)
+2026-11-09T13:52:01.163278+05:00 web-01 sudo: pam_unix(sudo:session): session closed for user root
+2026-11-09T14:02:00.220855+05:00 web-01 sudo:   backup : user NOT in sudoers ; TTY=pts/2 ; PWD=/var/backups ; USER=root ; COMMAND=/usr/bin/cat /etc/shadow
+2026-11-09T14:03:44.592804+05:00 web-01 sshd[3215]: Invalid user user from 198.51.100.222 port 37169
+2026-11-09T14:03:44.942804+05:00 web-01 sshd[3215]: Failed password for invalid user user from 198.51.100.222 port 37169 ssh2
+2026-11-09T14:03:45.642804+05:00 web-01 sshd[3215]: Connection closed by invalid user user 198.51.100.222 port 37169 [preauth]
+2026-11-09T14:17:01.000000+05:00 web-01 CRON[1799]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T14:17:02.000000+05:00 web-01 CRON[1799]: pam_unix(cron:session): session closed for user root
+2026-11-09T14:30:00.455103+05:00 web-01 sshd[1988]: pam_unix(sshd:session): session closed for user alice
+2026-11-09T14:50:39.645470+05:00 web-01 sshd[3694]: Invalid user oracle from 198.51.100.105 port 45257
+2026-11-09T14:50:39.995470+05:00 web-01 sshd[3694]: Failed password for invalid user oracle from 198.51.100.105 port 45257 ssh2
+2026-11-09T14:50:40.695470+05:00 web-01 sshd[3694]: Connection closed by invalid user oracle 198.51.100.105 port 45257 [preauth]
+2026-11-09T14:50:42.116650+05:00 web-01 sshd[3734]: Invalid user admin from 198.51.100.105 port 36748
+2026-11-09T14:50:42.466650+05:00 web-01 sshd[3734]: Failed password for invalid user admin from 198.51.100.105 port 36748 ssh2
+2026-11-09T14:50:43.166650+05:00 web-01 sshd[3734]: Connection closed by invalid user admin 198.51.100.105 port 36748 [preauth]
+2026-11-09T15:04:11.882668+05:00 web-01 sshd[2890]: Invalid user oracle from 198.51.100.239 port 44700
+2026-11-09T15:04:12.232668+05:00 web-01 sshd[2890]: Failed password for invalid user oracle from 198.51.100.239 port 44700 ssh2
+2026-11-09T15:04:12.932668+05:00 web-01 sshd[2890]: Connection closed by invalid user oracle 198.51.100.239 port 44700 [preauth]
+2026-11-09T15:17:01.000000+05:00 web-01 CRON[1807]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T15:17:02.000000+05:00 web-01 CRON[1807]: pam_unix(cron:session): session closed for user root
+2026-11-09T15:23:41.886565+05:00 web-01 sshd[2980]: Invalid user guest from 198.51.100.151 port 39738
+2026-11-09T15:23:42.236565+05:00 web-01 sshd[2980]: Failed password for invalid user guest from 198.51.100.151 port 39738 ssh2
+2026-11-09T15:23:42.936565+05:00 web-01 sshd[2980]: Connection closed by invalid user guest 198.51.100.151 port 39738 [preauth]
+2026-11-09T16:17:01.000000+05:00 web-01 CRON[1817]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T16:17:02.000000+05:00 web-01 CRON[1817]: pam_unix(cron:session): session closed for user root
+2026-11-09T16:17:21.627791+05:00 web-01 sshd[3455]: Invalid user admin from 192.0.2.191 port 54081
+2026-11-09T16:17:21.977791+05:00 web-01 sshd[3455]: Failed password for invalid user admin from 192.0.2.191 port 54081 ssh2
+2026-11-09T16:17:22.677791+05:00 web-01 sshd[3455]: Connection closed by invalid user admin 192.0.2.191 port 54081 [preauth]
+2026-11-09T16:17:23.700298+05:00 web-01 sshd[3476]: Invalid user support from 192.0.2.191 port 35752
+2026-11-09T16:17:24.050298+05:00 web-01 sshd[3476]: Failed password for invalid user support from 192.0.2.191 port 35752 ssh2
+2026-11-09T16:17:24.750298+05:00 web-01 sshd[3476]: Connection closed by invalid user support 192.0.2.191 port 35752 [preauth]
+2026-11-09T16:45:00.116021+05:00 web-01 sshd[2085]: Accepted publickey for deploy from 10.0.5.20 port 53963 ssh2: ED25519 SHA256:bliQMhM3VNHtXNojIloUhgIB0g1BHMeCnPMso6Ezob7
+2026-11-09T16:45:00.296021+05:00 web-01 sshd[2085]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by (uid=0)
+2026-11-09T16:45:00.376021+05:00 web-01 systemd-logind[812]: New session 215 of user deploy.
+2026-11-09T16:46:00.709752+05:00 web-01 sudo:   deploy : TTY=pts/1 ; PWD=/srv/app ; USER=root ; COMMAND=/usr/bin/systemctl reload nginx
+2026-11-09T11:4
+2026-11-09T16:46:00.749752+05:00 web-01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by deploy(uid=1000)
+2026-11-09T16:46:01.709752+05:00 web-01 sudo: pam_unix(sudo:session): session closed for user root
+2026-11-09T16:49:00.116021+05:00 web-01 sshd[2085]: pam_unix(sshd:session): session closed for user deploy
+2026-11-09T16:57:12.400539+05:00 web-01 sshd[2925]: Invalid user user from 198.51.100.139 port 34087
+2026-11-09T16:57:12.750539+05:00 web-01 sshd[2925]: Failed password for invalid user user from 198.51.100.139 port 34087 ssh2
+2026-11-09T16:57:13.450539+05:00 web-01 sshd[2925]: Connection closed by invalid user user 198.51.100.139 port 34087 [preauth]
+2026-11-09T16:57:14.658932+05:00 web-01 sshd[2931]: Invalid user support from 198.51.100.139 port 35869
+2026-11-09T16:57:15.008932+05:00 web-01 sshd[2931]: Failed password for invalid user support from 198.51.100.139 port 35869 ssh2
+2026-11-09T16:57:15.708932+05:00 web-01 sshd[2931]: Connection closed by invalid user support 198.51.100.139 port 35869 [preauth]
+2026-11-09T17:16:15.227838+05:00 web-01 sshd[3532]: Invalid user support from 192.0.2.182 port 37312
+2026-11-09T17:16:15.577838+05:00 web-01 sshd[3532]: Failed password for invalid user support from 192.0.2.182 port 37312 ssh2
+2026-11-09T17:16:16.277838+05:00 web-01 sshd[3532]: Connection closed by invalid user support 192.0.2.182 port 37312 [preauth]
+2026-11-09T17:17:01.000000+05:00 web-01 CRON[1838]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T17:17:02.000000+05:00 web-01 CRON[1838]: pam_unix(cron:session): session closed for user root
+2026-11-09T17:21:04.795648+05:00 web-01 sshd[3094]: Invalid user support from 198.51.100.169 port 58763
+2026-11-09T17:21:05.145648+05:00 web-01 sshd[3094]: Failed password for invalid user support from 198.51.100.169 port 58763 ssh2
+2026-11-09T17:21:05.845648+05:00 web-01 sshd[3094]: Connection closed by invalid user support 198.51.100.169 port 58763 [preauth]
+2026-11-09T17:21:08.237832+05:00 web-01 sshd[3111]: Invalid user user from 198.51.100.169 port 44531
+2026-11-09T17:21:08.587832+05:00 web-01 sshd[3111]: Failed password for invalid user user from 198.51.100.169 port 44531 ssh2
+2026-11-09T17:21:09.287832+05:00 web-01 sshd[3111]: Connection closed by invalid user user 198.51.100.169 port 44531 [preauth]
+2026-11-09T18:17:01.000000+05:00 web-01 CRON[1847]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T18:17:02.000000+05:00 web-01 CRON[1847]: pam_unix(cron:session): session closed for user root
+2026-11-09T18:22:51.141848+05:00 web-01 sshd[3511]: Invalid user user from 198.51.100.202 port 33388
+2026-11-09T18:22:51.491848+05:00 web-01 sshd[3511]: Failed password for invalid user user from 198.51.100.202 port 33388 ssh2
+2026-11-09T18:22:52.191848+05:00 web-01 sshd[3511]: Connection closed by invalid user user 198.51.100.202 port 33388 [preauth]
+2026-11-09T18:22:53.728925+05:00 web-01 sshd[3522]: Invalid user pi from 198.51.100.202 port 51343
+2026-11-09T18:22:54.078925+05:00 web-01 sshd[3522]: Failed password for invalid user pi from 198.51.100.202 port 51343 ssh2
+2026-11-09T18:22:54.778925+05:00 web-01 sshd[3522]: Connection closed by invalid user pi 198.51.100.202 port 51343 [preauth]
+2026-11-09T19:06:15.826773+05:00 web-01 sshd[3440]: Invalid user oracle from 198.51.100.195 port 39929
+2026-11-09T19:06:16.176773+05:00 web-01 sshd[3440]: Failed password for invalid user oracle from 198.51.100.195 port 39929 ssh2
+2026-11-09T19:06:16.876773+05:00 web-01 sshd[3440]: Connection closed by invalid user oracle 198.51.100.195 port 39929 [preauth]
+2026-11-09T19:17:01.000000+05:00 web-01 CRON[1878]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T19:17:02.000000+05:00 web-01 CRON[1878]: pam_unix(cron:session): session closed for user root
+2026-11-09T20:17:01.000000+05:00 web-01 CRON[1881]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T20:17:02.000000+05:00 web-01 CRON[1881]: pam_unix(cron:session): session closed for user root
+2026-11-09T20:29:20.130500+05:00 web-01 sshd[3429]: Invalid user user from 198.51.100.155 port 59236
+2026-11-09T20:29:20.480500+05:00 web-01 sshd[3429]: Failed password for invalid user user from 198.51.100.155 port 59236 ssh2
+2026-11-09T20:29:21.180500+05:00 web-01 sshd[3429]: Connection closed by invalid user user 198.51.100.155 port 59236 [preauth]
+2026-11-09T21:17:01.000000+05:00 web-01 CRON[1915]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T21:17:02.000000+05:00 web-01 CRON[1915]: pam_unix(cron:session): session closed for user root
+2026-11-09T21:25:19.174192+05:00 web-01 sshd[3303]: Invalid user admin from 198.51.100.197 port 45374
+2026-11-09T21:25:19.524192+05:00 web-01 sshd[3303]: Failed password for invalid user admin from 198.51.100.197 port 45374 ssh2
+2026-11-09T21:25:20.224192+05:00 web-01 sshd[3303]: Connection closed by invalid user admin 198.51.100.197 port 45374 [preauth]
+2026-11-09T21:25:22.206260+05:00 web-01 sshd[3335]: Invalid user admin from 198.51.100.197 port 58477
+2026-11-09T21:25:22.556260+05:00 web-01 sshd[3335]: Failed password for invalid user admin from 198.51.100.197 port 58477 ssh2
+2026-11-09T21:25:23.256260+05:00 web-01 sshd[3335]: Connection closed by invalid user admin 198.51.100.197 port 58477 [preauth]
+2026-11-09T21:54:59.144649+05:00 web-01 sshd[3238]: Invalid user oracle from 192.0.2.185 port 43327
+2026-11-09T21:54:59.494649+05:00 web-01 sshd[3238]: Failed password for invalid user oracle from 192.0.2.185 port 43327 ssh2
+2026-11-09T21:55:00.194649+05:00 web-01 sshd[3238]: Connection closed by invalid user oracle 192.0.2.185 port 43327 [preauth]
+2026-11-09T22:06:39.655170+05:00 web-01 sshd[3682]: Invalid user user from 198.51.100.128 port 42961
+2026-11-09T22:06:40.005170+05:00 web-01 sshd[3682]: Failed password for invalid user user from 198.51.100.128 port 42961 ssh2
+2026-11-09T22:06:40.705170+05:00 web-01 sshd[3682]: Connection closed by invalid user user 198.51.100.128 port 42961 [preauth]
+2026-11-09T22:17:01.000000+05:00 web-01 CRON[1938]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T22:17:02.000000+05:00 web-01 CRON[1938]: pam_unix(cron:session): session closed for user root
+2026-11-09T23:17:01.000000+05:00 web-01 CRON[1954]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-09T23:17:02.000000+05:00 web-01 CRON[1954]: pam_unix(cron:session): session closed for user root
+2026-11-09T23:44:00.951837+05:00 web-01 sshd[3481]: Invalid user admin from 192.0.2.171 port 48214
+2026-11-09T23:44:01.301837+05:00 web-01 sshd[3481]: Failed password for invalid user admin from 192.0.2.171 port 48214 ssh2
+2026-11-09T23:44:02.001837+05:00 web-01 sshd[3481]: Connection closed by invalid user admin 192.0.2.171 port 48214 [preauth]
+2026-11-10T00:17:01.000000+05:00 web-01 CRON[2111]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T00:17:02.000000+05:00 web-01 CRON[2111]: pam_unix(cron:session): session closed for user root
+2026-11-10T01:17:01.000000+05:00 web-01 CRON[2146]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T01:17:02.000000+05:00 web-01 CRON[2146]: pam_unix(cron:session): session closed for user root
+2026-11-10T01:52:03.785688+05:00 web-01 sshd[3859]: Invalid user admin from 198.51.100.23 port 53888
+2026-11-10T01:52:04.135688+05:00 web-01 sshd[3859]: Failed password for invalid user admin from 198.51.100.23 port 53888 ssh2
+2026-11-10T01:52:21.064774+05:00 web-01 sshd[3875]: Invalid user admin from 198.51.100.23 port 52966
+2026-11-10T01:52:21.414774+05:00 web-01 sshd[3875]: Failed password for invalid user admin from 198.51.100.23 port 52966 ssh2
+2026-11-10T01:52:38.607275+05:00 web-01 sshd[3912]: Invalid user test from 198.51.100.23 port 50404
+2026-11-10T01:52:38.957275+05:00 web-01 sshd[3912]: Failed password for invalid user test from 198.51.100.23 port 50404 ssh2
+2026-11-10T01:52:53.378299+05:00 web-01 sshd[3931]: Invalid user test from 198.51.100.23 port 44159
+2026-11-10T01:52:53.728299+05:00 web-01 sshd[3931]: Failed password for invalid user test from 198.51.100.23 port 44159 ssh2
+2026-11-10T01:53:14.905348+05:00 web-01 sshd[3945]: Invalid user oracle from 198.51.100.23 port 49436
+2026-11-10T01:53:15.255348+05:00 web-01 sshd[3945]: Failed password for invalid user oracle from 198.51.100.23 port 49436 ssh2
+2026-11-10T01:53:27.690267+05:00 web-01 sshd[3960]: Invalid user oracle from 198.51.100.23 port 42608
+2026-11-10T01:53:28.040267+05:00 web-01 sshd[3960]: Failed password for invalid user oracle from 198.51.100.23 port 42608 ssh2
+2026-11-10T01:53:39.353692+05:00 web-01 sshd[4000]: Invalid user postgres from 198.51.100.23 port 36865
+2026-11-10T01:53:39.703692+05:00 web-01 sshd[4000]: Failed password for invalid user postgres from 198.51.100.23 port 36865 ssh2
+2026-11-10T01:53:55.044376+05:00 web-01 sshd[4034]: Invalid user postgres from 198.51.100.23 port 55080
+2026-11-10T01:53:55.394376+05:00 web-01 sshd[4034]: Failed password for invalid user postgres from 198.51.100.23 port 55080 ssh2
+2026-11-10T01:54:04.424743+05:00 web-01 sshd[4039]: Invalid user ubuntu from 198.51.100.23 port 58970
+2026-11-10T01:54:04.774743+05:00 web-01 sshd[4039]: Failed password for invalid user ubuntu from 198.51.100.23 port 58970 ssh2
+2026-11-10T01:54:22.189798+05:00 web-01 sshd[4063]: Invalid user ubuntu from 198.51.100.23 port 51176
+2026-11-10T01:54:22.539798+05:00 web-01 sshd[4063]: Failed password for invalid user ubuntu from 198.51.100.23 port 51176 ssh2
+2026-11-10T01:54:34.887799+05:00 web-01 sshd[4100]: Invalid user git from 198.51.100.23 port 59945
+2026-11-10T01:54:35.237799+05:00 web-01 sshd[4100]: Failed password for invalid user git from 198.51.100.23 port 59945 ssh2
+2026-11-10T01:54:51.950441+05:00 web-01 sshd[4135]: Invalid user git from 198.51.100.23 port 44242
+2026-11-10T01:54:52.300441+05:00 web-01 sshd[4135]: Failed password for invalid user git from 198.51.100.23 port 44242 ssh2
+2026-11-10T01:55:14.438730+05:00 web-01 sshd[4162]: Invalid user ftpuser from 198.51.100.23 port 49995
+2026-11-10T01:55:14.788730+05:00 web-01 sshd[4162]: Failed password for invalid user ftpuser from 198.51.100.23 port 49995 ssh2
+2026-11-10T01:55:25.665155+05:00 web-01 sshd[4191]: Invalid user ftpuser from 198.51.100.23 port 49993
+2026-11-10T01:55:26.015155+05:00 web-01 sshd[4191]: Failed password for invalid user ftpuser from 198.51.100.23 port 49993 ssh2
+2026-11-10T01:55:41.304067+05:00 web-01 sshd[4217]: Invalid user jenkins from 198.51.100.23 port 60756
+2026-11-10T01:55:41.654067+05:00 web-01 sshd[4217]: Failed password for invalid user jenkins from 198.51.100.23 port 60756 ssh2
+2026-11-10T01:56:01.906856+05:00 web-01 sshd[4255]: Invalid user jenkins from 198.51.100.23 port 51924
+2026-11-10T01:56:02.256856+05:00 web-01 sshd[4255]: Failed password for invalid user jenkins from 198.51.100.23 port 51924 ssh2
+2026-11-10T01:56:17.906542+05:00 web-01 sshd[4259]: Failed password for deploy from 198.51.100.23 port 36273 ssh2
+2026-11-10T01:56:29.226764+05:00 web-01 sshd[4273]: Failed password for deploy from 198.51.100.23 port 48841 ssh2
+2026-11-10T01:56:47.496853+05:00 web-01 sshd[4286]: Failed password for alice from 198.51.100.23 port 47036 ssh2
+2026-11-10T01:57:04.199716+05:00 web-01 sshd[4312]: Failed password for alice from 198.51.100.23 port 33786 ssh2
+2026-11-10T01:57:21.107428+05:00 web-01 sshd[4322]: Failed password for backup from 198.51.100.23 port 39890 ssh2
+2026-11-10T02:10:03.130104+05:00 web-01 sshd[4354]: Failed password for deploy from 203.0.113.45 port 52477 ssh2
+2026-11-10T02:10:09.667812+05:00 web-01 sshd[4390]: Failed password for deploy from 203.0.113.45 port 53289 ssh2
+2026-11-10T02:10:13.437588+05:00 web-01 sshd[4408]: Failed password for deploy from 203.0.113.45 port 43292 ssh2
+2026-11-10T02:10:19.942076+05:00 web-01 sshd[4411]: Failed password for deploy from 203.0.113.45 port 35937 ssh2
+2026-11-10T02:10:23.799766+05:00 web-01 sshd[4435]: Failed password for root from 203.0.113.45 port 54358 ssh2
+2026-11-10T02:10:28.484319+05:00 web-01 sshd[4464]: Failed password for deploy from 203.0.113.45 port 36029 ssh2
+2026-11-10T02:10:29.184319+05:00 web-01 sshd[4464]: Connection closed by authenticating user deploy 203.0.113.45 port 36029 [preauth]
+2026-11-10T02:10:32.867891+05:00 web-01 sshd[4479]: Failed password for deploy from 203.0.113.45 port 58909 ssh2
+2026-11-10T02:10:40.902631+05:00 web-01 sshd[4513]: Failed password for deploy from 203.0.113.45 port 43938 ssh2
+2026-11-10T02:10:48.190916+05:00 web-01 sshd[4523]: Failed password for deploy from 203.0.113.45 port 35605 ssh2
+2026-11-10T02:10:54.249193+05:00 web-01 sshd[4535]: Failed password for deploy from 203.0.113.45 port 47296 ssh2
+2026-11-10T02:11:01.997674+05:00 web-01 sshd[4544]: Failed password for deploy from 203.0.113.45 port 50814 ssh2
+2026-11-10T02:11:08.791193+05:00 web-01 sshd[4555]: Failed password for deploy from 203.0.113.45 port 35755 ssh2
+2026-11-10T02:11:09.491193+05:00 web-01 sshd[4555]: Connection closed by authenticating user deploy 203.0.113.45 port 35755 [preauth]
+2026-11-10T02:11:12.720063+05:00 web-01 sshd[4587]: Failed password for deploy from 203.0.113.45 port 46630 ssh2
+2026-11-10T02:11:16.464252+05:00 web-01 sshd[4621]: Failed password for root from 203.0.113.45 port 34778 ssh2
+2026-11-10T02:11:23.499675+05:00 web-01 sshd[4646]: Failed password for deploy from 203.0.113.45 port 57251 ssh2
+2026-11-10T02:11:27.050335+05:00 web-01 sshd[4675]: Failed password for deploy from 203.0.113.45 port 38712 ssh2
+2026-11-10T02:11:34.672397+05:00 web-01 sshd[4682]: Failed password for deploy from 203.0.113.45 port 41148 ssh2
+2026-11-10T02:11:42.550429+05:00 web-01 sshd[4700]: Failed password for deploy from 203.0.113.45 port 46681 ssh2
+2026-11-10T02:11:43.250429+05:00 web-01 sshd[4700]: Connection closed by authenticating user deploy 203.0.113.45 port 46681 [preauth]
+2026-11-10T02:11:46.368081+05:00 web-01 sshd[4713]: Failed password for deploy from 203.0.113.45 port 33127 ssh2
+2026-11-10T02:11:51.632775+05:00 web-01 sshd[4735]: Failed password for deploy from 203.0.113.45 port 41226 ssh2
+2026-11-10T02:11:58.825068+05:00 web-01 sshd[4744]: Failed password for deploy from 203.0.113.45 port 55537 ssh2
+2026-11-10T02:12:03.383619+05:00 web-01 sshd[4751]: Failed password for deploy from 203.0.113.45 port 46218 ssh2
+2026-11-10T02:12:07.606937+05:00 web-01 sshd[4770]: Failed password for root from 203.0.113.45 port 43226 ssh2
+2026-11-10T02:12:14.900514+05:00 web-01 sshd[4810]: Failed password for deploy from 203.0.113.45 port 42951 ssh2
+2026-11-10T02:12:15.600514+05:00 web-01 sshd[4810]: Connection closed by authenticating user deploy 203.0.113.45 port 42951 [preauth]
+2026-11-10T02:12:19.778664+05:00 web-01 sshd[4846]: Failed password for deploy from 203.0.113.45 port 38708 ssh2
+2026-11-10T02:12:27.440416+05:00 web-01 sshd[4865]: Failed password for deploy from 203.0.113.45 port 33883 ssh2
+2026-11-10T02:12:35.640209+05:00 web-01 sshd[4884]: Failed password for deploy from 203.0.113.45 port 50047 ssh2
+2026-11-10T02:12:42.305230+05:00 web-01 sshd[4913]: Failed password for deploy from 203.0.113.45 port 56965 ssh2
+2026-11-10T02:12:48.219032+05:00 web-01 sshd[4953]: Failed password for deploy from 203.0.113.45 port 47243 ssh2
+2026-11-10T02:12:53.376203+05:00 web-01 sshd[4989]: Failed password for deploy from 203.0.113.45 port 42892 ssh2
+2026-11-10T02:12:54.076203+05:00 web-01 sshd[4989]: Connection closed by authenticating user deploy 203.0.113.45 port 42892 [preauth]
+2026-11-10T02:12:59.327413+05:00 web-01 sshd[4999]: Failed password for deploy from 203.0.113.45 port 52638 ssh2
+2026-11-10T02:13:04.003029+05:00 web-01 sshd[5014]: Failed password for root from 203.0.113.45 port 52457 ssh2
+2026-11-10T02:13:12.355036+05:00 web-01 sshd[5037]: Failed password for deploy from 203.0.113.45 port 56623 ssh2
+2026-11-10T02:13:16.694116+05:00 web-01 sshd[5061]: Failed password for deploy from 203.0.113.45 port 46071 ssh2
+2026-11-10T02:13:23.643010+05:00 web-01 sshd[5093]: Failed password for deploy from 203.0.113.45 port 52714 ssh2
+2026-11-10T02:13:30.709448+05:00 web-01 sshd[5102]: Failed password for deploy from 203.0.113.45 port 44978 ssh2
+2026-11-10T02:13:31.409448+05:00 web-01 sshd[5102]: Connection closed by authenticating user deploy 203.0.113.45 port 44978 [preauth]
+2026-11-10T02:13:37.793379+05:00 web-01 sshd[5133]: Failed password for deploy from 203.0.113.45 port 51916 ssh2
+2026-11-10T02:13:43.598057+05:00 web-01 sshd[5160]: Failed password for deploy from 203.0.113.45 port 44507 ssh2
+2026-11-10T02:13:47.798575+05:00 web-01 sshd[5185]: Failed password for deploy from 203.0.113.45 port 45427 ssh2
+2026-11-10T02:13:53.831833+05:00 web-01 sshd[5204]: Failed password for deploy from 203.0.113.45 port 58403 ssh2
+2026-11-10T02:14:00.011507+05:00 web-01 sshd[5230]: Failed password for root from 203.0.113.45 port 46312 ssh2
+2026-11-10T02:14:07.047158+05:00 web-01 sshd[5234]: Failed password for deploy from 203.0.113.45 port 56001 ssh2
+2026-11-10T02:14:07.747158+05:00 web-01 sshd[5234]: Connection closed by authenticating user deploy 203.0.113.45 port 56001 [preauth]
+2026-11-10T02:14:13.567624+05:00 web-01 sshd[5271]: Failed password for deploy from 203.0.113.45 port 58760 ssh2
+2026-11-10T02:14:17.122798+05:00 web-01 sshd[5295]: Failed password for deploy from 203.0.113.45 port 46915 ssh2
+2026-11-10T02:14:23.403581+05:00 web-01 sshd[5317]: Failed password for deploy from 203.0.113.45 port 56021 ssh2
+2026-11-10T02:14:29.003339+05:00 web-01 sshd[5333]: Failed password for deploy from 203.0.113.45 port 39920 ssh2
+2026-11-10T02:14:33.082690+05:00 web-01 sshd[5350]: Failed password for deploy from 203.0.113.45 port 38553 ssh2
+2026-11-10T02:14:37.744163+05:00 web-01 sshd[5376]: Failed password for deploy from 203.0.113.45 port 53045 ssh2
+2026-11-10T02:14:38.444163+05:00 web-01 sshd[5376]: Connection closed by authenticating user deploy 203.0.113.45 port 53045 [preauth]
+2026-11-10T02:14:45.479289+05:00 web-01 sshd[5385]: Failed password for deploy from 203.0.113.45 port 54914 ssh2
+2026-11-10T02:14:53.563623+05:00 web-01 sshd[5421]: Failed password for root from 203.0.113.45 port 53504 ssh2
+2026-11-10T02:15:01.058001+05:00 web-01 sshd[5442]: Failed password for deploy from 203.0.113.45 port 36927 ssh2
+2026-11-10T02:15:05.917639+05:00 web-01 sshd[5471]: Failed password for deploy from 203.0.113.45 port 40284 ssh2
+2026-11-10T02:15:09.729496+05:00 web-01 sshd[5478]: Failed password for deploy from 203.0.113.45 port 36205 ssh2
+2026-11-10T02:15:13.618914+05:00 web-01 sshd[5505]: Failed password for deploy from 203.0.113.45 port 33973 ssh2
+2026-11-10T02:15:14.318914+05:00 web-01 sshd[5505]: Connection closed by authenticating user deploy 203.0.113.45 port 33973 [preauth]
+2026-11-10T02:15:18.463221+05:00 web-01 sshd[5543]: Failed password for deploy from 203.0.113.45 port 56877 ssh2
+2026-11-10T02:15:22.794170+05:00 web-01 sshd[5564]: Failed password for deploy from 203.0.113.45 port 46168 ssh2
+2026-11-10T02:15:28.584790+05:00 web-01 sshd[5595]: Failed password for deploy from 203.0.113.45 port 38999 ssh2
+2026-11-10T02:15:32.435795+05:00 web-01 sshd[5617]: Failed password for deploy from 203.0.113.45 port 37669 ssh2
+2026-11-10T02:15:38.671642+05:00 web-01 sshd[5654]: Failed password for root from 203.0.113.45 port 38174 ssh2
+2026-11-10T02:15:46.417490+05:00 web-01 sshd[5660]: Failed password for deploy from 203.0.113.45 port 35012 ssh2
+2026-11-10T02:15:47.117490+05:00 web-01 sshd[5660]: Connection closed by authenticating user deploy 203.0.113.45 port 35012 [preauth]
+2026-11-10T02:15:53.603024+05:00 web-01 sshd[5689]: Failed password for deploy from 203.0.113.45 port 59681 ssh2
+2026-11-10T02:16:00.463517+05:00 web-01 sshd[5701]: Failed password for deploy from 203.0.113.45 port 58472 ssh2
+2026-11-10T02:16:04.302391+05:00 web-01 sshd[5710]: Failed password for deploy from 203.0.113.45 port 58859 ssh2
+2026-11-10T02:16:09.451627+05:00 web-01 sshd[5725]: Failed password for deploy from 203.0.113.45 port 41606 ssh2
+2026-11-10T02:16:16.550310+05:00 web-01 sshd[5737]: Failed password for deploy from 203.0.113.45 port 39503 ssh2
+2026-11-10T02:16:22.167963+05:00 web-01 sshd[5758]: Failed password for deploy from 203.0.113.45 port 33785 ssh2
+2026-11-10T02:16:22.867963+05:00 web-01 sshd[5758]: Connection closed by authenticating user deploy 203.0.113.45 port 33785 [preauth]
+2026-11-10T02:16:26.203713+05:00 web-01 sshd[5790]: Failed password for deploy from 203.0.113.45 port 45420 ssh2
+2026-11-10T02:16:30.377868+05:00 web-01 sshd[5818]: Failed password for root from 203.0.113.45 port 35215 ssh2
+2026-11-10T02:16:34.385875+05:00 web-01 sshd[5857]: Failed password for deploy from 203.0.113.45 port 54723 ssh2
+2026-11-10T02:16:38.290878+05:00 web-01 sshd[5895]: Failed password for deploy from 203.0.113.45 port 39939 ssh2
+2026-11-10T02:16:43.357707+05:00 web-01 sshd[5914]: Failed password for deploy from 203.0.113.45 port 35809 ssh2
+2026-11-10T02:16:49.566244+05:00 web-01 sshd[5952]: Failed password for deploy from 203.0.113.45 port 36412 ssh2
+2026-11-10T02:16:50.266244+05:00 web-01 sshd[5952]: Connection closed by authenticating user deploy 203.0.113.45 port 36412 [preauth]
+2026-11-10T02:16:57.077711+05:00 web-01 sshd[5969]: Failed password for deploy from 203.0.113.45 port 47971 ssh2
+2026-11-10T02:17:01.000000+05:00 web-01 CRON[2165]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T02:17:02.000000+05:00 web-01 CRON[2165]: pam_unix(cron:session): session closed for user root
+2026-11-10T02:17:05.365612+05:00 web-01 sshd[5980]: Failed password for deploy from 203.0.113.45 port 38364 ssh2
+2026-11-10T02:17:10.204617+05:00 web-01 sshd[6018]: Failed password for deploy from 203.0.113.45 port 41026 ssh2
+2026-11-10T02:17:14.410306+05:00 web-01 sshd[6037]: Failed password for deploy from 203.0.113.45 port 52035 ssh2
+2026-11-10T02:17:21.381789+05:00 web-01 sshd[6052]: Failed password for root from 203.0.113.45 port 38917 ssh2
+2026-11-10T02:17:26.984624+05:00 web-01 sshd[6078]: Failed password for deploy from 203.0.113.45 port 48290 ssh2
+2026-11-10T02:17:27.684624+05:00 web-01 sshd[6078]: Connection closed by authenticating user deploy 203.0.113.45 port 48290 [preauth]
+2026-11-10T02:17:30.954644+05:00 web-01 sshd[6089]: Failed password for deploy from 203.0.113.45 port 53189 ssh2
+2026-11-10T02:17:36.838096+05:00 web-01 sshd[6126]: Failed password for deploy from 203.0.113.45 port 34380 ssh2
+2026-11-10T02:17:44.362914+05:00 web-01 sshd[6143]: Failed password for deploy from 203.0.113.45 port 56321 ssh2
+2026-11-10T02:17:50.497758+05:00 web-01 sshd[6148]: Failed password for deploy from 203.0.113.45 port 42775 ssh2
+2026-11-10T02:17:55.282275+05:00 web-01 sshd[6180]: Failed password for deploy from 203.0.113.45 port 45632 ssh2
+2026-11-10T02:17:59.218923+05:00 web-01 sshd[6202]: Failed password for deploy from 203.0.113.45 port 36816 ssh2
+2026-11-10T02:17:59.918923+05:00 web-01 sshd[6202]: Connection closed by authenticating user deploy 203.0.113.45 port 36816 [preauth]
+2026-11-10T02:18:05.711795+05:00 web-01 sshd[6231]: Failed password for deploy from 203.0.113.45 port 35122 ssh2
+2026-11-10T02:18:12.332569+05:00 web-01 sshd[6252]: Failed password for root from 203.0.113.45 port 42553 ssh2
+2026-11-10T02:18:17.988463+05:00 web-01 sshd[6258]: Failed password for deploy from 203.0.113.45 port 34994 ssh2
+2026-11-10T02:18:23.794101+05:00 web-01 sshd[6288]: Failed password for deploy from 203.0.113.45 port 35719 ssh2
+2026-11-10T02:18:28.686941+05:00 web-01 sshd[6303]: Failed password for deploy from 203.0.113.45 port 50470 ssh2
+2026-11-10T02:18:32.032511+05:00 web-01 sshd[6326]: Failed password for deploy from 203.0.113.45 port 39389 ssh2
+2026-11-10T02:18:32.732511+05:00 web-01 sshd[6326]: Connection closed by authenticating user deploy 203.0.113.45 port 39389 [preauth]
+2026-11-10T02:18:36.657514+05:00 web-01 sshd[6349]: Failed password for deploy from 203.0.113.45 port 35840 ssh2
+2026-11-10T02:18:42.524147+05:00 web-01 sshd[6385]: Failed password for deploy from 203.0.113.45 port 60236 ssh2
+2026-11-10T02:18:49.717190+05:00 web-01 sshd[6409]: Failed password for deploy from 203.0.113.45 port 50482 ssh2
+2026-11-10T02:18:57.230512+05:00 web-01 sshd[6414]: Failed password for deploy from 203.0.113.45 port 44495 ssh2
+2026-11-10T02:19:05.752956+05:00 web-01 sshd[6448]: Failed password for root from 203.0.113.45 port 55220 ssh2
+2026-11-10T02:19:12.724476+05:00 web-01 sshd[6478]: Failed password for deploy from 203.0.113.45 port 34809 ssh2
+2026-11-10T02:19:13.424476+05:00 web-01 sshd[6478]: Connection closed by authenticating user deploy 203.0.113.45 port 34809 [preauth]
+2026-11-10T02:19:18.917259+05:00 web-01 sshd[6504]: Failed password for deploy from 203.0.113.45 port 39382 ssh2
+2026-11-10T02:19:26.984241+05:00 web-01 sshd[6523]: Failed password for deploy from 203.0.113.45 port 50948 ssh2
+2026-11-10T02:19:34.362133+05:00 web-01 sshd[6551]: Failed password for deploy from 203.0.113.45 port 50374 ssh2
+2026-11-10T02:19:38.668390+05:00 web-01 sshd[6555]: Failed password for deploy from 203.0.113.45 port 46969 ssh2
+2026-11-10T02:19:45.979687+05:00 web-01 sshd[6561]: Failed password for deploy from 203.0.113.45 port 53835 ssh2
+2026-11-10T02:19:53.042436+05:00 web-01 sshd[6594]: Failed password for deploy from 203.0.113.45 port 37542 ssh2
+2026-11-10T02:19:53.742436+05:00 web-01 sshd[6594]: Connection closed by authenticating user deploy 203.0.113.45 port 37542 [preauth]
+2026-11-10T02:20:00.424034+05:00 web-01 sshd[6604]: Failed password for deploy from 203.0.113.45 port 56156 ssh2
+2026-11-10T02:20:06.128586+05:00 web-01 sshd[6623]: Failed password for root from 203.0.113.45 port 36629 ssh2
+2026-11-10T02:20:11.444205+05:00 web-01 sshd[6640]: Failed password for deploy from 203.0.113.45 port 53914 ssh2
+2026-11-10T02:20:16.292780+05:00 web-01 sshd[6656]: Failed password for deploy from 203.0.113.45 port 47846 ssh2
+2026-11-10T02:20:20.128148+05:00 web-01 sshd[6661]: Failed password for deploy from 203.0.113.45 port 57016 ssh2
+2026-11-10T02:20:28.498679+05:00 web-01 sshd[6686]: Failed password for deploy from 203.0.113.45 port 38426 ssh2
+2026-11-10T02:20:29.198679+05:00 web-01 sshd[6686]: Connection closed by authenticating user deploy 203.0.113.45 port 38426 [preauth]
+2026-11-10T02:20:35.947014+05:00 web-01 sshd[6697]: Failed password for deploy from 203.0.113.45 port 59458 ssh2
+2026-11-10T02:20:40.736232+05:00 web-01 sshd[6719]: Failed password for deploy from 203.0.113.45 port 38645 ssh2
+2026-11-10T02:20:46.788415+05:00 web-01 sshd[6749]: Failed password for deploy from 203.0.113.45 port 42144 ssh2
+2026-11-10T02:20:53.862038+05:00 web-01 sshd[6779]: Failed password for deploy from 203.0.113.45 port 50993 ssh2
+2026-11-10T02:21:00.211690+05:00 web-01 sshd[6787]: Failed password for root from 203.0.113.45 port 45761 ssh2
+2026-11-10T02:21:07.891600+05:00 web-01 sshd[6813]: Failed password for deploy from 203.0.113.45 port 39817 ssh2
+2026-11-10T02:21:08.591600+05:00 web-01 sshd[6813]: Connection closed by authenticating user deploy 203.0.113.45 port 39817 [preauth]
+2026-11-10T02:21:15.571012+05:00 web-01 sshd[6852]: Failed password for deploy from 203.0.113.45 port 57925 ssh2
+2026-11-10T02:21:22.275508+05:00 web-01 sshd[6875]: Failed password for deploy from 203.0.113.45 port 56170 ssh2
+2026-11-10T02:21:27.768076+05:00 web-01 sshd[6899]: Failed password for deploy from 203.0.113.45 port 50787 ssh2
+2026-11-10T02:21:31.898359+05:00 web-01 sshd[6914]: Failed password for deploy from 203.0.113.45 port 57005 ssh2
+2026-11-10T02:21:37.196695+05:00 web-01 sshd[6922]: Failed password for deploy from 203.0.113.45 port 47840 ssh2
+2026-11-10T02:21:42.232328+05:00 web-01 sshd[6939]: Failed password for deploy from 203.0.113.45 port 42885 ssh2
+2026-11-10T02:21:42.932328+05:00 web-01 sshd[6939]: Connection closed by authenticating user deploy 203.0.113.45 port 42885 [preauth]
+2026-11-10T02:21:50.426987+05:00 web-01 sshd[6971]: Failed password for deploy from 203.0.113.45 port 60348 ssh2
+2026-11-10T02:21:57.046000+05:00 web-01 sshd[6991]: Failed password for root from 203.0.113.45 port 60767 ssh2
+2026-11-10T02:22:03.728777+05:00 web-01 sshd[6999]: Failed password for deploy from 203.0.113.45 port 53438 ssh2
+2026-11-10T02:22:07.290282+05:00 web-01 sshd[7031]: Failed password for deploy from 203.0.113.45 port 43782 ssh2
+2026-11-10T02:22:11.798780+05:00 web-01 sshd[7058]: Failed password for deploy from 203.0.113.45 port 49981 ssh2
+2026-11-10T02:22:19.453450+05:00 web-01 sshd[7081]: Failed password for deploy from 203.0.113.45 port 46495 ssh2
+2026-11-10T02:22:20.153450+05:00 web-01 sshd[7081]: Connection closed by authenticating user deploy 203.0.113.45 port 46495 [preauth]
+2026-11-10T02:22:23.126478+05:00 web-01 sshd[7101]: Failed password for deploy from 203.0.113.45 port 36673 ssh2
+2026-11-10T02:22:27.547912+05:00 web-01 sshd[7112]: Failed password for deploy from 203.0.113.45 port 40866 ssh2
+2026-11-10T02:22:33.850244+05:00 web-01 sshd[7151]: Failed password for deploy from 203.0.113.45 port 43174 ssh2
+2026-11-10T02:22:38.279144+05:00 web-01 sshd[7171]: Failed password for deploy from 203.0.113.45 port 33211 ssh2
+2026-11-10T02:22:44.955601+05:00 web-01 sshd[7184]: Failed password for root from 203.0.113.45 port 51306 ssh2
+2026-11-10T02:22:50.814925+05:00 web-01 sshd[7217]: Failed password for deploy from 203.0.113.45 port 41891 ssh2
+2026-11-10T02:22:51.514925+05:00 web-01 sshd[7217]: Connection closed by authenticating user deploy 203.0.113.45 port 41891 [preauth]
+2026-11-10T02:22:57.543938+05:00 web-01 sshd[7224]: Failed password for deploy from 203.0.113.45 port 57893 ssh2
+2026-11-10T02:23:05.136116+05:00 web-01 sshd[7244]: Failed password for deploy from 203.0.113.45 port 59112 ssh2
+2026-11-10T02:23:11.417959+05:00 web-01 sshd[7247]: Failed password for deploy from 203.0.113.45 port 38645 ssh2
+2026-11-10T02:23:18.098350+05:00 web-01 sshd[7273]: Failed password for deploy from 203.0.113.45 port 46002 ssh2
+2026-11-10T02:23:26.724739+05:00 web-01 sshd[7276]: Failed password for deploy from 203.0.113.45 port 56971 ssh2
+2026-11-10T02:23:34.001472+05:00 web-01 sshd[7283]: Failed password for deploy from 203.0.113.45 port 34561 ssh2
+2026-11-10T02:23:34.701472+05:00 web-01 sshd[7283]: Connection closed by authenticating user deploy 203.0.113.45 port 34561 [preauth]
+2026-11-10T02:23:38.751916+05:00 web-01 sshd[7288]: Failed password for deploy from 203.0.113.45 port 53290 ssh2
+2026-11-10T02:23:44.666551+05:00 web-01 sshd[7299]: Failed password for root from 203.0.113.45 port 33379 ssh2
+2026-11-10T02:23:48.514322+05:00 web-01 sshd[7305]: Failed password for deploy from 203.0.113.45 port 57978 ssh2
+2026-11-10T02:24:40.623178+05:00 web-01 sshd[7314]: Accepted password for deploy from 203.0.113.45 port 54538 ssh2
+2026-11-10T02:24:40.803178+05:00 web-01 sshd[7314]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by (uid=0)
+2026-11-10T02:24:40.883178+05:00 web-01 systemd-logind[812]: New session 222 of user deploy.
+2026-11-10T02:26:10.600000+05:00 web-01 useradd[7329]: new group: name=svc-update, GID=1004
+2026-11-10T02:26:10.640000+05:00 web-01 useradd[7329]: new user: name=svc-update, UID=1004, GID=1004, home=/home/svc-update, shell=/bin/bash, from=/dev/pts/1
+2026-11-10T02:26:10.806124+05:00 web-01 sudo:   deploy : TTY=pts/1 ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/sbin/useradd -m -s /bin/bash svc-update
+2026-11-10T02:26:10.846124+05:00 web-01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by deploy(uid=1000)
+2026-11-10T02:26:11.806124+05:00 web-01 sudo: pam_unix(sudo:session): session closed for user root
+2026-11-10T02:26:31.500000+05:00 web-01 usermod[7363]: add 'svc-update' to group 'sudo'
+2026-11-10T02:26:31.520000+05:00 web-01 usermod[7363]: add 'svc-update' to shadow group 'sudo'
+2026-11-10T02:26:31.789671+05:00 web-01 sudo:   deploy : TTY=pts/1 ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/sbin/usermod -aG sudo svc-update
+2026-11-10T02:26:31.829671+05:00 web-01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by deploy(uid=1000)
+2026-11-10T02:26:33.789671+05:00 web-01 sudo: pam_unix(sudo:session): session closed for user root
+2026-11-10T02:27:02.211574+05:00 web-01 sudo:   deploy : TTY=pts/1 ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/passwd svc-update
+2026-11-10T02:27:02.251574+05:00 web-01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by deploy(uid=1000)
+2026-11-10T02:27:04.211574+05:00 web-01 sudo: pam_unix(sudo:session): session closed for user root
+2026-11-10T02:27:08.000000+05:00 web-01 passwd[7368]: pam_unix(passwd:chauthtok): password changed for svc-update
+2026-11-10T02:29:15.392504+05:00 web-01 sshd[7399]: Accepted password for svc-update from 203.0.113.45 port 41077 ssh2
+2026-11-10T02:29:15.572504+05:00 web-01 sshd[7399]: pam_unix(sshd:session): session opened for user svc-update(uid=1004) by (uid=0)
+2026-11-10T02:29:15.652504+05:00 web-01 systemd-logind[812]: New session 223 of user svc-update.
+2026-11-10T02:30:02.210112+05:00 web-01 sudo:   svc-update : TTY=pts/2 ; PWD=/home/svc-update ; USER=root ; COMMAND=/usr/bin/crontab -l
+2026-11-10T02:30:02.250112+05:00 web-01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by svc-update(uid=1000)
+2026-11-10T02:30:03.210112+05:00 web-01 sudo: pam_unix(sudo:session): session closed for user root
+2026-11-10T02:35:40.623178+05:00 web-01 sshd[7314]: pam_unix(sshd:session): session closed for user deploy
+2026-11-10T02:35:46.511055+05:00 web-01 sshd[3487]: Invalid user support from 192.0.2.240 port 50517
+2026-11-10T02:35:46.861055+05:00 web-01 sshd[3487]: Failed password for invalid user support from 192.0.2.240 port 50517 ssh2
+2026-11-10T02:35:47.561055+05:00 web-01 sshd[3487]: Connection closed by invalid user support 192.0.2.240 port 50517 [preauth]
+2026-11-10T02:43:15.392504+05:00 web-01 sshd[7399]: pam_unix(sshd:session): session closed for user svc-update
+2026-11-10T03:17:01.000000+05:00 web-01 CRON[2192]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T03:17:02.000000+05:00 web-01 CRON[2192]: pam_unix(cron:session): session closed for user root
+2026-11-10T03:20:27.022128+05:00 web-01 sshd[3047]: Invalid user test from 192.0.2.150 port 36541
+2026-11-10T03:20:27.372128+05:00 web-01 sshd[3047]: Failed password for invalid user test from 192.0.2.150 port 36541 ssh2
+2026-11-10T03:20:28.072128+05:00 web-01 sshd[3047]: Connection closed by invalid user test 192.0.2.150 port 36541 [preauth]
+2026-11-10T04:17:01.000000+05:00 web-01 CRON[2213]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T04:17:02.000000+05:00 web-01 CRON[2213]: pam_unix(cron:session): session closed for user root
+2026-11-10T05:17:01.000000+05:00 web-01 CRON[2238]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T05:17:02.000000+05:00 web-01 CRON[2238]: pam_unix(cron:session): session closed for user root
+2026-11-10T05:46:16.390290+05:00 web-01 sshd[2996]: Invalid user pi from 198.51.100.208 port 42883
+2026-11-10T05:46:16.740290+05:00 web-01 sshd[2996]: Failed password for invalid user pi from 198.51.100.208 port 42883 ssh2
+2026-11-10T05:46:17.440290+05:00 web-01 sshd[2996]: Connection closed by invalid user pi 198.51.100.208 port 42883 [preauth]
+2026-11-10T05:46:19.631546+05:00 web-01 sshd[3034]: Invalid user support from 198.51.100.208 port 52645
+2026-11-10T05:46:19.981546+05:00 web-01 sshd[3034]: Failed password for invalid user support from 198.51.100.208 port 52645 ssh2
+2026-11-10T05:46:20.681546+05:00 web-01 sshd[3034]: Connection closed by invalid user support 198.51.100.208 port 52645 [preauth]
+2026-11-10T06:17:01.000000+05:00 web-01 CRON[2244]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T06:17:02.000000+05:00 web-01 CRON[2244]: pam_unix(cron:session): session closed for user root
+2026-11-10T07:17:01.000000+05:00 web-01 CRON[2274]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T07:17:02.000000+05:00 web-01 CRON[2274]: pam_unix(cron:session): session closed for user root
+2026-11-10T08:17:01.000000+05:00 web-01 CRON[2278]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T08:17:02.000000+05:00 web-01 CRON[2278]: pam_unix(cron:session): session closed for user root
+2026-11-10T08:18:42.683971+05:00 web-01 sshd[3490]: Invalid user guest from 198.51.100.218 port 46317
+2026-11-10T08:18:43.033971+05:00 web-01 sshd[3490]: Failed password for invalid user guest from 198.51.100.218 port 46317 ssh2
+2026-11-10T08:18:43.733971+05:00 web-01 sshd[3490]: Connection closed by invalid user guest 198.51.100.218 port 46317 [preauth]
+2026-11-10T08:49:48.694289+05:00 web-01 sshd[3272]: Invalid user ubnt from 198.51.100.161 port 40934
+2026-11-10T08:49:49.044289+05:00 web-01 sshd[3272]: Failed password for invalid user ubnt from 198.51.100.161 port 40934 ssh2
+2026-11-10T08:49:49.744289+05:00 web-01 sshd[3272]: Connection closed by invalid user ubnt 198.51.100.161 port 40934 [preauth]
+2026-11-10T08:49:52.110824+05:00 web-01 sshd[3287]: Invalid user user from 198.51.100.161 port 57959
+2026-11-10T08:49:52.460824+05:00 web-01 sshd[3287]: Failed password for invalid user user from 198.51.100.161 port 57959 ssh2
+2026-11-10T08:49:53.160824+05:00 web-01 sshd[3287]: Connection closed by invalid user user 198.51.100.161 port 57959 [preauth]
+2026-11-10T09:05:00.170999+05:00 web-01 sshd[2612]: Accepted publickey for alice from 10.0.5.12 port 53076 ssh2: ED25519 SHA256:PEQtmD2Qt1xwe1cQXDygSdCCj91hoRLWEhroHBf8HcT
+2026-11-10T09:05:00.350999+05:00 web-01 sshd[2612]: pam_unix(sshd:session): session opened for user alice(uid=1000) by (uid=0)
+2026-11-10T09:05:00.430999+05:00 web-01 systemd-logind[812]: New session 216 of user alice.
+2026-11-10T09:12:00.310635+05:00 web-01 sudo:   alice : TTY=pts/0 ; PWD=/home/alice ; USER=root ; COMMAND=/usr/bin/systemctl status nginx
+2026-11-10T09:12:00.350635+05:00 web-01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by alice(uid=1000)
+2026-11-10T09:12:03.310635+05:00 web-01 sudo: pam_unix(sudo:session): session closed for user root
+2026-11-10T09:17:01.000000+05:00 web-01 CRON[2299]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T09:17:02.000000+05:00 web-01 CRON[2299]: pam_unix(cron:session): session closed for user root
+2026-11-10T10:15:00.408489+05:00 web-01 sshd[2653]: Accepted publickey for deploy from 10.0.5.20 port 48693 ssh2: ED25519 SHA256:B92tVDWoSUDOAvIvmbTfQNp+NJwhmPs8/Pft6sKIL/n
+2026-11-10T10:15:00.588489+05:00 web-01 sshd[2653]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by (uid=0)
+2026-11-10T10:15:00.668489+05:00 web-01 systemd-logind[812]: New session 218 of user deploy.
+2026-11-10T10:16:00.790884+05:00 web-01 sudo:   deploy : TTY=pts/1 ; PWD=/srv/app ; USER=root ; COMMAND=/usr/bin/systemctl reload nginx
+2026-11-10T10:16:00.830884+05:00 web-01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by deploy(uid=1000)
+2026-11-10T10:16:02.790884+05:00 web-01 sudo: pam_unix(sudo:session): session closed for user root
+2026-11-10T10:17:01.000000+05:00 web-01 CRON[2323]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T10:17:02.000000+05:00 web-01 CRON[2323]: pam_unix(cron:session): session closed for user root
+2026-11-10T10:19:00.408489+05:00 web-01 sshd[2653]: pam_unix(sshd:session): session closed for user deploy
+2026-11-10T10:40:00.170999+05:00 web-01 sshd[2612]: pam_unix(sshd:session): session closed for user alice
+2026-11-10T10:49:39.961843+05:00 web-01 sshd[3788]: Invalid user support from 198.51.100.214 port 59574
+2026-11-10T10:49:40.311843+05:00 web-01 sshd[3788]: Failed password for invalid user support from 198.51.100.214 port 59574 ssh2
+2026-11-10T10:49:41.011843+05:00 web-01 sshd[3788]: Connection closed by invalid user support 198.51.100.214 port 59574 [preauth]
+2026-11-10T10:49:42.757599+05:00 web-01 sshd[3826]: Invalid user user from 198.51.100.214 port 33771
+2026-11-10T10:49:43.107599+05:00 web-01 sshd[3826]: Failed password for invalid user user from 198.51.100.214 port 33771 ssh2
+2026-11-10T10:49:43.807599+05:00 web-01 sshd[3826]: Connection closed by invalid user user 198.51.100.214 port 33771 [preauth]
+2026-11-10T11:17:01.000000+05:00 web-01 CRON[2344]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T11:17:02.000000+05:00 web-01 CRON[2344]: pam_unix(cron:session): session closed for user root
+2026-11-10T11:30:00.177518+05:00 web-01 sshd[2676]: Accepted publickey for deploy from 10.0.5.20 port 60741 ssh2: ED25519 SHA256:3qp/zoWZ7css0wbT4Q3iqPoi4hSidqSPil6zzCq0rM/
+2026-11-10T11:30:00.357518+05:00 web-01 sshd[2676]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by (uid=0)
+2026-11-10T11:30:00.437518+05:00 web-01 systemd-logind[812]: New session 219 of user deploy.
+2026-11-10T11:31:00.882879+05:00 web-01 sudo:   deploy : TTY=pts/1 ; PWD=/srv/app ; USER=root ; COMMAND=/usr/bin/systemctl reload nginx
+2026-11-10T11:31:00.922879+05:00 web-01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by deploy(uid=1000)
+2026-11-10T11:31:02.882879+05:00 web-01 sudo: pam_unix(sudo:session): session closed for user root
+2026-11-10T11:34:00.177518+05:00 web-01 sshd[2676]: pam_unix(sshd:session): session closed for user deploy
+2026-11-10T12:17:01.000000+05:00 web-01 CRON[2354]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T12:17:02.000000+05:00 web-01 CRON[2354]: pam_unix(cron:session): session closed for user root
+2026-11-10T13:14:36.287246+05:00 web-01 sshd[2806]: Invalid user user from 198.51.100.236 port 55863
+2026-11-10T13:14:36.637246+05:00 web-01 sshd[2806]: Failed password for invalid user user from 198.51.100.236 port 55863 ssh2
+2026-11-10T13:14:37.337246+05:00 web-01 sshd[2806]: Connection closed by invalid user user 198.51.100.236 port 55863 [preauth]
+2026-11-10T13:17:01.000000+05:00 web-01 CRON[2376]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T13:17:02.000000+05:00 web-01 CRON[2376]: pam_unix(cron:session): session closed for user root
+2026-11-10T13:40:00.742625+05:00 web-01 sshd[2638]: Accepted publickey for alice from 10.0.5.12 port 49598 ssh2: ED25519 SHA256:djrZvt668nYU0T+At0EWKmvhRMCbnFywUNKSxqhnFYU
+2026-11-10T13:40:00.922625+05:00 web-01 sshd[2638]: pam_unix(sshd:session): session opened for user alice(uid=1000) by (uid=0)
+2026-11-10T13:40:01.002625+05:00 web-01 systemd-logind[812]: New session 217 of user alice.
+2026-11-10T13:44:26.366159+05:00 web-01 sshd[3119]: Invalid user oracle from 192.0.2.243 port 47873
+2026-11-10T13:44:26.716159+05:00 web-01 sshd[3119]: Failed password for invalid user oracle from 192.0.2.243 port 47873 ssh2
+2026-11-10T13:44:27.416159+05:00 web-01 sshd[3119]: Connection closed by invalid user oracle 192.0.2.243 port 47873 [preauth]
+2026-11-10T13:44:29.013746+05:00 web-01 sshd[3156]: Invalid user support from 192.0.2.243 port 59832
+2026-11-10T13:44:29.363746+05:00 web-01 sshd[3156]: Failed password for invalid user support from 192.0.2.243 port 59832 ssh2
+2026-11-10T13:44:30.063746+05:00 web-01 sshd[3156]: Connection closed by invalid user support 192.0.2.243 port 59832 [preauth]
+2026-11-10T13:52:00.375575+05:00 web-01 sudo:   alice : TTY=pts/0 ; PWD=/home/alice ; USER=root ; COMMAND=/usr/bin/journalctl -u nginx --since today
+2026-11-10T13:52:00.415575+05:00 web-01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by alice(uid=1000)
+2026-11-10T13:52:02.375575+05:00 web-01 sudo: pam_unix(sudo:session): session closed for user root
+2026-11-10T14:17:01.000000+05:00 web-01 CRON[2405]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T14:17:02.000000+05:00 web-01 CRON[2405]: pam_unix(cron:session): session closed for user root
+2026-11-10T14:30:00.742625+05:00 web-01 sshd[2638]: pam_unix(sshd:session): session closed for user alice
+tail: /var/log/auth.log: file truncated
+
+2026-11-10T15:17:01.000000+05:00 web-01 CRON[2428]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T15:17:02.000000+05:00 web-01 CRON[2428]: pam_unix(cron:session): session closed for user root
+2026-11-10T16:17:01.000000+05:00 web-01 CRON[2468]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T16:17:02.000000+05:00 web-01 CRON[2468]: pam_unix(cron:session): session closed for user root
+2026-11-10T16:45:00.446053+05:00 web-01 sshd[2701]: Accepted publickey for deploy from 10.0.5.20 port 46070 ssh2: ED25519 SHA256:qHzWBigQq189rBEcPipCa6jvKYBMTqc7aVnK1RNDi1F
+2026-11-10T16:45:00.626053+05:00 web-01 sshd[2701]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by (uid=0)
+2026-11-10T16:45:00.706053+05:00 web-01 systemd-logind[812]: New session 220 of user deploy.
+2026-11-10T16:46:00.577960+05:00 web-01 sudo:   deploy : TTY=pts/1 ; PWD=/srv/app ; USER=root ; COMMAND=/usr/bin/systemctl reload nginx
+2026-11-10T16:46:00.617960+05:00 web-01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by deploy(uid=1000)
+2026-11-10T16:46:02.577960+05:00 web-01 sudo: pam_unix(sudo:session): session closed for user root
+2026-11-10T16:49:00.446053+05:00 web-01 sshd[2701]: pam_unix(sshd:session): session closed for user deploy
+2026-11-10T17:17:01.000000+05:00 web-01 CRON[2472]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T17:17:02.000000+05:00 web-01 CRON[2472]: pam_unix(cron:session): session closed for user root
+2026-11-10T18:17:01.000000+05:00 web-01 CRON[2509]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T18:17:02.000000+05:00 web-01 CRON[2509]: pam_unix(cron:session): session closed for user root
+2026-11-10T18:29:49.464469+05:00 web-01 sshd[2768]: Invalid user oracle from 192.0.2.231 port 37247
+2026-11-10T18:29:49.814469+05:00 web-01 sshd[2768]: Failed password for invalid user oracle from 192.0.2.231 port 37247 ssh2
+2026-11-10T18:29:50.514469+05:00 web-01 sshd[2768]: Connection closed by invalid user oracle 192.0.2.231 port 37247 [preauth]
+2026-11-10T19:17:01.000000+05:00 web-01 CRON[2533]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T19:17:02.000000+05:00 web-01 CRON[2533]: pam_unix(cron:session): session closed for user root
+2026-11-10T20:14:19.899392+05:00 web-01 sshd[3503]: Invalid user user from 192.0.2.212 port 51091
+2026-11-10T20:14:20.249392+05:00 web-01 sshd[3503]: Failed password for invalid user user from 192.0.2.212 port 51091 ssh2
+2026-11-10T20:14:20.949392+05:00 web-01 sshd[3503]: Connection closed by invalid user user 192.0.2.212 port 51091 [preauth]
+2026-11-10T20:17:01.000000+05:00 web-01 CRON[2548]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T20:17:02.000000+05:00 web-01 CRON[2548]: pam_unix(cron:session): session closed for user root
+2026-11-10T21:17:01.000000+05:00 web-01 CRON[2586]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T21:17:02.000000+05:00 web-01 CRON[2586]: pam_unix(cron:session): session closed for user root
+2026-11-10T21:20:09.178709+05:00 web-01 sshd[2946]: Invalid user user from 198.51.100.184 port 59521
+2026-11-10T21:20:09.528709+05:00 web-01 sshd[2946]: Failed password for invalid user user from 198.51.100.184 port 59521 ssh2
+2026-11-10T21:20:10.228709+05:00 web-01 sshd[2946]: Connection closed by invalid user user 198.51.100.184 port 59521 [preauth]
+2026-11-10T22:17:01.000000+05:00 web-01 CRON[2592]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T22:17:02.000000+05:00 web-01 CRON[2592]: pam_unix(cron:session): session closed for user root
+2026-11-10T23:17:01.000000+05:00 web-01 CRON[2602]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-11-10T23:17:02.000000+05:00 web-01 CRON[2602]: pam_unix(cron:session): session closed for user root

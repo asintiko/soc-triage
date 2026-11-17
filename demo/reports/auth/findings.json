@@ -1,0 +1,741 @@
+{
+  "tool": "soc-triage 0.1.0",
+  "input": {
+    "name": "auth.log",
+    "sha256": "7d8ce8a7e587bcad489bfd70697929a39a899de3f093111efceaa30f406496ed",
+    "format": "linux"
+  },
+  "read": 556,
+  "events": 553,
+  "skipped": 2,
+  "findings": [
+    {
+      "rule": "auth-success-after-failures",
+      "title": "Successful login after repeated failures from the same address",
+      "severity": "critical",
+      "mitre": {
+        "id": "T1110",
+        "name": "Brute Force",
+        "tactic": "Credential Access",
+        "url": "https://attack.mitre.org/techniques/T1110/"
+      },
+      "subject": {
+        "ip": "203.0.113.45"
+      },
+      "events": 2,
+      "first_seen": "2026-11-10 02:24:40",
+      "last_seen": "2026-11-10 02:29:15",
+      "summary": "203.0.113.45 logged in as deploy, svc-update after 141 failed logins within 30 min",
+      "facts": {
+        "precursors": "141",
+        "values": "deploy, svc-update"
+      },
+      "conditions": [
+        "event = login",
+        "result = success",
+        "ip is recorded"
+      ],
+      "trigger": "a matching event preceded within 30 min by at least 5 events per ip where event = login and result = failure",
+      "evidence": [
+        {
+          "line": "406",
+          "time": "2026-11-10 02:23:44",
+          "host": "web-01",
+          "user": "root",
+          "ip": "203.0.113.45",
+          "event": "login",
+          "result": "failure",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "33379",
+          "raw": "2026-11-10T02:23:44.666551+05:00 web-01 sshd[7299]: Failed password for root from 203.0.113.45 port 33379 ssh2"
+        },
+        {
+          "line": "407",
+          "time": "2026-11-10 02:23:48",
+          "host": "web-01",
+          "user": "deploy",
+          "ip": "203.0.113.45",
+          "event": "login",
+          "result": "failure",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "57978",
+          "raw": "2026-11-10T02:23:48.514322+05:00 web-01 sshd[7305]: Failed password for deploy from 203.0.113.45 port 57978 ssh2"
+        },
+        {
+          "line": "408",
+          "time": "2026-11-10 02:24:40",
+          "host": "web-01",
+          "user": "deploy",
+          "ip": "203.0.113.45",
+          "event": "login",
+          "result": "success",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "54538",
+          "raw": "2026-11-10T02:24:40.623178+05:00 web-01 sshd[7314]: Accepted password for deploy from 203.0.113.45 port 54538 ssh2"
+        },
+        {
+          "line": "425",
+          "time": "2026-11-10 02:29:15",
+          "host": "web-01",
+          "user": "svc-update",
+          "ip": "203.0.113.45",
+          "event": "login",
+          "result": "success",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "41077",
+          "raw": "2026-11-10T02:29:15.392504+05:00 web-01 sshd[7399]: Accepted password for svc-update from 203.0.113.45 port 41077 ssh2"
+        }
+      ]
+    },
+    {
+      "rule": "auth-password-guessing",
+      "title": "Repeated failed logins from one address",
+      "severity": "high",
+      "mitre": {
+        "id": "T1110.001",
+        "name": "Brute Force: Password Guessing",
+        "tactic": "Credential Access",
+        "url": "https://attack.mitre.org/techniques/T1110/001/"
+      },
+      "subject": {
+        "ip": "203.0.113.45"
+      },
+      "events": 141,
+      "first_seen": "2026-11-10 02:10:03",
+      "last_seen": "2026-11-10 02:23:48",
+      "summary": "141 failed logins from 203.0.113.45, up to 55 within 5 min; accounts: deploy, root",
+      "facts": {
+        "peak": "55",
+        "values": "deploy, root"
+      },
+      "conditions": [
+        "event = login",
+        "result = failure",
+        "ip is recorded"
+      ],
+      "trigger": "at least 10 matching events within 5 min per ip",
+      "evidence": [
+        {
+          "line": "242",
+          "time": "2026-11-10 02:10:03",
+          "host": "web-01",
+          "user": "deploy",
+          "ip": "203.0.113.45",
+          "event": "login",
+          "result": "failure",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "52477",
+          "raw": "2026-11-10T02:10:03.130104+05:00 web-01 sshd[4354]: Failed password for deploy from 203.0.113.45 port 52477 ssh2"
+        },
+        {
+          "line": "243",
+          "time": "2026-11-10 02:10:09",
+          "host": "web-01",
+          "user": "deploy",
+          "ip": "203.0.113.45",
+          "event": "login",
+          "result": "failure",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "53289",
+          "raw": "2026-11-10T02:10:09.667812+05:00 web-01 sshd[4390]: Failed password for deploy from 203.0.113.45 port 53289 ssh2"
+        },
+        {
+          "line": "244",
+          "time": "2026-11-10 02:10:13",
+          "host": "web-01",
+          "user": "deploy",
+          "ip": "203.0.113.45",
+          "event": "login",
+          "result": "failure",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "43292",
+          "raw": "2026-11-10T02:10:13.437588+05:00 web-01 sshd[4408]: Failed password for deploy from 203.0.113.45 port 43292 ssh2"
+        },
+        {
+          "line": "245",
+          "time": "2026-11-10 02:10:19",
+          "host": "web-01",
+          "user": "deploy",
+          "ip": "203.0.113.45",
+          "event": "login",
+          "result": "failure",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "35937",
+          "raw": "2026-11-10T02:10:19.942076+05:00 web-01 sshd[4411]: Failed password for deploy from 203.0.113.45 port 35937 ssh2"
+        },
+        {
+          "line": "246",
+          "time": "2026-11-10 02:10:23",
+          "host": "web-01",
+          "user": "root",
+          "ip": "203.0.113.45",
+          "event": "login",
+          "result": "failure",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "54358",
+          "raw": "2026-11-10T02:10:23.799766+05:00 web-01 sshd[4435]: Failed password for root from 203.0.113.45 port 54358 ssh2"
+        }
+      ]
+    },
+    {
+      "rule": "auth-password-guessing",
+      "title": "Repeated failed logins from one address",
+      "severity": "high",
+      "mitre": {
+        "id": "T1110.001",
+        "name": "Brute Force: Password Guessing",
+        "tactic": "Credential Access",
+        "url": "https://attack.mitre.org/techniques/T1110/001/"
+      },
+      "subject": {
+        "ip": "198.51.100.23"
+      },
+      "events": 21,
+      "first_seen": "2026-11-10 01:52:04",
+      "last_seen": "2026-11-10 01:57:21",
+      "summary": "21 failed logins from 198.51.100.23, up to 20 within 5 min; accounts: admin, alice, deploy, ftpuser, git and 6 more",
+      "facts": {
+        "peak": "20",
+        "values": "admin, alice, deploy, ftpuser, git and 6 more"
+      },
+      "conditions": [
+        "event = login",
+        "result = failure",
+        "ip is recorded"
+      ],
+      "trigger": "at least 10 matching events within 5 min per ip",
+      "evidence": [
+        {
+          "line": "206",
+          "time": "2026-11-10 01:52:04",
+          "host": "web-01",
+          "user": "admin",
+          "ip": "198.51.100.23",
+          "event": "login",
+          "result": "failure",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "53888",
+          "invalid_user": "yes",
+          "raw": "2026-11-10T01:52:04.135688+05:00 web-01 sshd[3859]: Failed password for invalid user admin from 198.51.100.23 port 53888 ssh2"
+        },
+        {
+          "line": "208",
+          "time": "2026-11-10 01:52:21",
+          "host": "web-01",
+          "user": "admin",
+          "ip": "198.51.100.23",
+          "event": "login",
+          "result": "failure",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "52966",
+          "invalid_user": "yes",
+          "raw": "2026-11-10T01:52:21.414774+05:00 web-01 sshd[3875]: Failed password for invalid user admin from 198.51.100.23 port 52966 ssh2"
+        },
+        {
+          "line": "210",
+          "time": "2026-11-10 01:52:38",
+          "host": "web-01",
+          "user": "test",
+          "ip": "198.51.100.23",
+          "event": "login",
+          "result": "failure",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "50404",
+          "invalid_user": "yes",
+          "raw": "2026-11-10T01:52:38.957275+05:00 web-01 sshd[3912]: Failed password for invalid user test from 198.51.100.23 port 50404 ssh2"
+        },
+        {
+          "line": "212",
+          "time": "2026-11-10 01:52:53",
+          "host": "web-01",
+          "user": "test",
+          "ip": "198.51.100.23",
+          "event": "login",
+          "result": "failure",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "44159",
+          "invalid_user": "yes",
+          "raw": "2026-11-10T01:52:53.728299+05:00 web-01 sshd[3931]: Failed password for invalid user test from 198.51.100.23 port 44159 ssh2"
+        },
+        {
+          "line": "214",
+          "time": "2026-11-10 01:53:15",
+          "host": "web-01",
+          "user": "oracle",
+          "ip": "198.51.100.23",
+          "event": "login",
+          "result": "failure",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "49436",
+          "invalid_user": "yes",
+          "raw": "2026-11-10T01:53:15.255348+05:00 web-01 sshd[3945]: Failed password for invalid user oracle from 198.51.100.23 port 49436 ssh2"
+        }
+      ]
+    },
+    {
+      "rule": "auth-password-spraying",
+      "title": "One address trying many different accounts",
+      "severity": "high",
+      "mitre": {
+        "id": "T1110.003",
+        "name": "Brute Force: Password Spraying",
+        "tactic": "Credential Access",
+        "url": "https://attack.mitre.org/techniques/T1110/003/"
+      },
+      "subject": {
+        "ip": "198.51.100.23"
+      },
+      "events": 21,
+      "first_seen": "2026-11-10 01:52:04",
+      "last_seen": "2026-11-10 01:57:21",
+      "summary": "198.51.100.23 tried 11 different accounts, up to 11 within 10 min: admin, alice, deploy, ftpuser, git and 6 more",
+      "facts": {
+        "distinct": "11",
+        "peak": "11",
+        "values": "admin, alice, deploy, ftpuser, git and 6 more"
+      },
+      "conditions": [
+        "event = login",
+        "result = failure",
+        "ip is recorded",
+        "user is recorded"
+      ],
+      "trigger": "at least 6 different values of user within 10 min per ip",
+      "evidence": [
+        {
+          "line": "206",
+          "time": "2026-11-10 01:52:04",
+          "host": "web-01",
+          "user": "admin",
+          "ip": "198.51.100.23",
+          "event": "login",
+          "result": "failure",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "53888",
+          "invalid_user": "yes",
+          "raw": "2026-11-10T01:52:04.135688+05:00 web-01 sshd[3859]: Failed password for invalid user admin from 198.51.100.23 port 53888 ssh2"
+        },
+        {
+          "line": "210",
+          "time": "2026-11-10 01:52:38",
+          "host": "web-01",
+          "user": "test",
+          "ip": "198.51.100.23",
+          "event": "login",
+          "result": "failure",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "50404",
+          "invalid_user": "yes",
+          "raw": "2026-11-10T01:52:38.957275+05:00 web-01 sshd[3912]: Failed password for invalid user test from 198.51.100.23 port 50404 ssh2"
+        },
+        {
+          "line": "214",
+          "time": "2026-11-10 01:53:15",
+          "host": "web-01",
+          "user": "oracle",
+          "ip": "198.51.100.23",
+          "event": "login",
+          "result": "failure",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "49436",
+          "invalid_user": "yes",
+          "raw": "2026-11-10T01:53:15.255348+05:00 web-01 sshd[3945]: Failed password for invalid user oracle from 198.51.100.23 port 49436 ssh2"
+        },
+        {
+          "line": "218",
+          "time": "2026-11-10 01:53:39",
+          "host": "web-01",
+          "user": "postgres",
+          "ip": "198.51.100.23",
+          "event": "login",
+          "result": "failure",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "36865",
+          "invalid_user": "yes",
+          "raw": "2026-11-10T01:53:39.703692+05:00 web-01 sshd[4000]: Failed password for invalid user postgres from 198.51.100.23 port 36865 ssh2"
+        },
+        {
+          "line": "222",
+          "time": "2026-11-10 01:54:04",
+          "host": "web-01",
+          "user": "ubuntu",
+          "ip": "198.51.100.23",
+          "event": "login",
+          "result": "failure",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "58970",
+          "invalid_user": "yes",
+          "raw": "2026-11-10T01:54:04.774743+05:00 web-01 sshd[4039]: Failed password for invalid user ubuntu from 198.51.100.23 port 58970 ssh2"
+        }
+      ]
+    },
+    {
+      "rule": "privileged-group-change",
+      "title": "Account added to a privileged group",
+      "severity": "high",
+      "mitre": {
+        "id": "T1098",
+        "name": "Account Manipulation",
+        "tactic": "Privilege Escalation",
+        "url": "https://attack.mitre.org/techniques/T1098/"
+      },
+      "subject": {
+        "user": "svc-update",
+        "group": "sudo"
+      },
+      "events": 1,
+      "first_seen": "2026-11-10 02:26:31",
+      "last_seen": "2026-11-10 02:26:31",
+      "summary": "svc-update was added to the group sudo",
+      "facts": {},
+      "conditions": [
+        "event = group_member_added",
+        "group in [sudo, wheel, adm, root, admin, docker, … (13 in total)]"
+      ],
+      "trigger": "every matching event per user, group",
+      "evidence": [
+        {
+          "line": "416",
+          "time": "2026-11-10 02:26:31",
+          "host": "web-01",
+          "user": "svc-update",
+          "ip": "",
+          "event": "group_member_added",
+          "result": "success",
+          "source": "linux_auth",
+          "process": "usermod",
+          "group": "sudo",
+          "raw": "2026-11-10T02:26:31.500000+05:00 web-01 usermod[7363]: add 'svc-update' to group 'sudo'"
+        }
+      ]
+    },
+    {
+      "rule": "admin-night-activity",
+      "title": "Administrative activity at night",
+      "severity": "medium",
+      "mitre": {
+        "id": "T1078",
+        "name": "Valid Accounts",
+        "tactic": "Privilege Escalation",
+        "url": "https://attack.mitre.org/techniques/T1078/"
+      },
+      "subject": {
+        "user": "deploy"
+      },
+      "events": 3,
+      "first_seen": "2026-11-10 02:26:10",
+      "last_seen": "2026-11-10 02:27:02",
+      "summary": "Privileged actions by deploy between 00:00 and 05:59: 3",
+      "facts": {
+        "values": "/usr/bin/passwd svc-update, /usr/sbin/useradd -m -s /bin/bash svc-update, /usr/sbin/usermod -aG sudo svc-update"
+      },
+      "conditions": [
+        "time of day between 00:00 and 05:59",
+        "(event in [sudo, su] and result = success or event = login and result = success and user in [root, admin, administrator, Администратор] or event = special_privileges and user is recorded and user not in [SYSTEM, LOCAL SERVICE, NETWORK SERVICE, ANONYMOUS LOGON] and user does not match /\\$$|^(DWM|UMFD)-\\d+$/)"
+      ],
+      "trigger": "every matching event per user",
+      "evidence": [
+        {
+          "line": "413",
+          "time": "2026-11-10 02:26:10",
+          "host": "web-01",
+          "user": "deploy",
+          "ip": "",
+          "event": "sudo",
+          "result": "success",
+          "source": "linux_auth",
+          "process": "sudo",
+          "tty": "pts/1",
+          "cwd": "/home/deploy",
+          "target_user": "root",
+          "command": "/usr/sbin/useradd -m -s /bin/bash svc-update",
+          "raw": "2026-11-10T02:26:10.806124+05:00 web-01 sudo:   deploy : TTY=pts/1 ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/sbin/useradd -m -s /bin/bash svc-update"
+        },
+        {
+          "line": "418",
+          "time": "2026-11-10 02:26:31",
+          "host": "web-01",
+          "user": "deploy",
+          "ip": "",
+          "event": "sudo",
+          "result": "success",
+          "source": "linux_auth",
+          "process": "sudo",
+          "tty": "pts/1",
+          "cwd": "/home/deploy",
+          "target_user": "root",
+          "command": "/usr/sbin/usermod -aG sudo svc-update",
+          "raw": "2026-11-10T02:26:31.789671+05:00 web-01 sudo:   deploy : TTY=pts/1 ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/sbin/usermod -aG sudo svc-update"
+        },
+        {
+          "line": "421",
+          "time": "2026-11-10 02:27:02",
+          "host": "web-01",
+          "user": "deploy",
+          "ip": "",
+          "event": "sudo",
+          "result": "success",
+          "source": "linux_auth",
+          "process": "sudo",
+          "tty": "pts/1",
+          "cwd": "/home/deploy",
+          "target_user": "root",
+          "command": "/usr/bin/passwd svc-update",
+          "raw": "2026-11-10T02:27:02.211574+05:00 web-01 sudo:   deploy : TTY=pts/1 ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/passwd svc-update"
+        }
+      ]
+    },
+    {
+      "rule": "auth-root-login",
+      "title": "Direct root login over SSH",
+      "severity": "medium",
+      "mitre": {
+        "id": "T1078.003",
+        "name": "Valid Accounts: Local Accounts",
+        "tactic": "Initial Access",
+        "url": "https://attack.mitre.org/techniques/T1078/003/"
+      },
+      "subject": {
+        "ip": "10.0.5.12"
+      },
+      "events": 1,
+      "first_seen": "2026-11-09 11:02:00",
+      "last_seen": "2026-11-09 11:02:00",
+      "summary": "Direct root logins from 10.0.5.12: 1",
+      "facts": {},
+      "conditions": [
+        "source = linux_auth",
+        "event = login",
+        "result = success",
+        "user = root"
+      ],
+      "trigger": "every matching event per ip",
+      "evidence": [
+        {
+          "line": "73",
+          "time": "2026-11-09 11:02:00",
+          "host": "web-01",
+          "user": "root",
+          "ip": "10.0.5.12",
+          "event": "login",
+          "result": "success",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "publickey",
+          "port": "47893",
+          "raw": "2026-11-09T11:02:00.990315+05:00 web-01 sshd[2734]: Accepted publickey for root from 10.0.5.12 port 47893 ssh2: ED25519 SHA256:rrso9g+pgE+RC9ug7ZvjzmbG0Im9Lp+oruXJWgxNbD7"
+        }
+      ]
+    },
+    {
+      "rule": "auth-new-source-for-user",
+      "title": "Login from an address the account has not used before",
+      "severity": "medium",
+      "mitre": {
+        "id": "T1078",
+        "name": "Valid Accounts",
+        "tactic": "Initial Access",
+        "url": "https://attack.mitre.org/techniques/T1078/"
+      },
+      "subject": {
+        "user": "deploy"
+      },
+      "events": 1,
+      "first_seen": "2026-11-10 02:24:40",
+      "last_seen": "2026-11-10 02:24:40",
+      "summary": "deploy logged in from 203.0.113.45; earlier logins came from 10.0.5.20",
+      "facts": {
+        "values": "203.0.113.45",
+        "known": "10.0.5.20"
+      },
+      "conditions": [
+        "event = login",
+        "result = success",
+        "ip is recorded",
+        "user is recorded",
+        "user does not match /\\$$/"
+      ],
+      "trigger": "a value of ip not seen before per user, after at least 3 earlier matching events",
+      "evidence": [
+        {
+          "line": "408",
+          "time": "2026-11-10 02:24:40",
+          "host": "web-01",
+          "user": "deploy",
+          "ip": "203.0.113.45",
+          "event": "login",
+          "result": "success",
+          "source": "linux_auth",
+          "process": "sshd",
+          "method": "password",
+          "port": "54538",
+          "raw": "2026-11-10T02:24:40.623178+05:00 web-01 sshd[7314]: Accepted password for deploy from 203.0.113.45 port 54538 ssh2"
+        }
+      ]
+    },
+    {
+      "rule": "account-created",
+      "title": "New user account created",
+      "severity": "medium",
+      "mitre": {
+        "id": "T1136",
+        "name": "Create Account",
+        "tactic": "Persistence",
+        "url": "https://attack.mitre.org/techniques/T1136/"
+      },
+      "subject": {
+        "user": "svc-update"
+      },
+      "events": 1,
+      "first_seen": "2026-11-10 02:26:10",
+      "last_seen": "2026-11-10 02:26:10",
+      "summary": "Account svc-update was created",
+      "facts": {},
+      "conditions": [
+        "event = account_created"
+      ],
+      "trigger": "every matching event per user",
+      "evidence": [
+        {
+          "line": "412",
+          "time": "2026-11-10 02:26:10",
+          "host": "web-01",
+          "user": "svc-update",
+          "ip": "",
+          "event": "account_created",
+          "result": "success",
+          "source": "linux_auth",
+          "process": "useradd",
+          "raw": "2026-11-10T02:26:10.640000+05:00 web-01 useradd[7329]: new user: name=svc-update, UID=1004, GID=1004, home=/home/svc-update, shell=/bin/bash, from=/dev/pts/1"
+        }
+      ]
+    },
+    {
+      "rule": "admin-night-activity",
+      "title": "Administrative activity at night",
+      "severity": "medium",
+      "mitre": {
+        "id": "T1078",
+        "name": "Valid Accounts",
+        "tactic": "Privilege Escalation",
+        "url": "https://attack.mitre.org/techniques/T1078/"
+      },
+      "subject": {
+        "user": "svc-update"
+      },
+      "events": 1,
+      "first_seen": "2026-11-10 02:30:02",
+      "last_seen": "2026-11-10 02:30:02",
+      "summary": "Privileged actions by svc-update between 00:00 and 05:59: 1",
+      "facts": {
+        "values": "/usr/bin/crontab -l"
+      },
+      "conditions": [
+        "time of day between 00:00 and 05:59",
+        "(event in [sudo, su] and result = success or event = login and result = success and user in [root, admin, administrator, Администратор] or event = special_privileges and user is recorded and user not in [SYSTEM, LOCAL SERVICE, NETWORK SERVICE, ANONYMOUS LOGON] and user does not match /\\$$|^(DWM|UMFD)-\\d+$/)"
+      ],
+      "trigger": "every matching event per user",
+      "evidence": [
+        {
+          "line": "428",
+          "time": "2026-11-10 02:30:02",
+          "host": "web-01",
+          "user": "svc-update",
+          "ip": "",
+          "event": "sudo",
+          "result": "success",
+          "source": "linux_auth",
+          "process": "sudo",
+          "tty": "pts/2",
+          "cwd": "/home/svc-update",
+          "target_user": "root",
+          "command": "/usr/bin/crontab -l",
+          "raw": "2026-11-10T02:30:02.210112+05:00 web-01 sudo:   svc-update : TTY=pts/2 ; PWD=/home/svc-update ; USER=root ; COMMAND=/usr/bin/crontab -l"
+        }
+      ]
+    },
+    {
+      "rule": "sudo-denied",
+      "title": "sudo attempt refused",
+      "severity": "low",
+      "mitre": {
+        "id": "T1548.003",
+        "name": "Abuse Elevation Control Mechanism: Sudo and Sudo Caching",
+        "tactic": "Privilege Escalation",
+        "url": "https://attack.mitre.org/techniques/T1548/003/"
+      },
+      "subject": {
+        "user": "backup"
+      },
+      "events": 1,
+      "first_seen": "2026-11-09 14:02:00",
+      "last_seen": "2026-11-09 14:02:00",
+      "summary": "sudo or su refused for backup, attempts: 1; command: /usr/bin/cat /etc/shadow",
+      "facts": {
+        "values": "/usr/bin/cat /etc/shadow"
+      },
+      "conditions": [
+        "event in [sudo, su]",
+        "result = failure"
+      ],
+      "trigger": "every matching event per user",
+      "evidence": [
+        {
+          "line": "108",
+          "time": "2026-11-09 14:02:00",
+          "host": "web-01",
+          "user": "backup",
+          "ip": "",
+          "event": "sudo",
+          "result": "failure",
+          "source": "linux_auth",
+          "process": "sudo",
+          "tty": "pts/2",
+          "cwd": "/var/backups",
+          "target_user": "root",
+          "command": "/usr/bin/cat /etc/shadow",
+          "reason": "user NOT in sudoers",
+          "raw": "2026-11-09T14:02:00.220855+05:00 web-01 sudo:   backup : user NOT in sudoers ; TTY=pts/2 ; PWD=/var/backups ; USER=root ; COMMAND=/usr/bin/cat /etc/shadow"
+        }
+      ]
+    }
+  ]
+}

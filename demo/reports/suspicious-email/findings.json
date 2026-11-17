@@ -1,0 +1,237 @@
+{
+  "tool": "soc-triage 0.1.0",
+  "input": {
+    "name": "suspicious.eml",
+    "sha256": "d1bf286235643541e25868290c3d498612ebca83f8aac76007641c2a38cb8fe3",
+    "size": 3522
+  },
+  "verdict": {
+    "level": "phishing",
+    "label": "Likely phishing",
+    "reason": "14 indicators, 5 of them strong (score 29). The verdict needs at least three.",
+    "score": 29
+  },
+  "indicators": [
+    {
+      "id": "dmarc-fail",
+      "weight": "strong",
+      "title": "DMARC fail: neither SPF nor DKIM matches the From domain",
+      "evidence": [
+        "dmarc=fail",
+        "From domain examplebank[.]example"
+      ]
+    },
+    {
+      "id": "link-text-mismatch",
+      "weight": "strong",
+      "title": "Link text shows one address, the link leads to another",
+      "evidence": [
+        "shown hxxps://examplebank[.]example/secure-login -> leads to hxxp://203[.]0[.]113[.]77/examplebank/verify.php?id=8841"
+      ]
+    },
+    {
+      "id": "link-ip-host",
+      "weight": "strong",
+      "title": "Link points to a bare IP address",
+      "evidence": [
+        "hxxp://203[.]0[.]113[.]77/examplebank/verify.php?id=8841",
+        "hxxp://203[.]0[.]113[.]77/o.gif?m=8841"
+      ]
+    },
+    {
+      "id": "link-sender-name-in-foreign-domain",
+      "weight": "strong",
+      "title": "Sender's name appears inside a domain that belongs to someone else",
+      "evidence": [
+        "hxxp://examplebank[.]example[.]account-check[.]test/login is registered under account-check[.]test, not examplebank[.]example"
+      ]
+    },
+    {
+      "id": "attachment-double-extension",
+      "weight": "strong",
+      "title": "Attachment name hides its real type behind a second extension",
+      "evidence": [
+        "Statement_November.pdf.html"
+      ]
+    },
+    {
+      "id": "spf-softfail",
+      "weight": "medium",
+      "title": "SPF softfail: the sending server is not authorised for the envelope domain",
+      "evidence": [
+        "spf=softfail",
+        "envelope sender bounce-7731[@]mail[.]promo-sender[.]test"
+      ]
+    },
+    {
+      "id": "reply-to-mismatch",
+      "weight": "medium",
+      "title": "Replies go to a different domain than the sender",
+      "evidence": [
+        "From security[@]examplebank[.]example",
+        "Reply-To examplebank.support[@]freemail[.]test"
+      ]
+    },
+    {
+      "id": "form-over-http",
+      "weight": "medium",
+      "title": "Form submits over unencrypted HTTP",
+      "evidence": [
+        "hxxp://account-check[.]test/collect.php"
+      ]
+    },
+    {
+      "id": "html-form",
+      "weight": "medium",
+      "title": "The message carries an HTML form",
+      "evidence": [
+        "forms: 1, in attachment Statement_November.pdf.html"
+      ]
+    },
+    {
+      "id": "attachment-markup",
+      "weight": "medium",
+      "title": "HTML or SVG attachment, a common carrier for fake login pages",
+      "evidence": [
+        "Statement_November.pdf.html"
+      ]
+    },
+    {
+      "id": "dkim-none",
+      "weight": "weak",
+      "title": "No DKIM signature",
+      "evidence": [
+        "dkim=none"
+      ]
+    },
+    {
+      "id": "return-path-mismatch",
+      "weight": "weak",
+      "title": "Envelope sender is on a different domain than From",
+      "evidence": [
+        "From security[@]examplebank[.]example",
+        "Return-Path bounce-7731[@]mail[.]promo-sender[.]test"
+      ]
+    },
+    {
+      "id": "urgency",
+      "weight": "weak",
+      "title": "Pressure to act quickly",
+      "evidence": [
+        "\"within 24 hours\"",
+        "\"action required\"",
+        "\"will be suspended\""
+      ]
+    },
+    {
+      "id": "credential-request",
+      "weight": "weak",
+      "title": "Asks the reader to confirm an account or enter credentials",
+      "evidence": [
+        "\"confirm your account\"",
+        "\"confirm your identity\""
+      ]
+    }
+  ],
+  "authentication": [
+    {
+      "check": "spf",
+      "result": "softfail",
+      "source": "Authentication-Results",
+      "details": {
+        "smtp.mailfrom": "bounce-7731[@]mail[.]promo-sender[.]test"
+      }
+    },
+    {
+      "check": "dkim",
+      "result": "none",
+      "source": "Authentication-Results",
+      "details": {}
+    },
+    {
+      "check": "dmarc",
+      "result": "fail",
+      "source": "Authentication-Results",
+      "details": {
+        "header.from": "examplebank[.]example"
+      }
+    }
+  ],
+  "iocs": [
+    {
+      "type": "url",
+      "value": "hxxp://203[.]0[.]113[.]77/examplebank/verify.php?id=8841",
+      "seen_in": "text body, HTML body, link"
+    },
+    {
+      "type": "url",
+      "value": "hxxp://examplebank[.]example[.]account-check[.]test/login",
+      "seen_in": "HTML body, link"
+    },
+    {
+      "type": "url",
+      "value": "hxxps://examplebank[.]example/help",
+      "seen_in": "HTML body, link"
+    },
+    {
+      "type": "url",
+      "value": "hxxp://203[.]0[.]113[.]77/o.gif?m=8841",
+      "seen_in": "HTML body, img source"
+    },
+    {
+      "type": "url",
+      "value": "hxxps://examplebank[.]example/secure-login",
+      "seen_in": "HTML body, text"
+    },
+    {
+      "type": "url",
+      "value": "hxxp://account-check[.]test/collect.php",
+      "seen_in": "attachment Statement_November.pdf.html, form action"
+    },
+    {
+      "type": "ip",
+      "value": "203[.]0[.]113[.]77",
+      "seen_in": "link host"
+    },
+    {
+      "type": "domain",
+      "value": "account-check[.]test",
+      "seen_in": "link host"
+    },
+    {
+      "type": "domain",
+      "value": "examplebank[.]example",
+      "seen_in": "link host"
+    },
+    {
+      "type": "email",
+      "value": "security[@]examplebank[.]example",
+      "seen_in": "From (can be forged)"
+    },
+    {
+      "type": "email",
+      "value": "examplebank.support[@]freemail[.]test",
+      "seen_in": "Reply-To"
+    },
+    {
+      "type": "email",
+      "value": "bounce-7731[@]mail[.]promo-sender[.]test",
+      "seen_in": "Return-Path"
+    },
+    {
+      "type": "sha256",
+      "value": "b44ce1060fff459d29ae614caca0ec1340d69fdc97127912bf3221e24a5bb670",
+      "seen_in": "attachment Statement_November.pdf.html"
+    },
+    {
+      "type": "md5",
+      "value": "66116c4e1c12106a844a94c3fef97ee4",
+      "seen_in": "attachment Statement_November.pdf.html"
+    },
+    {
+      "type": "filename",
+      "value": "Statement_November.pdf.html",
+      "seen_in": "attachment"
+    }
+  ]
+}

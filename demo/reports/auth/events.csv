@@ -1,0 +1,554 @@
+line,time,host,user,ip,event,result,source,details
+1,2026-11-09 00:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+2,2026-11-09 00:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+3,2026-11-09 01:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+4,2026-11-09 01:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+5,2026-11-09 02:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+6,2026-11-09 02:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+7,2026-11-09 03:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+8,2026-11-09 03:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+9,2026-11-09 03:49:41,web-01,oracle,198.51.100.123,invalid_user,failure,linux_auth,process=sshd
+10,2026-11-09 03:49:42,web-01,oracle,198.51.100.123,login,failure,linux_auth,process=sshd; method=password; port=57308; invalid_user=yes
+11,2026-11-09 03:49:42,web-01,oracle,198.51.100.123,preauth_disconnect,failure,linux_auth,process=sshd
+12,2026-11-09 03:50:47,web-01,guest,198.51.100.202,invalid_user,failure,linux_auth,process=sshd
+13,2026-11-09 03:50:48,web-01,guest,198.51.100.202,login,failure,linux_auth,process=sshd; method=password; port=41375; invalid_user=yes
+14,2026-11-09 03:50:48,web-01,guest,198.51.100.202,preauth_disconnect,failure,linux_auth,process=sshd
+15,2026-11-09 04:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+16,2026-11-09 04:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+17,2026-11-09 05:04:03,web-01,user,198.51.100.238,invalid_user,failure,linux_auth,process=sshd
+18,2026-11-09 05:04:03,web-01,user,198.51.100.238,login,failure,linux_auth,process=sshd; method=password; port=38881; invalid_user=yes
+19,2026-11-09 05:04:04,web-01,user,198.51.100.238,preauth_disconnect,failure,linux_auth,process=sshd
+20,2026-11-09 05:04:06,web-01,admin,198.51.100.238,invalid_user,failure,linux_auth,process=sshd
+21,2026-11-09 05:04:06,web-01,admin,198.51.100.238,login,failure,linux_auth,process=sshd; method=password; port=55047; invalid_user=yes
+22,2026-11-09 05:04:07,web-01,admin,198.51.100.238,preauth_disconnect,failure,linux_auth,process=sshd
+23,2026-11-09 05:14:30,web-01,admin,192.0.2.246,invalid_user,failure,linux_auth,process=sshd
+24,2026-11-09 05:14:31,web-01,admin,192.0.2.246,login,failure,linux_auth,process=sshd; method=password; port=59626; invalid_user=yes
+25,2026-11-09 05:14:31,web-01,admin,192.0.2.246,preauth_disconnect,failure,linux_auth,process=sshd
+26,2026-11-09 05:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+27,2026-11-09 05:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+28,2026-11-09 06:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+29,2026-11-09 06:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+30,2026-11-09 07:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+31,2026-11-09 07:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+32,2026-11-09 07:24:42,web-01,admin,198.51.100.148,invalid_user,failure,linux_auth,process=sshd
+33,2026-11-09 07:24:42,web-01,admin,198.51.100.148,login,failure,linux_auth,process=sshd; method=password; port=54007; invalid_user=yes
+34,2026-11-09 07:24:43,web-01,admin,198.51.100.148,preauth_disconnect,failure,linux_auth,process=sshd
+35,2026-11-09 07:24:44,web-01,oracle,198.51.100.148,invalid_user,failure,linux_auth,process=sshd
+36,2026-11-09 07:24:45,web-01,oracle,198.51.100.148,login,failure,linux_auth,process=sshd; method=password; port=45819; invalid_user=yes
+37,2026-11-09 07:24:46,web-01,oracle,198.51.100.148,preauth_disconnect,failure,linux_auth,process=sshd
+38,2026-11-09 07:46:00,web-01,pi,198.51.100.203,invalid_user,failure,linux_auth,process=sshd
+39,2026-11-09 07:46:01,web-01,pi,198.51.100.203,login,failure,linux_auth,process=sshd; method=password; port=40299; invalid_user=yes
+40,2026-11-09 07:46:01,web-01,pi,198.51.100.203,preauth_disconnect,failure,linux_auth,process=sshd
+41,2026-11-09 08:16:47,web-01,ubnt,198.51.100.213,invalid_user,failure,linux_auth,process=sshd
+42,2026-11-09 08:16:48,web-01,ubnt,198.51.100.213,login,failure,linux_auth,process=sshd; method=password; port=57977; invalid_user=yes
+43,2026-11-09 08:16:48,web-01,ubnt,198.51.100.213,preauth_disconnect,failure,linux_auth,process=sshd
+44,2026-11-09 08:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+45,2026-11-09 08:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+46,2026-11-09 09:05:00,web-01,alice,10.0.5.12,login,success,linux_auth,process=sshd; method=publickey; port=53171
+47,2026-11-09 09:05:00,web-01,alice,,session_opened,,linux_auth,process=sshd; service=sshd
+48,2026-11-09 09:05:00,web-01,,,other,,linux_auth,process=systemd-logind
+49,2026-11-09 09:12:00,web-01,alice,,sudo,success,linux_auth,process=sudo; tty=pts/0; cwd=/home/alice; target_user=root; command=/usr/bin/systemctl status nginx
+50,2026-11-09 09:12:00,web-01,root,,session_opened,,linux_auth,process=sudo; service=sudo
+51,2026-11-09 09:12:03,web-01,root,,session_closed,,linux_auth,process=sudo; service=sudo
+52,2026-11-09 09:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+53,2026-11-09 09:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+54,2026-11-09 10:03:10,web-01,admin,198.51.100.109,invalid_user,failure,linux_auth,process=sshd
+55,2026-11-09 10:03:11,web-01,admin,198.51.100.109,login,failure,linux_auth,process=sshd; method=password; port=47593; invalid_user=yes
+56,2026-11-09 10:03:11,web-01,admin,198.51.100.109,preauth_disconnect,failure,linux_auth,process=sshd
+57,2026-11-09 10:15:00,web-01,deploy,10.0.5.20,login,success,linux_auth,process=sshd; method=publickey; port=46405
+58,2026-11-09 10:15:00,web-01,deploy,,session_opened,,linux_auth,process=sshd; service=sshd
+59,2026-11-09 10:15:00,web-01,,,other,,linux_auth,process=systemd-logind
+60,2026-11-09 10:16:00,web-01,deploy,,sudo,success,linux_auth,process=sudo; tty=pts/1; cwd=/srv/app; target_user=root; command=/usr/bin/systemctl reload nginx
+61,2026-11-09 10:16:00,web-01,root,,session_opened,,linux_auth,process=sudo; service=sudo
+62,2026-11-09 10:16:02,web-01,root,,session_closed,,linux_auth,process=sudo; service=sudo
+63,2026-11-09 10:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+64,2026-11-09 10:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+65,2026-11-09 10:19:00,web-01,deploy,,session_closed,,linux_auth,process=sshd; service=sshd
+66,2026-11-09 10:40:00,web-01,alice,,session_closed,,linux_auth,process=sshd; service=sshd
+67,2026-11-09 10:43:43,web-01,oracle,192.0.2.233,invalid_user,failure,linux_auth,process=sshd
+68,2026-11-09 10:43:43,web-01,oracle,192.0.2.233,login,failure,linux_auth,process=sshd; method=password; port=56861; invalid_user=yes
+69,2026-11-09 10:43:44,web-01,oracle,192.0.2.233,preauth_disconnect,failure,linux_auth,process=sshd
+70,2026-11-09 10:43:46,web-01,admin,192.0.2.233,invalid_user,failure,linux_auth,process=sshd
+71,2026-11-09 10:43:46,web-01,admin,192.0.2.233,login,failure,linux_auth,process=sshd; method=password; port=38219; invalid_user=yes
+72,2026-11-09 10:43:47,web-01,admin,192.0.2.233,preauth_disconnect,failure,linux_auth,process=sshd
+73,2026-11-09 11:02:00,web-01,root,10.0.5.12,login,success,linux_auth,process=sshd; method=publickey; port=47893
+74,2026-11-09 11:02:01,web-01,root,,session_opened,,linux_auth,process=sshd; service=sshd
+75,2026-11-09 11:02:01,web-01,,,other,,linux_auth,process=systemd-logind
+76,2026-11-09 11:08:00,web-01,root,,session_closed,,linux_auth,process=sshd; service=sshd
+77,2026-11-09 11:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+78,2026-11-09 11:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+79,2026-11-09 11:30:00,web-01,deploy,10.0.5.20,login,success,linux_auth,process=sshd; method=publickey; port=45136
+80,2026-11-09 11:30:00,web-01,deploy,,session_opened,,linux_auth,process=sshd; service=sshd
+81,2026-11-09 11:30:00,web-01,,,other,,linux_auth,process=systemd-logind
+82,2026-11-09 11:31:00,web-01,deploy,,sudo,success,linux_auth,process=sudo; tty=pts/1; cwd=/srv/app; target_user=root; command=/usr/bin/systemctl reload nginx
+83,2026-11-09 11:31:00,web-01,root,,session_opened,,linux_auth,process=sudo; service=sudo
+84,2026-11-09 11:31:02,web-01,root,,session_closed,,linux_auth,process=sudo; service=sudo
+85,2026-11-09 11:34:00,web-01,deploy,,session_closed,,linux_auth,process=sshd; service=sshd
+86,2026-11-09 12:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+87,2026-11-09 12:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+88,2026-11-09 12:28:18,web-01,guest,192.0.2.217,invalid_user,failure,linux_auth,process=sshd
+89,2026-11-09 12:28:18,web-01,guest,192.0.2.217,login,failure,linux_auth,process=sshd; method=password; port=57360; invalid_user=yes
+90,2026-11-09 12:28:19,web-01,guest,192.0.2.217,preauth_disconnect,failure,linux_auth,process=sshd
+91,2026-11-09 13:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+92,2026-11-09 13:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+93,2026-11-09 13:40:00,web-01,alice,10.0.5.12,login,success,linux_auth,process=sshd; method=publickey; port=57906
+94,2026-11-09 13:40:00,web-01,alice,,session_opened,,linux_auth,process=sshd; service=sshd
+95,2026-11-09 13:40:00,web-01,,,other,,linux_auth,process=systemd-logind
+96,2026-11-09 13:44:05,web-01,oracle,192.0.2.177,invalid_user,failure,linux_auth,process=sshd
+97,2026-11-09 13:44:05,web-01,oracle,192.0.2.177,login,failure,linux_auth,process=sshd; method=password; port=33111; invalid_user=yes
+98,2026-11-09 13:44:06,web-01,oracle,192.0.2.177,preauth_disconnect,failure,linux_auth,process=sshd
+99,2026-11-09 13:49:07,web-01,pi,192.0.2.227,invalid_user,failure,linux_auth,process=sshd
+100,2026-11-09 13:49:07,web-01,pi,192.0.2.227,login,failure,linux_auth,process=sshd; method=password; port=35494; invalid_user=yes
+101,2026-11-09 13:49:08,web-01,pi,192.0.2.227,preauth_disconnect,failure,linux_auth,process=sshd
+102,2026-11-09 13:49:10,web-01,admin,192.0.2.227,invalid_user,failure,linux_auth,process=sshd
+103,2026-11-09 13:49:10,web-01,admin,192.0.2.227,login,failure,linux_auth,process=sshd; method=password; port=40566; invalid_user=yes
+104,2026-11-09 13:49:11,web-01,admin,192.0.2.227,preauth_disconnect,failure,linux_auth,process=sshd
+105,2026-11-09 13:52:00,web-01,alice,,sudo,success,linux_auth,process=sudo; tty=pts/0; cwd=/home/alice; target_user=root; command=/usr/bin/journalctl -u nginx --since today
+106,2026-11-09 13:52:00,web-01,root,,session_opened,,linux_auth,process=sudo; service=sudo
+107,2026-11-09 13:52:01,web-01,root,,session_closed,,linux_auth,process=sudo; service=sudo
+108,2026-11-09 14:02:00,web-01,backup,,sudo,failure,linux_auth,process=sudo; tty=pts/2; cwd=/var/backups; target_user=root; command=/usr/bin/cat /etc/shadow; reason=user NOT in sudoers
+109,2026-11-09 14:03:44,web-01,user,198.51.100.222,invalid_user,failure,linux_auth,process=sshd
+110,2026-11-09 14:03:44,web-01,user,198.51.100.222,login,failure,linux_auth,process=sshd; method=password; port=37169; invalid_user=yes
+111,2026-11-09 14:03:45,web-01,user,198.51.100.222,preauth_disconnect,failure,linux_auth,process=sshd
+112,2026-11-09 14:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+113,2026-11-09 14:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+114,2026-11-09 14:30:00,web-01,alice,,session_closed,,linux_auth,process=sshd; service=sshd
+115,2026-11-09 14:50:39,web-01,oracle,198.51.100.105,invalid_user,failure,linux_auth,process=sshd
+116,2026-11-09 14:50:39,web-01,oracle,198.51.100.105,login,failure,linux_auth,process=sshd; method=password; port=45257; invalid_user=yes
+117,2026-11-09 14:50:40,web-01,oracle,198.51.100.105,preauth_disconnect,failure,linux_auth,process=sshd
+118,2026-11-09 14:50:42,web-01,admin,198.51.100.105,invalid_user,failure,linux_auth,process=sshd
+119,2026-11-09 14:50:42,web-01,admin,198.51.100.105,login,failure,linux_auth,process=sshd; method=password; port=36748; invalid_user=yes
+120,2026-11-09 14:50:43,web-01,admin,198.51.100.105,preauth_disconnect,failure,linux_auth,process=sshd
+121,2026-11-09 15:04:11,web-01,oracle,198.51.100.239,invalid_user,failure,linux_auth,process=sshd
+122,2026-11-09 15:04:12,web-01,oracle,198.51.100.239,login,failure,linux_auth,process=sshd; method=password; port=44700; invalid_user=yes
+123,2026-11-09 15:04:12,web-01,oracle,198.51.100.239,preauth_disconnect,failure,linux_auth,process=sshd
+124,2026-11-09 15:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+125,2026-11-09 15:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+126,2026-11-09 15:23:41,web-01,guest,198.51.100.151,invalid_user,failure,linux_auth,process=sshd
+127,2026-11-09 15:23:42,web-01,guest,198.51.100.151,login,failure,linux_auth,process=sshd; method=password; port=39738; invalid_user=yes
+128,2026-11-09 15:23:42,web-01,guest,198.51.100.151,preauth_disconnect,failure,linux_auth,process=sshd
+129,2026-11-09 16:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+130,2026-11-09 16:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+131,2026-11-09 16:17:21,web-01,admin,192.0.2.191,invalid_user,failure,linux_auth,process=sshd
+132,2026-11-09 16:17:21,web-01,admin,192.0.2.191,login,failure,linux_auth,process=sshd; method=password; port=54081; invalid_user=yes
+133,2026-11-09 16:17:22,web-01,admin,192.0.2.191,preauth_disconnect,failure,linux_auth,process=sshd
+134,2026-11-09 16:17:23,web-01,support,192.0.2.191,invalid_user,failure,linux_auth,process=sshd
+135,2026-11-09 16:17:24,web-01,support,192.0.2.191,login,failure,linux_auth,process=sshd; method=password; port=35752; invalid_user=yes
+136,2026-11-09 16:17:24,web-01,support,192.0.2.191,preauth_disconnect,failure,linux_auth,process=sshd
+137,2026-11-09 16:45:00,web-01,deploy,10.0.5.20,login,success,linux_auth,process=sshd; method=publickey; port=53963
+138,2026-11-09 16:45:00,web-01,deploy,,session_opened,,linux_auth,process=sshd; service=sshd
+139,2026-11-09 16:45:00,web-01,,,other,,linux_auth,process=systemd-logind
+140,2026-11-09 16:46:00,web-01,deploy,,sudo,success,linux_auth,process=sudo; tty=pts/1; cwd=/srv/app; target_user=root; command=/usr/bin/systemctl reload nginx
+142,2026-11-09 16:46:00,web-01,root,,session_opened,,linux_auth,process=sudo; service=sudo
+143,2026-11-09 16:46:01,web-01,root,,session_closed,,linux_auth,process=sudo; service=sudo
+144,2026-11-09 16:49:00,web-01,deploy,,session_closed,,linux_auth,process=sshd; service=sshd
+145,2026-11-09 16:57:12,web-01,user,198.51.100.139,invalid_user,failure,linux_auth,process=sshd
+146,2026-11-09 16:57:12,web-01,user,198.51.100.139,login,failure,linux_auth,process=sshd; method=password; port=34087; invalid_user=yes
+147,2026-11-09 16:57:13,web-01,user,198.51.100.139,preauth_disconnect,failure,linux_auth,process=sshd
+148,2026-11-09 16:57:14,web-01,support,198.51.100.139,invalid_user,failure,linux_auth,process=sshd
+149,2026-11-09 16:57:15,web-01,support,198.51.100.139,login,failure,linux_auth,process=sshd; method=password; port=35869; invalid_user=yes
+150,2026-11-09 16:57:15,web-01,support,198.51.100.139,preauth_disconnect,failure,linux_auth,process=sshd
+151,2026-11-09 17:16:15,web-01,support,192.0.2.182,invalid_user,failure,linux_auth,process=sshd
+152,2026-11-09 17:16:15,web-01,support,192.0.2.182,login,failure,linux_auth,process=sshd; method=password; port=37312; invalid_user=yes
+153,2026-11-09 17:16:16,web-01,support,192.0.2.182,preauth_disconnect,failure,linux_auth,process=sshd
+154,2026-11-09 17:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+155,2026-11-09 17:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+156,2026-11-09 17:21:04,web-01,support,198.51.100.169,invalid_user,failure,linux_auth,process=sshd
+157,2026-11-09 17:21:05,web-01,support,198.51.100.169,login,failure,linux_auth,process=sshd; method=password; port=58763; invalid_user=yes
+158,2026-11-09 17:21:05,web-01,support,198.51.100.169,preauth_disconnect,failure,linux_auth,process=sshd
+159,2026-11-09 17:21:08,web-01,user,198.51.100.169,invalid_user,failure,linux_auth,process=sshd
+160,2026-11-09 17:21:08,web-01,user,198.51.100.169,login,failure,linux_auth,process=sshd; method=password; port=44531; invalid_user=yes
+161,2026-11-09 17:21:09,web-01,user,198.51.100.169,preauth_disconnect,failure,linux_auth,process=sshd
+162,2026-11-09 18:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+163,2026-11-09 18:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+164,2026-11-09 18:22:51,web-01,user,198.51.100.202,invalid_user,failure,linux_auth,process=sshd
+165,2026-11-09 18:22:51,web-01,user,198.51.100.202,login,failure,linux_auth,process=sshd; method=password; port=33388; invalid_user=yes
+166,2026-11-09 18:22:52,web-01,user,198.51.100.202,preauth_disconnect,failure,linux_auth,process=sshd
+167,2026-11-09 18:22:53,web-01,pi,198.51.100.202,invalid_user,failure,linux_auth,process=sshd
+168,2026-11-09 18:22:54,web-01,pi,198.51.100.202,login,failure,linux_auth,process=sshd; method=password; port=51343; invalid_user=yes
+169,2026-11-09 18:22:54,web-01,pi,198.51.100.202,preauth_disconnect,failure,linux_auth,process=sshd
+170,2026-11-09 19:06:15,web-01,oracle,198.51.100.195,invalid_user,failure,linux_auth,process=sshd
+171,2026-11-09 19:06:16,web-01,oracle,198.51.100.195,login,failure,linux_auth,process=sshd; method=password; port=39929; invalid_user=yes
+172,2026-11-09 19:06:16,web-01,oracle,198.51.100.195,preauth_disconnect,failure,linux_auth,process=sshd
+173,2026-11-09 19:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+174,2026-11-09 19:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+175,2026-11-09 20:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+176,2026-11-09 20:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+177,2026-11-09 20:29:20,web-01,user,198.51.100.155,invalid_user,failure,linux_auth,process=sshd
+178,2026-11-09 20:29:20,web-01,user,198.51.100.155,login,failure,linux_auth,process=sshd; method=password; port=59236; invalid_user=yes
+179,2026-11-09 20:29:21,web-01,user,198.51.100.155,preauth_disconnect,failure,linux_auth,process=sshd
+180,2026-11-09 21:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+181,2026-11-09 21:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+182,2026-11-09 21:25:19,web-01,admin,198.51.100.197,invalid_user,failure,linux_auth,process=sshd
+183,2026-11-09 21:25:19,web-01,admin,198.51.100.197,login,failure,linux_auth,process=sshd; method=password; port=45374; invalid_user=yes
+184,2026-11-09 21:25:20,web-01,admin,198.51.100.197,preauth_disconnect,failure,linux_auth,process=sshd
+185,2026-11-09 21:25:22,web-01,admin,198.51.100.197,invalid_user,failure,linux_auth,process=sshd
+186,2026-11-09 21:25:22,web-01,admin,198.51.100.197,login,failure,linux_auth,process=sshd; method=password; port=58477; invalid_user=yes
+187,2026-11-09 21:25:23,web-01,admin,198.51.100.197,preauth_disconnect,failure,linux_auth,process=sshd
+188,2026-11-09 21:54:59,web-01,oracle,192.0.2.185,invalid_user,failure,linux_auth,process=sshd
+189,2026-11-09 21:54:59,web-01,oracle,192.0.2.185,login,failure,linux_auth,process=sshd; method=password; port=43327; invalid_user=yes
+190,2026-11-09 21:55:00,web-01,oracle,192.0.2.185,preauth_disconnect,failure,linux_auth,process=sshd
+191,2026-11-09 22:06:39,web-01,user,198.51.100.128,invalid_user,failure,linux_auth,process=sshd
+192,2026-11-09 22:06:40,web-01,user,198.51.100.128,login,failure,linux_auth,process=sshd; method=password; port=42961; invalid_user=yes
+193,2026-11-09 22:06:40,web-01,user,198.51.100.128,preauth_disconnect,failure,linux_auth,process=sshd
+194,2026-11-09 22:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+195,2026-11-09 22:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+196,2026-11-09 23:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+197,2026-11-09 23:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+198,2026-11-09 23:44:00,web-01,admin,192.0.2.171,invalid_user,failure,linux_auth,process=sshd
+199,2026-11-09 23:44:01,web-01,admin,192.0.2.171,login,failure,linux_auth,process=sshd; method=password; port=48214; invalid_user=yes
+200,2026-11-09 23:44:02,web-01,admin,192.0.2.171,preauth_disconnect,failure,linux_auth,process=sshd
+201,2026-11-10 00:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+202,2026-11-10 00:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+203,2026-11-10 01:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+204,2026-11-10 01:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+205,2026-11-10 01:52:03,web-01,admin,198.51.100.23,invalid_user,failure,linux_auth,process=sshd
+206,2026-11-10 01:52:04,web-01,admin,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=53888; invalid_user=yes
+207,2026-11-10 01:52:21,web-01,admin,198.51.100.23,invalid_user,failure,linux_auth,process=sshd
+208,2026-11-10 01:52:21,web-01,admin,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=52966; invalid_user=yes
+209,2026-11-10 01:52:38,web-01,test,198.51.100.23,invalid_user,failure,linux_auth,process=sshd
+210,2026-11-10 01:52:38,web-01,test,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=50404; invalid_user=yes
+211,2026-11-10 01:52:53,web-01,test,198.51.100.23,invalid_user,failure,linux_auth,process=sshd
+212,2026-11-10 01:52:53,web-01,test,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=44159; invalid_user=yes
+213,2026-11-10 01:53:14,web-01,oracle,198.51.100.23,invalid_user,failure,linux_auth,process=sshd
+214,2026-11-10 01:53:15,web-01,oracle,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=49436; invalid_user=yes
+215,2026-11-10 01:53:27,web-01,oracle,198.51.100.23,invalid_user,failure,linux_auth,process=sshd
+216,2026-11-10 01:53:28,web-01,oracle,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=42608; invalid_user=yes
+217,2026-11-10 01:53:39,web-01,postgres,198.51.100.23,invalid_user,failure,linux_auth,process=sshd
+218,2026-11-10 01:53:39,web-01,postgres,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=36865; invalid_user=yes
+219,2026-11-10 01:53:55,web-01,postgres,198.51.100.23,invalid_user,failure,linux_auth,process=sshd
+220,2026-11-10 01:53:55,web-01,postgres,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=55080; invalid_user=yes
+221,2026-11-10 01:54:04,web-01,ubuntu,198.51.100.23,invalid_user,failure,linux_auth,process=sshd
+222,2026-11-10 01:54:04,web-01,ubuntu,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=58970; invalid_user=yes
+223,2026-11-10 01:54:22,web-01,ubuntu,198.51.100.23,invalid_user,failure,linux_auth,process=sshd
+224,2026-11-10 01:54:22,web-01,ubuntu,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=51176; invalid_user=yes
+225,2026-11-10 01:54:34,web-01,git,198.51.100.23,invalid_user,failure,linux_auth,process=sshd
+226,2026-11-10 01:54:35,web-01,git,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=59945; invalid_user=yes
+227,2026-11-10 01:54:51,web-01,git,198.51.100.23,invalid_user,failure,linux_auth,process=sshd
+228,2026-11-10 01:54:52,web-01,git,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=44242; invalid_user=yes
+229,2026-11-10 01:55:14,web-01,ftpuser,198.51.100.23,invalid_user,failure,linux_auth,process=sshd
+230,2026-11-10 01:55:14,web-01,ftpuser,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=49995; invalid_user=yes
+231,2026-11-10 01:55:25,web-01,ftpuser,198.51.100.23,invalid_user,failure,linux_auth,process=sshd
+232,2026-11-10 01:55:26,web-01,ftpuser,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=49993; invalid_user=yes
+233,2026-11-10 01:55:41,web-01,jenkins,198.51.100.23,invalid_user,failure,linux_auth,process=sshd
+234,2026-11-10 01:55:41,web-01,jenkins,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=60756; invalid_user=yes
+235,2026-11-10 01:56:01,web-01,jenkins,198.51.100.23,invalid_user,failure,linux_auth,process=sshd
+236,2026-11-10 01:56:02,web-01,jenkins,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=51924; invalid_user=yes
+237,2026-11-10 01:56:17,web-01,deploy,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=36273
+238,2026-11-10 01:56:29,web-01,deploy,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=48841
+239,2026-11-10 01:56:47,web-01,alice,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=47036
+240,2026-11-10 01:57:04,web-01,alice,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=33786
+241,2026-11-10 01:57:21,web-01,backup,198.51.100.23,login,failure,linux_auth,process=sshd; method=password; port=39890
+242,2026-11-10 02:10:03,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=52477
+243,2026-11-10 02:10:09,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=53289
+244,2026-11-10 02:10:13,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=43292
+245,2026-11-10 02:10:19,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=35937
+246,2026-11-10 02:10:23,web-01,root,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=54358
+247,2026-11-10 02:10:28,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=36029
+248,2026-11-10 02:10:29,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+249,2026-11-10 02:10:32,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=58909
+250,2026-11-10 02:10:40,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=43938
+251,2026-11-10 02:10:48,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=35605
+252,2026-11-10 02:10:54,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=47296
+253,2026-11-10 02:11:01,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=50814
+254,2026-11-10 02:11:08,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=35755
+255,2026-11-10 02:11:09,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+256,2026-11-10 02:11:12,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=46630
+257,2026-11-10 02:11:16,web-01,root,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=34778
+258,2026-11-10 02:11:23,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=57251
+259,2026-11-10 02:11:27,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=38712
+260,2026-11-10 02:11:34,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=41148
+261,2026-11-10 02:11:42,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=46681
+262,2026-11-10 02:11:43,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+263,2026-11-10 02:11:46,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=33127
+264,2026-11-10 02:11:51,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=41226
+265,2026-11-10 02:11:58,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=55537
+266,2026-11-10 02:12:03,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=46218
+267,2026-11-10 02:12:07,web-01,root,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=43226
+268,2026-11-10 02:12:14,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=42951
+269,2026-11-10 02:12:15,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+270,2026-11-10 02:12:19,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=38708
+271,2026-11-10 02:12:27,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=33883
+272,2026-11-10 02:12:35,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=50047
+273,2026-11-10 02:12:42,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=56965
+274,2026-11-10 02:12:48,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=47243
+275,2026-11-10 02:12:53,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=42892
+276,2026-11-10 02:12:54,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+277,2026-11-10 02:12:59,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=52638
+278,2026-11-10 02:13:04,web-01,root,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=52457
+279,2026-11-10 02:13:12,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=56623
+280,2026-11-10 02:13:16,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=46071
+281,2026-11-10 02:13:23,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=52714
+282,2026-11-10 02:13:30,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=44978
+283,2026-11-10 02:13:31,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+284,2026-11-10 02:13:37,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=51916
+285,2026-11-10 02:13:43,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=44507
+286,2026-11-10 02:13:47,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=45427
+287,2026-11-10 02:13:53,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=58403
+288,2026-11-10 02:14:00,web-01,root,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=46312
+289,2026-11-10 02:14:07,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=56001
+290,2026-11-10 02:14:07,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+291,2026-11-10 02:14:13,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=58760
+292,2026-11-10 02:14:17,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=46915
+293,2026-11-10 02:14:23,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=56021
+294,2026-11-10 02:14:29,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=39920
+295,2026-11-10 02:14:33,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=38553
+296,2026-11-10 02:14:37,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=53045
+297,2026-11-10 02:14:38,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+298,2026-11-10 02:14:45,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=54914
+299,2026-11-10 02:14:53,web-01,root,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=53504
+300,2026-11-10 02:15:01,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=36927
+301,2026-11-10 02:15:05,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=40284
+302,2026-11-10 02:15:09,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=36205
+303,2026-11-10 02:15:13,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=33973
+304,2026-11-10 02:15:14,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+305,2026-11-10 02:15:18,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=56877
+306,2026-11-10 02:15:22,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=46168
+307,2026-11-10 02:15:28,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=38999
+308,2026-11-10 02:15:32,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=37669
+309,2026-11-10 02:15:38,web-01,root,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=38174
+310,2026-11-10 02:15:46,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=35012
+311,2026-11-10 02:15:47,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+312,2026-11-10 02:15:53,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=59681
+313,2026-11-10 02:16:00,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=58472
+314,2026-11-10 02:16:04,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=58859
+315,2026-11-10 02:16:09,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=41606
+316,2026-11-10 02:16:16,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=39503
+317,2026-11-10 02:16:22,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=33785
+318,2026-11-10 02:16:22,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+319,2026-11-10 02:16:26,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=45420
+320,2026-11-10 02:16:30,web-01,root,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=35215
+321,2026-11-10 02:16:34,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=54723
+322,2026-11-10 02:16:38,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=39939
+323,2026-11-10 02:16:43,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=35809
+324,2026-11-10 02:16:49,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=36412
+325,2026-11-10 02:16:50,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+326,2026-11-10 02:16:57,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=47971
+327,2026-11-10 02:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+328,2026-11-10 02:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+329,2026-11-10 02:17:05,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=38364
+330,2026-11-10 02:17:10,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=41026
+331,2026-11-10 02:17:14,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=52035
+332,2026-11-10 02:17:21,web-01,root,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=38917
+333,2026-11-10 02:17:26,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=48290
+334,2026-11-10 02:17:27,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+335,2026-11-10 02:17:30,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=53189
+336,2026-11-10 02:17:36,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=34380
+337,2026-11-10 02:17:44,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=56321
+338,2026-11-10 02:17:50,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=42775
+339,2026-11-10 02:17:55,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=45632
+340,2026-11-10 02:17:59,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=36816
+341,2026-11-10 02:17:59,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+342,2026-11-10 02:18:05,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=35122
+343,2026-11-10 02:18:12,web-01,root,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=42553
+344,2026-11-10 02:18:17,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=34994
+345,2026-11-10 02:18:23,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=35719
+346,2026-11-10 02:18:28,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=50470
+347,2026-11-10 02:18:32,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=39389
+348,2026-11-10 02:18:32,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+349,2026-11-10 02:18:36,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=35840
+350,2026-11-10 02:18:42,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=60236
+351,2026-11-10 02:18:49,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=50482
+352,2026-11-10 02:18:57,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=44495
+353,2026-11-10 02:19:05,web-01,root,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=55220
+354,2026-11-10 02:19:12,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=34809
+355,2026-11-10 02:19:13,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+356,2026-11-10 02:19:18,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=39382
+357,2026-11-10 02:19:26,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=50948
+358,2026-11-10 02:19:34,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=50374
+359,2026-11-10 02:19:38,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=46969
+360,2026-11-10 02:19:45,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=53835
+361,2026-11-10 02:19:53,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=37542
+362,2026-11-10 02:19:53,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+363,2026-11-10 02:20:00,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=56156
+364,2026-11-10 02:20:06,web-01,root,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=36629
+365,2026-11-10 02:20:11,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=53914
+366,2026-11-10 02:20:16,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=47846
+367,2026-11-10 02:20:20,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=57016
+368,2026-11-10 02:20:28,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=38426
+369,2026-11-10 02:20:29,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+370,2026-11-10 02:20:35,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=59458
+371,2026-11-10 02:20:40,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=38645
+372,2026-11-10 02:20:46,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=42144
+373,2026-11-10 02:20:53,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=50993
+374,2026-11-10 02:21:00,web-01,root,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=45761
+375,2026-11-10 02:21:07,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=39817
+376,2026-11-10 02:21:08,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+377,2026-11-10 02:21:15,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=57925
+378,2026-11-10 02:21:22,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=56170
+379,2026-11-10 02:21:27,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=50787
+380,2026-11-10 02:21:31,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=57005
+381,2026-11-10 02:21:37,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=47840
+382,2026-11-10 02:21:42,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=42885
+383,2026-11-10 02:21:42,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+384,2026-11-10 02:21:50,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=60348
+385,2026-11-10 02:21:57,web-01,root,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=60767
+386,2026-11-10 02:22:03,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=53438
+387,2026-11-10 02:22:07,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=43782
+388,2026-11-10 02:22:11,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=49981
+389,2026-11-10 02:22:19,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=46495
+390,2026-11-10 02:22:20,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+391,2026-11-10 02:22:23,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=36673
+392,2026-11-10 02:22:27,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=40866
+393,2026-11-10 02:22:33,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=43174
+394,2026-11-10 02:22:38,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=33211
+395,2026-11-10 02:22:44,web-01,root,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=51306
+396,2026-11-10 02:22:50,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=41891
+397,2026-11-10 02:22:51,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+398,2026-11-10 02:22:57,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=57893
+399,2026-11-10 02:23:05,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=59112
+400,2026-11-10 02:23:11,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=38645
+401,2026-11-10 02:23:18,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=46002
+402,2026-11-10 02:23:26,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=56971
+403,2026-11-10 02:23:34,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=34561
+404,2026-11-10 02:23:34,web-01,deploy,203.0.113.45,preauth_disconnect,failure,linux_auth,process=sshd
+405,2026-11-10 02:23:38,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=53290
+406,2026-11-10 02:23:44,web-01,root,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=33379
+407,2026-11-10 02:23:48,web-01,deploy,203.0.113.45,login,failure,linux_auth,process=sshd; method=password; port=57978
+408,2026-11-10 02:24:40,web-01,deploy,203.0.113.45,login,success,linux_auth,process=sshd; method=password; port=54538
+409,2026-11-10 02:24:40,web-01,deploy,,session_opened,,linux_auth,process=sshd; service=sshd
+410,2026-11-10 02:24:40,web-01,,,other,,linux_auth,process=systemd-logind
+411,2026-11-10 02:26:10,web-01,,,other,,linux_auth,process=useradd
+412,2026-11-10 02:26:10,web-01,svc-update,,account_created,success,linux_auth,process=useradd
+413,2026-11-10 02:26:10,web-01,deploy,,sudo,success,linux_auth,process=sudo; tty=pts/1; cwd=/home/deploy; target_user=root; command=/usr/sbin/useradd -m -s /bin/bash svc-update
+414,2026-11-10 02:26:10,web-01,root,,session_opened,,linux_auth,process=sudo; service=sudo
+415,2026-11-10 02:26:11,web-01,root,,session_closed,,linux_auth,process=sudo; service=sudo
+416,2026-11-10 02:26:31,web-01,svc-update,,group_member_added,success,linux_auth,process=usermod; group=sudo
+417,2026-11-10 02:26:31,web-01,,,other,,linux_auth,process=usermod
+418,2026-11-10 02:26:31,web-01,deploy,,sudo,success,linux_auth,process=sudo; tty=pts/1; cwd=/home/deploy; target_user=root; command=/usr/sbin/usermod -aG sudo svc-update
+419,2026-11-10 02:26:31,web-01,root,,session_opened,,linux_auth,process=sudo; service=sudo
+420,2026-11-10 02:26:33,web-01,root,,session_closed,,linux_auth,process=sudo; service=sudo
+421,2026-11-10 02:27:02,web-01,deploy,,sudo,success,linux_auth,process=sudo; tty=pts/1; cwd=/home/deploy; target_user=root; command=/usr/bin/passwd svc-update
+422,2026-11-10 02:27:02,web-01,root,,session_opened,,linux_auth,process=sudo; service=sudo
+423,2026-11-10 02:27:04,web-01,root,,session_closed,,linux_auth,process=sudo; service=sudo
+424,2026-11-10 02:27:08,web-01,svc-update,,password_changed,success,linux_auth,process=passwd
+425,2026-11-10 02:29:15,web-01,svc-update,203.0.113.45,login,success,linux_auth,process=sshd; method=password; port=41077
+426,2026-11-10 02:29:15,web-01,svc-update,,session_opened,,linux_auth,process=sshd; service=sshd
+427,2026-11-10 02:29:15,web-01,,,other,,linux_auth,process=systemd-logind
+428,2026-11-10 02:30:02,web-01,svc-update,,sudo,success,linux_auth,process=sudo; tty=pts/2; cwd=/home/svc-update; target_user=root; command=/usr/bin/crontab -l
+429,2026-11-10 02:30:02,web-01,root,,session_opened,,linux_auth,process=sudo; service=sudo
+430,2026-11-10 02:30:03,web-01,root,,session_closed,,linux_auth,process=sudo; service=sudo
+431,2026-11-10 02:35:40,web-01,deploy,,session_closed,,linux_auth,process=sshd; service=sshd
+432,2026-11-10 02:35:46,web-01,support,192.0.2.240,invalid_user,failure,linux_auth,process=sshd
+433,2026-11-10 02:35:46,web-01,support,192.0.2.240,login,failure,linux_auth,process=sshd; method=password; port=50517; invalid_user=yes
+434,2026-11-10 02:35:47,web-01,support,192.0.2.240,preauth_disconnect,failure,linux_auth,process=sshd
+435,2026-11-10 02:43:15,web-01,svc-update,,session_closed,,linux_auth,process=sshd; service=sshd
+436,2026-11-10 03:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+437,2026-11-10 03:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+438,2026-11-10 03:20:27,web-01,test,192.0.2.150,invalid_user,failure,linux_auth,process=sshd
+439,2026-11-10 03:20:27,web-01,test,192.0.2.150,login,failure,linux_auth,process=sshd; method=password; port=36541; invalid_user=yes
+440,2026-11-10 03:20:28,web-01,test,192.0.2.150,preauth_disconnect,failure,linux_auth,process=sshd
+441,2026-11-10 04:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+442,2026-11-10 04:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+443,2026-11-10 05:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+444,2026-11-10 05:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+445,2026-11-10 05:46:16,web-01,pi,198.51.100.208,invalid_user,failure,linux_auth,process=sshd
+446,2026-11-10 05:46:16,web-01,pi,198.51.100.208,login,failure,linux_auth,process=sshd; method=password; port=42883; invalid_user=yes
+447,2026-11-10 05:46:17,web-01,pi,198.51.100.208,preauth_disconnect,failure,linux_auth,process=sshd
+448,2026-11-10 05:46:19,web-01,support,198.51.100.208,invalid_user,failure,linux_auth,process=sshd
+449,2026-11-10 05:46:19,web-01,support,198.51.100.208,login,failure,linux_auth,process=sshd; method=password; port=52645; invalid_user=yes
+450,2026-11-10 05:46:20,web-01,support,198.51.100.208,preauth_disconnect,failure,linux_auth,process=sshd
+451,2026-11-10 06:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+452,2026-11-10 06:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+453,2026-11-10 07:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+454,2026-11-10 07:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+455,2026-11-10 08:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+456,2026-11-10 08:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+457,2026-11-10 08:18:42,web-01,guest,198.51.100.218,invalid_user,failure,linux_auth,process=sshd
+458,2026-11-10 08:18:43,web-01,guest,198.51.100.218,login,failure,linux_auth,process=sshd; method=password; port=46317; invalid_user=yes
+459,2026-11-10 08:18:43,web-01,guest,198.51.100.218,preauth_disconnect,failure,linux_auth,process=sshd
+460,2026-11-10 08:49:48,web-01,ubnt,198.51.100.161,invalid_user,failure,linux_auth,process=sshd
+461,2026-11-10 08:49:49,web-01,ubnt,198.51.100.161,login,failure,linux_auth,process=sshd; method=password; port=40934; invalid_user=yes
+462,2026-11-10 08:49:49,web-01,ubnt,198.51.100.161,preauth_disconnect,failure,linux_auth,process=sshd
+463,2026-11-10 08:49:52,web-01,user,198.51.100.161,invalid_user,failure,linux_auth,process=sshd
+464,2026-11-10 08:49:52,web-01,user,198.51.100.161,login,failure,linux_auth,process=sshd; method=password; port=57959; invalid_user=yes
+465,2026-11-10 08:49:53,web-01,user,198.51.100.161,preauth_disconnect,failure,linux_auth,process=sshd
+466,2026-11-10 09:05:00,web-01,alice,10.0.5.12,login,success,linux_auth,process=sshd; method=publickey; port=53076
+467,2026-11-10 09:05:00,web-01,alice,,session_opened,,linux_auth,process=sshd; service=sshd
+468,2026-11-10 09:05:00,web-01,,,other,,linux_auth,process=systemd-logind
+469,2026-11-10 09:12:00,web-01,alice,,sudo,success,linux_auth,process=sudo; tty=pts/0; cwd=/home/alice; target_user=root; command=/usr/bin/systemctl status nginx
+470,2026-11-10 09:12:00,web-01,root,,session_opened,,linux_auth,process=sudo; service=sudo
+471,2026-11-10 09:12:03,web-01,root,,session_closed,,linux_auth,process=sudo; service=sudo
+472,2026-11-10 09:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+473,2026-11-10 09:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+474,2026-11-10 10:15:00,web-01,deploy,10.0.5.20,login,success,linux_auth,process=sshd; method=publickey; port=48693
+475,2026-11-10 10:15:00,web-01,deploy,,session_opened,,linux_auth,process=sshd; service=sshd
+476,2026-11-10 10:15:00,web-01,,,other,,linux_auth,process=systemd-logind
+477,2026-11-10 10:16:00,web-01,deploy,,sudo,success,linux_auth,process=sudo; tty=pts/1; cwd=/srv/app; target_user=root; command=/usr/bin/systemctl reload nginx
+478,2026-11-10 10:16:00,web-01,root,,session_opened,,linux_auth,process=sudo; service=sudo
+479,2026-11-10 10:16:02,web-01,root,,session_closed,,linux_auth,process=sudo; service=sudo
+480,2026-11-10 10:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+481,2026-11-10 10:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+482,2026-11-10 10:19:00,web-01,deploy,,session_closed,,linux_auth,process=sshd; service=sshd
+483,2026-11-10 10:40:00,web-01,alice,,session_closed,,linux_auth,process=sshd; service=sshd
+484,2026-11-10 10:49:39,web-01,support,198.51.100.214,invalid_user,failure,linux_auth,process=sshd
+485,2026-11-10 10:49:40,web-01,support,198.51.100.214,login,failure,linux_auth,process=sshd; method=password; port=59574; invalid_user=yes
+486,2026-11-10 10:49:41,web-01,support,198.51.100.214,preauth_disconnect,failure,linux_auth,process=sshd
+487,2026-11-10 10:49:42,web-01,user,198.51.100.214,invalid_user,failure,linux_auth,process=sshd
+488,2026-11-10 10:49:43,web-01,user,198.51.100.214,login,failure,linux_auth,process=sshd; method=password; port=33771; invalid_user=yes
+489,2026-11-10 10:49:43,web-01,user,198.51.100.214,preauth_disconnect,failure,linux_auth,process=sshd
+490,2026-11-10 11:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+491,2026-11-10 11:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+492,2026-11-10 11:30:00,web-01,deploy,10.0.5.20,login,success,linux_auth,process=sshd; method=publickey; port=60741
+493,2026-11-10 11:30:00,web-01,deploy,,session_opened,,linux_auth,process=sshd; service=sshd
+494,2026-11-10 11:30:00,web-01,,,other,,linux_auth,process=systemd-logind
+495,2026-11-10 11:31:00,web-01,deploy,,sudo,success,linux_auth,process=sudo; tty=pts/1; cwd=/srv/app; target_user=root; command=/usr/bin/systemctl reload nginx
+496,2026-11-10 11:31:00,web-01,root,,session_opened,,linux_auth,process=sudo; service=sudo
+497,2026-11-10 11:31:02,web-01,root,,session_closed,,linux_auth,process=sudo; service=sudo
+498,2026-11-10 11:34:00,web-01,deploy,,session_closed,,linux_auth,process=sshd; service=sshd
+499,2026-11-10 12:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+500,2026-11-10 12:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+501,2026-11-10 13:14:36,web-01,user,198.51.100.236,invalid_user,failure,linux_auth,process=sshd
+502,2026-11-10 13:14:36,web-01,user,198.51.100.236,login,failure,linux_auth,process=sshd; method=password; port=55863; invalid_user=yes
+503,2026-11-10 13:14:37,web-01,user,198.51.100.236,preauth_disconnect,failure,linux_auth,process=sshd
+504,2026-11-10 13:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+505,2026-11-10 13:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+506,2026-11-10 13:40:00,web-01,alice,10.0.5.12,login,success,linux_auth,process=sshd; method=publickey; port=49598
+507,2026-11-10 13:40:00,web-01,alice,,session_opened,,linux_auth,process=sshd; service=sshd
+508,2026-11-10 13:40:01,web-01,,,other,,linux_auth,process=systemd-logind
+509,2026-11-10 13:44:26,web-01,oracle,192.0.2.243,invalid_user,failure,linux_auth,process=sshd
+510,2026-11-10 13:44:26,web-01,oracle,192.0.2.243,login,failure,linux_auth,process=sshd; method=password; port=47873; invalid_user=yes
+511,2026-11-10 13:44:27,web-01,oracle,192.0.2.243,preauth_disconnect,failure,linux_auth,process=sshd
+512,2026-11-10 13:44:29,web-01,support,192.0.2.243,invalid_user,failure,linux_auth,process=sshd
+513,2026-11-10 13:44:29,web-01,support,192.0.2.243,login,failure,linux_auth,process=sshd; method=password; port=59832; invalid_user=yes
+514,2026-11-10 13:44:30,web-01,support,192.0.2.243,preauth_disconnect,failure,linux_auth,process=sshd
+515,2026-11-10 13:52:00,web-01,alice,,sudo,success,linux_auth,process=sudo; tty=pts/0; cwd=/home/alice; target_user=root; command=/usr/bin/journalctl -u nginx --since today
+516,2026-11-10 13:52:00,web-01,root,,session_opened,,linux_auth,process=sudo; service=sudo
+517,2026-11-10 13:52:02,web-01,root,,session_closed,,linux_auth,process=sudo; service=sudo
+518,2026-11-10 14:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+519,2026-11-10 14:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+520,2026-11-10 14:30:00,web-01,alice,,session_closed,,linux_auth,process=sshd; service=sshd
+523,2026-11-10 15:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+524,2026-11-10 15:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+525,2026-11-10 16:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+526,2026-11-10 16:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+527,2026-11-10 16:45:00,web-01,deploy,10.0.5.20,login,success,linux_auth,process=sshd; method=publickey; port=46070
+528,2026-11-10 16:45:00,web-01,deploy,,session_opened,,linux_auth,process=sshd; service=sshd
+529,2026-11-10 16:45:00,web-01,,,other,,linux_auth,process=systemd-logind
+530,2026-11-10 16:46:00,web-01,deploy,,sudo,success,linux_auth,process=sudo; tty=pts/1; cwd=/srv/app; target_user=root; command=/usr/bin/systemctl reload nginx
+531,2026-11-10 16:46:00,web-01,root,,session_opened,,linux_auth,process=sudo; service=sudo
+532,2026-11-10 16:46:02,web-01,root,,session_closed,,linux_auth,process=sudo; service=sudo
+533,2026-11-10 16:49:00,web-01,deploy,,session_closed,,linux_auth,process=sshd; service=sshd
+534,2026-11-10 17:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+535,2026-11-10 17:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+536,2026-11-10 18:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+537,2026-11-10 18:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+538,2026-11-10 18:29:49,web-01,oracle,192.0.2.231,invalid_user,failure,linux_auth,process=sshd
+539,2026-11-10 18:29:49,web-01,oracle,192.0.2.231,login,failure,linux_auth,process=sshd; method=password; port=37247; invalid_user=yes
+540,2026-11-10 18:29:50,web-01,oracle,192.0.2.231,preauth_disconnect,failure,linux_auth,process=sshd
+541,2026-11-10 19:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+542,2026-11-10 19:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+543,2026-11-10 20:14:19,web-01,user,192.0.2.212,invalid_user,failure,linux_auth,process=sshd
+544,2026-11-10 20:14:20,web-01,user,192.0.2.212,login,failure,linux_auth,process=sshd; method=password; port=51091; invalid_user=yes
+545,2026-11-10 20:14:20,web-01,user,192.0.2.212,preauth_disconnect,failure,linux_auth,process=sshd
+546,2026-11-10 20:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+547,2026-11-10 20:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+548,2026-11-10 21:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+549,2026-11-10 21:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+550,2026-11-10 21:20:09,web-01,user,198.51.100.184,invalid_user,failure,linux_auth,process=sshd
+551,2026-11-10 21:20:09,web-01,user,198.51.100.184,login,failure,linux_auth,process=sshd; method=password; port=59521; invalid_user=yes
+552,2026-11-10 21:20:10,web-01,user,198.51.100.184,preauth_disconnect,failure,linux_auth,process=sshd
+553,2026-11-10 22:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+554,2026-11-10 22:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron
+555,2026-11-10 23:17:01,web-01,root,,session_opened,,linux_auth,process=CRON; service=cron
+556,2026-11-10 23:17:02,web-01,root,,session_closed,,linux_auth,process=CRON; service=cron

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" width="960" height="320" role="img" aria-label="Busiest source addresses" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12">
+<title>Busiest source addresses</title>
+<rect width="960" height="320" fill="#ffffff"/>
+<text x="20" y="24" font-size="14" font-weight="600" fill="#16181d">Busiest source addresses</text>
+<text x="940" y="24" text-anchor="end" fill="#5b6370">other events</text>
+<rect x="847" y="14" width="10" height="10" fill="#b4bcc8"/>
+<text x="829" y="24" text-anchor="end" fill="#5b6370">failed or refused</text>
+<rect x="704" y="14" width="10" height="10" fill="#c2410c"/>
+<text x="130" y="61" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">203.0.113.45</text>
+<rect x="142.2" y="50" width="7.4" height="16" fill="#b4bcc8"/>
+<rect x="149.6" y="50" width="610.8" height="16" fill="#c2410c"/>
+<text x="768.4" y="62" fill="#5b6370">166, 164 failed or refused</text>
+<text x="130" y="87" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">198.51.100.23</text>
+<rect x="142.2" y="76" width="137.8" height="16" fill="#c2410c"/>
+<text x="288.0" y="88" fill="#5b6370">37, 37 failed or refused</text>
+<text x="130" y="113" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">198.51.100.202</text>
+<rect x="142.2" y="102" width="33.5" height="16" fill="#c2410c"/>
+<text x="183.7" y="114" fill="#5b6370">9, 9 failed or refused</text>
+<text x="130" y="139" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">10.0.5.20</text>
+<rect x="142.2" y="128" width="22.3" height="16" fill="#b4bcc8"/>
+<text x="172.5" y="140" fill="#5b6370">6</text>
+<text x="130" y="165" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">192.0.2.191</text>
+<rect x="142.2" y="154" width="22.3" height="16" fill="#c2410c"/>
+<text x="172.5" y="166" fill="#5b6370">6, 6 failed or refused</text>
+<text x="130" y="191" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">192.0.2.227</text>
+<rect x="142.2" y="180" width="22.3" height="16" fill="#c2410c"/>
+<text x="172.5" y="192" fill="#5b6370">6, 6 failed or refused</text>
+<text x="130" y="217" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">192.0.2.233</text>
+<rect x="142.2" y="206" width="22.3" height="16" fill="#c2410c"/>
+<text x="172.5" y="218" fill="#5b6370">6, 6 failed or refused</text>
+<text x="130" y="243" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">192.0.2.243</text>
+<rect x="142.2" y="232" width="22.3" height="16" fill="#c2410c"/>
+<text x="172.5" y="244" fill="#5b6370">6, 6 failed or refused</text>
+<text x="130" y="269" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">198.51.100.105</text>
+<rect x="142.2" y="258" width="22.3" height="16" fill="#c2410c"/>
+<text x="172.5" y="270" fill="#5b6370">6, 6 failed or refused</text>
+<text x="130" y="295" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">198.51.100.139</text>
+<rect x="142.2" y="284" width="22.3" height="16" fill="#c2410c"/>
+<text x="172.5" y="296" fill="#5b6370">6, 6 failed or refused</text>
+</svg>

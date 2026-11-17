@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 138" width="960" height="138" role="img" aria-label="Busiest source addresses" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12">
+<title>Busiest source addresses</title>
+<rect width="960" height="138" fill="#ffffff"/>
+<text x="20" y="24" font-size="14" font-weight="600" fill="#16181d">Busiest source addresses</text>
+<text x="940" y="24" text-anchor="end" fill="#5b6370">other events</text>
+<rect x="847" y="14" width="10" height="10" fill="#b4bcc8"/>
+<text x="829" y="24" text-anchor="end" fill="#5b6370">failed or refused</text>
+<rect x="704" y="14" width="10" height="10" fill="#c2410c"/>
+<text x="130" y="61" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">10.0.8.77</text>
+<rect x="142.0" y="50" width="17.1" height="16" fill="#b4bcc8"/>
+<rect x="159.1" y="50" width="614.5" height="16" fill="#c2410c"/>
+<text x="781.6" y="62" fill="#5b6370">37, 36 failed or refused</text>
+<text x="130" y="87" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">10.0.8.31</text>
+<rect x="142.0" y="76" width="68.3" height="16" fill="#b4bcc8"/>
+<rect x="210.3" y="76" width="17.1" height="16" fill="#c2410c"/>
+<text x="235.4" y="88" fill="#5b6370">5, 1 failed or refused</text>
+<text x="130" y="113" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">10.0.8.10</text>
+<rect x="142.0" y="102" width="51.2" height="16" fill="#b4bcc8"/>
+<text x="201.2" y="114" fill="#5b6370">3</text>
+</svg>

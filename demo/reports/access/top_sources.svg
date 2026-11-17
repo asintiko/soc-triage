@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" width="960" height="320" role="img" aria-label="Busiest source addresses" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12">
+<title>Busiest source addresses</title>
+<rect width="960" height="320" fill="#ffffff"/>
+<text x="20" y="24" font-size="14" font-weight="600" fill="#16181d">Busiest source addresses</text>
+<text x="940" y="24" text-anchor="end" fill="#5b6370">other events</text>
+<rect x="847" y="14" width="10" height="10" fill="#b4bcc8"/>
+<text x="829" y="24" text-anchor="end" fill="#5b6370">failed or refused</text>
+<rect x="704" y="14" width="10" height="10" fill="#c2410c"/>
+<text x="130" y="61" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">198.51.100.177</text>
+<rect x="142.2" y="50" width="19.1" height="16" fill="#b4bcc8"/>
+<rect x="161.3" y="50" width="612.3" height="16" fill="#c2410c"/>
+<text x="781.6" y="62" fill="#5b6370">66, 64 failed or refused</text>
+<text x="130" y="87" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">203.0.113.99</text>
+<rect x="142.2" y="76" width="38.3" height="16" fill="#b4bcc8"/>
+<rect x="180.5" y="76" width="535.7" height="16" fill="#c2410c"/>
+<text x="724.2" y="88" fill="#5b6370">60, 56 failed or refused</text>
+<text x="130" y="113" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">198.51.100.14</text>
+<rect x="142.2" y="102" width="440.1" height="16" fill="#b4bcc8"/>
+<rect x="582.3" y="102" width="57.4" height="16" fill="#c2410c"/>
+<text x="647.7" y="114" fill="#5b6370">52, 6 failed or refused</text>
+<text x="130" y="139" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">192.0.2.63</text>
+<rect x="142.2" y="128" width="411.4" height="16" fill="#b4bcc8"/>
+<rect x="553.6" y="128" width="28.7" height="16" fill="#c2410c"/>
+<text x="590.3" y="140" fill="#5b6370">46, 3 failed or refused</text>
+<text x="130" y="165" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">198.51.100.24</text>
+<rect x="142.2" y="154" width="373.1" height="16" fill="#b4bcc8"/>
+<rect x="515.3" y="154" width="19.1" height="16" fill="#c2410c"/>
+<text x="542.4" y="166" fill="#5b6370">41, 2 failed or refused</text>
+<text x="130" y="191" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">192.0.2.11</text>
+<rect x="142.2" y="180" width="354.0" height="16" fill="#b4bcc8"/>
+<rect x="496.2" y="180" width="9.6" height="16" fill="#c2410c"/>
+<text x="513.7" y="192" fill="#5b6370">38, 1 failed or refused</text>
+<text x="130" y="217" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">192.0.2.79</text>
+<rect x="142.2" y="206" width="334.8" height="16" fill="#b4bcc8"/>
+<rect x="477.0" y="206" width="19.1" height="16" fill="#c2410c"/>
+<text x="504.2" y="218" fill="#5b6370">37, 2 failed or refused</text>
+<text x="130" y="243" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">192.0.2.2</text>
+<rect x="142.2" y="232" width="315.7" height="16" fill="#b4bcc8"/>
+<rect x="457.9" y="232" width="28.7" height="16" fill="#c2410c"/>
+<text x="494.6" y="244" fill="#5b6370">36, 3 failed or refused</text>
+<text x="130" y="269" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">192.0.2.80</text>
+<rect x="142.2" y="258" width="267.9" height="16" fill="#b4bcc8"/>
+<rect x="410.1" y="258" width="19.1" height="16" fill="#c2410c"/>
+<text x="437.2" y="270" fill="#5b6370">30, 2 failed or refused</text>
+<text x="130" y="295" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">198.51.100.89</text>
+<rect x="142.2" y="284" width="258.3" height="16" fill="#b4bcc8"/>
+<rect x="400.5" y="284" width="19.1" height="16" fill="#c2410c"/>
+<text x="427.6" y="296" fill="#5b6370">29, 2 failed or refused</text>
+</svg>

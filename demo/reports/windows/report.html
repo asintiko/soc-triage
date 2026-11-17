@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Log triage: windows-security.json</title>
+<style>
+:root {
+  --ink: #16181d; --muted: #5b6370; --line: #e3e5e8; --page: #f6f6f4; --paper: #ffffff; --wash: #f3f4f6;
+  --critical: #b42318; --high: #c2410c; --medium: #946200; --low: #33658a; --info: #5b6370; --ok: #2f6b3a;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 15px/1.55 var(--sans); }
+main { max-width: 1040px; margin: 0 auto; padding: 56px 40px 72px; background: var(--paper); min-height: 100vh;
+  border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
+.top { padding-bottom: 28px; border-bottom: 2px solid var(--ink); margin-bottom: 28px; }
+.kicker { margin: 0 0 10px; color: var(--muted); font-size: 13px; }
+h1 { margin: 0; font-size: 34px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 650; overflow-wrap: anywhere; }
+h1 code { font-size: 0.92em; background: none; padding: 0; }
+.sub { margin: 12px 0 0; color: var(--muted); }
+h2 { margin: 48px 0 14px; font-size: 20px; letter-spacing: -0.01em; }
+h3 { margin: 28px 0 10px; font-size: 16px; }
+p { margin: 0 0 12px; max-width: 76ch; }
+p.muted { color: var(--muted); font-size: 14px; }
+code { font: 13px/1.5 var(--mono); background: var(--wash); padding: 1px 5px; border-radius: 3px; overflow-wrap: anywhere; }
+strong { font-weight: 650; }
+.facts { display: flex; flex-wrap: wrap; gap: 1px; margin: 0; background: var(--line); border: 1px solid var(--line); }
+.facts div { flex: 1 1 200px; padding: 12px 14px; background: var(--paper); min-width: 0; }
+.facts div.wide { flex-basis: 100%; }
+.facts dt { color: var(--muted); font-size: 12.5px; margin-bottom: 2px; }
+.facts dd { margin: 0; font-size: 15px; overflow-wrap: anywhere; }
+.facts dd code { background: none; padding: 0; }
+.scroll { overflow-x: auto; margin: 0 0 16px; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th { text-align: left; font-weight: 600; color: var(--muted); font-size: 12.5px; padding: 7px 10px 7px 0;
+  border-bottom: 1px solid var(--ink); white-space: nowrap; }
+td { padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+td code { background: none; padding: 0; }
+table.wide td { min-width: 72px; }
+figure { margin: 0 0 20px; border: 1px solid var(--line); padding: 8px; }
+figure svg { display: block; width: 100%; height: auto; }
+pre { margin: 0 0 16px; padding: 12px 14px; background: var(--wash); font: 12.5px/1.6 var(--mono); overflow-x: auto;
+  white-space: pre-wrap; overflow-wrap: anywhere; border-left: 2px solid var(--line); }
+.label { margin: 14px 0 6px; color: var(--muted); font-size: 12.5px; }
+.badge { display: inline-block; font-size: 11.5px; font-weight: 650; line-height: 1; padding: 4px 7px 3px;
+  border: 1px solid currentColor; border-radius: 3px; white-space: nowrap; letter-spacing: 0.02em; }
+.tone-critical { --tone: var(--critical); } .tone-high { --tone: var(--high); } .tone-medium { --tone: var(--medium); }
+.tone-low { --tone: var(--low); } .tone-info { --tone: var(--info); } .tone-ok { --tone: var(--ok); }
+.badge { color: var(--tone, var(--muted)); }
+.callout { border-left: 4px solid var(--tone, var(--muted)); background: var(--wash); padding: 16px 18px; margin: 0 0 24px; }
+.callout .verdict { display: block; font-size: 22px; font-weight: 650; letter-spacing: -0.01em; color: var(--tone); margin-bottom: 4px; }
+.callout p { margin: 0; }
+.finding { margin: 0 0 36px; padding: 18px 0 0 18px; border-left: 4px solid var(--tone, var(--muted));
+  border-top: 1px solid var(--line); }
+.finding > header { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: baseline; margin-bottom: 12px; }
+.finding > header h3 { margin: 0; font-size: 18px; letter-spacing: -0.01em; }
+.finding > header .meta { grid-column: 2; margin: 0; color: var(--muted); font-size: 13.5px; }
+.finding .num { color: var(--muted); font-variant-numeric: tabular-nums; margin-right: 6px; }
+footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+@media (max-width: 720px) { main { padding: 32px 18px 48px; border: 0; } h1 { font-size: 26px; } }
+@media print {
+  body { background: #fff; font-size: 12px; } main { border: 0; padding: 0; max-width: none; }
+  .finding, figure, table { break-inside: avoid; } pre { white-space: pre-wrap; }
+}
+</style>
+</head>
+<body>
+<main>
+<header class="top"><p class="kicker">Log triage report</p><h1><code>windows-security.json</code></h1><p class="sub">Windows event log export (CSV / JSON) · 2026-11-09 08:01:00 to 2026-11-10 18:03:00</p></header>
+<div class="callout tone-critical"><span class="verdict">10 findings: 1 critical, 4 high, 5 medium</span><p>Start with: <code>10.0.8.77</code> logged in as <code>Administrator</code> after 36 failed logins within 30 min.</p></div>
+<dl class="facts"><div><dt>Records read</dt><dd>75</dd></div><div><dt>Events parsed</dt><dd>73</dd></div><div><dt>Records skipped</dt><dd>2</dd></div><div><dt>Rules applied</dt><dd>21 from built-in default.yaml</dd></div><div><dt>Clock</dt><dd>timestamps that carry an offset are shown in UTC+05:00; others as recorded</dd></div><div class="wide"><dt>SHA-256 of the input</dt><dd><code>77f7f7148c18174a2f9a18acbb9d0a2cb7ce783aee2472adfa741368753608a9</code></dd></div></dl>
+<h2>Findings</h2>
+<div class="scroll"><table><thead><tr><th>#</th><th>Severity</th><th>Finding</th><th>Subject</th><th>ATT&amp;CK</th><th>Events</th><th>First seen</th></tr></thead><tbody><tr><td>1</td><td><span class="badge tone-critical">CRITICAL</span></td><td>Successful login after repeated failures from the same address</td><td><code>10.0.8.77</code></td><td><code>T1110</code></td><td>1</td><td>2026-11-10 03:08:53</td></tr><tr><td>2</td><td><span class="badge tone-high">HIGH</span></td><td>Repeated failed logins from one address</td><td><code>10.0.8.77</code></td><td><code>T1110.001</code></td><td>36</td><td>2026-11-10 03:05:09</td></tr><tr><td>3</td><td><span class="badge tone-high">HIGH</span></td><td>PowerShell started with an encoded or download command</td><td><code>ACC-WS-07.corp.example</code></td><td><code>T1059.001</code></td><td>1</td><td>2026-11-10 03:12:30</td></tr><tr><td>4</td><td><span class="badge tone-high">HIGH</span></td><td>Account added to a privileged group</td><td><code>S-1-5-21-1004336348-1177238915-682003330-1124, Administrators</code></td><td><code>T1098</code></td><td>1</td><td>2026-11-10 03:14:40</td></tr><tr><td>5</td><td><span class="badge tone-high">HIGH</span></td><td>Windows event log cleared</td><td><code>ACC-WS-07.corp.example</code></td><td><code>T1070.001</code></td><td>1</td><td>2026-11-10 03:38:17</td></tr><tr><td>6</td><td><span class="badge tone-medium">MEDIUM</span></td><td>Administrative activity at night</td><td><code>Administrator</code></td><td><code>T1078</code></td><td>2</td><td>2026-11-10 03:08:53</td></tr><tr><td>7</td><td><span class="badge tone-medium">MEDIUM</span></td><td>Login from an address the account has not used before</td><td><code>Administrator</code></td><td><code>T1078</code></td><td>1</td><td>2026-11-10 03:08:53</td></tr><tr><td>8</td><td><span class="badge tone-medium">MEDIUM</span></td><td>New user account created</td><td><code>helpdesk2</code></td><td><code>T1136</code></td><td>1</td><td>2026-11-10 03:14:02</td></tr><tr><td>9</td><td><span class="badge tone-medium">MEDIUM</span></td><td>New Windows service installed</td><td><code>UpdaterSvc</code></td><td><code>T1543.003</code></td><td>1</td><td>2026-11-10 03:21:11</td></tr><tr><td>10</td><td><span class="badge tone-medium">MEDIUM</span></td><td>Scheduled task created</td><td><code>\UpdaterSync</code></td><td><code>T1053.005</code></td><td>1</td><td>2026-11-10 03:23:48</td></tr></tbody></table></div>
+<h2>Timeline and sources</h2>
+<figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" width="960" height="280" role="img" aria-label="Events over time, 30 min per bar" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12">
+<title>Events over time, 30 min per bar</title>
+<rect width="960" height="280" fill="#ffffff"/>
+<text x="20" y="24" font-size="14" font-weight="600" fill="#16181d">Events over time, 30 min per bar</text>
+<text x="940" y="24" text-anchor="end" fill="#5b6370">other events</text>
+<rect x="847" y="14" width="10" height="10" fill="#b4bcc8"/>
+<text x="829" y="24" text-anchor="end" fill="#5b6370">failed or refused</text>
+<rect x="704" y="14" width="10" height="10" fill="#c2410c"/>
+<line x1="56" x2="940" y1="240.0" y2="240.0" stroke="#e6e8eb"/>
+<text x="48" y="244.0" text-anchor="end" fill="#5b6370">0</text>
+<line x1="56" x2="940" y1="145.0" y2="145.0" stroke="#e6e8eb"/>
+<text x="48" y="149.0" text-anchor="end" fill="#5b6370">25</text>
+<line x1="56" x2="940" y1="50.0" y2="50.0" stroke="#e6e8eb"/>
+<text x="48" y="54.0" text-anchor="end" fill="#5b6370">50</text>
+<rect x="56.0" y="232.4" width="11.8" height="7.6" fill="#b4bcc8"/>
+<rect x="68.8" y="232.4" width="11.8" height="7.6" fill="#b4bcc8"/>
+<rect x="81.6" y="232.4" width="11.8" height="3.8" fill="#b4bcc8"/>
+<rect x="81.6" y="236.2" width="11.8" height="3.8" fill="#c2410c"/>
+<rect x="107.2" y="232.4" width="11.8" height="7.6" fill="#b4bcc8"/>
+<rect x="158.5" y="232.4" width="11.8" height="7.6" fill="#b4bcc8"/>
+<rect x="184.1" y="236.2" width="11.8" height="3.8" fill="#b4bcc8"/>
+<rect x="235.4" y="232.4" width="11.8" height="7.6" fill="#b4bcc8"/>
+<rect x="273.8" y="232.4" width="11.8" height="7.6" fill="#b4bcc8"/>
+<rect x="286.6" y="232.4" width="11.8" height="7.6" fill="#b4bcc8"/>
+<rect x="312.2" y="236.2" width="11.8" height="3.8" fill="#b4bcc8"/>
+<rect x="542.8" y="76.6" width="11.8" height="26.6" fill="#b4bcc8"/>
+<rect x="542.8" y="103.2" width="11.8" height="136.8" fill="#c2410c"/>
+<rect x="555.7" y="236.2" width="11.8" height="3.8" fill="#b4bcc8"/>
+<rect x="671.0" y="232.4" width="11.8" height="7.6" fill="#b4bcc8"/>
+<rect x="683.8" y="232.4" width="11.8" height="7.6" fill="#b4bcc8"/>
+<rect x="696.6" y="236.2" width="11.8" height="3.8" fill="#b4bcc8"/>
+<rect x="773.4" y="232.4" width="11.8" height="7.6" fill="#b4bcc8"/>
+<rect x="799.1" y="236.2" width="11.8" height="3.8" fill="#b4bcc8"/>
+<rect x="901.6" y="232.4" width="11.8" height="7.6" fill="#b4bcc8"/>
+<rect x="927.2" y="236.2" width="11.8" height="3.8" fill="#b4bcc8"/>
+<text x="56.0" y="264" text-anchor="start" fill="#5b6370">09 Nov 08:00</text>
+<text x="241.8" y="264" text-anchor="middle" fill="#5b6370">09 Nov 15:00</text>
+<text x="408.3" y="264" text-anchor="middle" fill="#5b6370">09 Nov 21:30</text>
+<text x="587.7" y="264" text-anchor="middle" fill="#5b6370">10 Nov 04:30</text>
+<text x="754.2" y="264" text-anchor="middle" fill="#5b6370">10 Nov 11:00</text>
+<text x="940.0" y="264" text-anchor="end" fill="#5b6370">10 Nov 18:00</text>
+</svg></figure>
+<figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 138" width="960" height="138" role="img" aria-label="Busiest source addresses" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12">
+<title>Busiest source addresses</title>
+<rect width="960" height="138" fill="#ffffff"/>
+<text x="20" y="24" font-size="14" font-weight="600" fill="#16181d">Busiest source addresses</text>
+<text x="940" y="24" text-anchor="end" fill="#5b6370">other events</text>
+<rect x="847" y="14" width="10" height="10" fill="#b4bcc8"/>
+<text x="829" y="24" text-anchor="end" fill="#5b6370">failed or refused</text>
+<rect x="704" y="14" width="10" height="10" fill="#c2410c"/>
+<text x="130" y="61" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">10.0.8.77</text>
+<rect x="142.0" y="50" width="17.1" height="16" fill="#b4bcc8"/>
+<rect x="159.1" y="50" width="614.5" height="16" fill="#c2410c"/>
+<text x="781.6" y="62" fill="#5b6370">37, 36 failed or refused</text>
+<text x="130" y="87" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">10.0.8.31</text>
+<rect x="142.0" y="76" width="68.3" height="16" fill="#b4bcc8"/>
+<rect x="210.3" y="76" width="17.1" height="16" fill="#c2410c"/>
+<text x="235.4" y="88" fill="#5b6370">5, 1 failed or refused</text>
+<text x="130" y="113" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">10.0.8.10</text>
+<rect x="142.0" y="102" width="51.2" height="16" fill="#b4bcc8"/>
+<text x="201.2" y="114" fill="#5b6370">3</text>
+</svg></figure>
+<h2>Details</h2>
+<section class="finding tone-critical"><header><span class="badge">CRITICAL</span><h3><span class="num">1.</span>Successful login after repeated failures from the same address</h3><p class="meta"><code>T1110</code> Brute Force · Credential Access · 1 event · 2026-11-10 03:08:53 to 2026-11-10 03:08:53</p></header>
+<p><strong>What was seen. </strong><code>10.0.8.77</code> logged in as <code>Administrator</code> after 36 failed logins within 30 min</p>
+<p>An address that had just failed to log in several times then logged in successfully. If the failures were password guessing, the guess worked.</p>
+<p><strong>Why it fired. </strong><code>event = login and result = success and ip is recorded</code>; a matching event preceded within 30 min by at least 5 events per ip where event = login and result = failure.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Record</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th></tr></thead><tbody><tr><td>55</td><td>2026-11-10 03:08:41</td><td><code>ACC-WS-07.corp.example</code></td><td><code>Administrator</code></td><td><code>10.0.8.77</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>56</td><td>2026-11-10 03:08:49</td><td><code>ACC-WS-07.corp.example</code></td><td><code>Administrator</code></td><td><code>10.0.8.77</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>57</td><td>2026-11-10 03:08:53</td><td><code>ACC-WS-07.corp.example</code></td><td><code>Administrator</code></td><td><code>10.0.8.77</code></td><td><code>login</code></td><td><code>success</code></td></tr></tbody></table></div>
+<p class="label">Raw records</p><pre>55: {&quot;TimeCreated&quot;:&quot;2026-11-09T22:08:41.7236550Z&quot;,&quot;EventID&quot;:4625,&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;Security&quot;,&quot;Status&quot;:&quot;0xc000006d&quot;,&quot;SubStatus&quot;:&quot;0xc000006a&quot;,&quot;SubjectUserName&quot;:&quot;-&quot;,&quot;TargetUserName&quot;:&quot;Administrator&quot;,&quot;TargetDomainName&quot;:&quot;CORP&quot;,&quot;LogonType&quot;:3,&quot;IpAddress&quot;:&quot;10.0.8.77&quot;,&quot;WorkstationName&quot;:&quot;WS-GUEST-03&quot;}
+56: {&quot;TimeCreated&quot;:&quot;2026-11-09T22:08:49.7950430Z&quot;,&quot;EventID&quot;:4625,&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;Security&quot;,&quot;Status&quot;:&quot;0xc000006d&quot;,&quot;SubStatus&quot;:&quot;0xc000006a&quot;,&quot;SubjectUserName&quot;:&quot;-&quot;,&quot;TargetUserName&quot;:&quot;Administrator&quot;,&quot;TargetDomainName&quot;:&quot;CORP&quot;,&quot;LogonType&quot;:3,&quot;IpAddress&quot;:&quot;10.0.8.77&quot;,&quot;WorkstationName&quot;:&quot;WS-GUEST-03&quot;}
+57: {&quot;TimeCreated&quot;:&quot;2026-11-09T22:08:53.1833830Z&quot;,&quot;EventID&quot;:4624,&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;Security&quot;,&quot;SubjectUserName&quot;:&quot;-&quot;,&quot;TargetUserName&quot;:&quot;Administrator&quot;,&quot;TargetDomainName&quot;:&quot;CORP&quot;,&quot;LogonType&quot;:3,&quot;IpAddress&quot;:&quot;10.0.8.77&quot;,&quot;WorkstationName&quot;:&quot;WS-GUEST-03&quot;}</pre>
+<p><strong>What to check. </strong>Treat the account as compromised until shown otherwise: confirm with its owner, review what the session did after this login, reset the password and revoke its keys and sessions.</p>
+<p class="muted">Rule auth-success-after-failures from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1110/</p>
+</section>
+<section class="finding tone-high"><header><span class="badge">HIGH</span><h3><span class="num">2.</span>Repeated failed logins from one address</h3><p class="meta"><code>T1110.001</code> Brute Force: Password Guessing · Credential Access · 36 events · 2026-11-10 03:05:09 to 2026-11-10 03:08:49</p></header>
+<p><strong>What was seen. </strong>36 failed logins from <code>10.0.8.77</code>, up to 36 within 5 min; accounts: <code>Administrator</code></p>
+<p>One address produced many failed logins in a short time, the pattern of an automated password-guessing run.</p>
+<p><strong>Why it fired. </strong><code>event = login and result = failure and ip is recorded</code>; at least 10 matching events within 5 min per ip.</p>
+<p class="muted">Evidence: 5 of 36 matching events</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Record</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th></tr></thead><tbody><tr><td>20</td><td>2026-11-10 03:05:09</td><td><code>ACC-WS-07.corp.example</code></td><td><code>Administrator</code></td><td><code>10.0.8.77</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>21</td><td>2026-11-10 03:05:14</td><td><code>ACC-WS-07.corp.example</code></td><td><code>Administrator</code></td><td><code>10.0.8.77</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>22</td><td>2026-11-10 03:05:21</td><td><code>ACC-WS-07.corp.example</code></td><td><code>Administrator</code></td><td><code>10.0.8.77</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>23</td><td>2026-11-10 03:05:29</td><td><code>ACC-WS-07.corp.example</code></td><td><code>Administrator</code></td><td><code>10.0.8.77</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>24</td><td>2026-11-10 03:05:36</td><td><code>ACC-WS-07.corp.example</code></td><td><code>Administrator</code></td><td><code>10.0.8.77</code></td><td><code>login</code></td><td><code>failure</code></td></tr></tbody></table></div>
+<p class="label">Raw records</p><pre>20: {&quot;TimeCreated&quot;:&quot;2026-11-09T22:05:09.1183140Z&quot;,&quot;EventID&quot;:4625,&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;Security&quot;,&quot;Status&quot;:&quot;0xc000006d&quot;,&quot;SubStatus&quot;:&quot;0xc000006a&quot;,&quot;SubjectUserName&quot;:&quot;-&quot;,&quot;TargetUserName&quot;:&quot;Administrator&quot;,&quot;TargetDomainName&quot;:&quot;CORP&quot;,&quot;LogonType&quot;:3,&quot;IpAddress&quot;:&quot;10.0.8.77&quot;,&quot;WorkstationName&quot;:&quot;WS-GUEST-03&quot;}
+21: {&quot;TimeCreated&quot;:&quot;2026-11-09T22:05:14.8268490Z&quot;,&quot;EventID&quot;:4625,&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;Security&quot;,&quot;Status&quot;:&quot;0xc000006d&quot;,&quot;SubStatus&quot;:&quot;0xc000006a&quot;,&quot;SubjectUserName&quot;:&quot;-&quot;,&quot;TargetUserName&quot;:&quot;Administrator&quot;,&quot;TargetDomainName&quot;:&quot;CORP&quot;,&quot;LogonType&quot;:3,&quot;IpAddress&quot;:&quot;10.0.8.77&quot;,&quot;WorkstationName&quot;:&quot;WS-GUEST-03&quot;}
+22: {&quot;TimeCreated&quot;:&quot;2026-11-09T22:05:21.6103400Z&quot;,&quot;EventID&quot;:4625,&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;Security&quot;,&quot;Status&quot;:&quot;0xc000006d&quot;,&quot;SubStatus&quot;:&quot;0xc000006a&quot;,&quot;SubjectUserName&quot;:&quot;-&quot;,&quot;TargetUserName&quot;:&quot;Administrator&quot;,&quot;TargetDomainName&quot;:&quot;CORP&quot;,&quot;LogonType&quot;:3,&quot;IpAddress&quot;:&quot;10.0.8.77&quot;,&quot;WorkstationName&quot;:&quot;WS-GUEST-03&quot;}
+23: {&quot;TimeCreated&quot;:&quot;2026-11-09T22:05:29.8293450Z&quot;,&quot;EventID&quot;:4625,&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;Security&quot;,&quot;Status&quot;:&quot;0xc000006d&quot;,&quot;SubStatus&quot;:&quot;0xc000006a&quot;,&quot;SubjectUserName&quot;:&quot;-&quot;,&quot;TargetUserName&quot;:&quot;Administrator&quot;,&quot;TargetDomainName&quot;:&quot;CORP&quot;,&quot;LogonType&quot;:3,&quot;IpAddress&quot;:&quot;10.0.8.77&quot;,&quot;WorkstationName&quot;:&quot;WS-GUEST-03&quot;}
+24: {&quot;TimeCreated&quot;:&quot;2026-11-09T22:05:36.8622410Z&quot;,&quot;EventID&quot;:4625,&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;Security&quot;,&quot;Status&quot;:&quot;0xc000006d&quot;,&quot;SubStatus&quot;:&quot;0xc000006a&quot;,&quot;SubjectUserName&quot;:&quot;-&quot;,&quot;TargetUserName&quot;:&quot;Administrator&quot;,&quot;TargetDomainName&quot;:&quot;CORP&quot;,&quot;LogonType&quot;:3,&quot;IpAddress&quot;:&quot;10.0.8.77&quot;,&quot;WorkstationName&quot;:&quot;WS-GUEST-03&quot;}</pre>
+<p><strong>What to check. </strong>Check whether any login from this address succeeded. Block the address and make sure the targeted accounts cannot be reached with a password alone.</p>
+<p class="muted">Rule auth-password-guessing from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1110/001/</p>
+</section>
+<section class="finding tone-high"><header><span class="badge">HIGH</span><h3><span class="num">3.</span>PowerShell started with an encoded or download command</h3><p class="meta"><code>T1059.001</code> Command and Scripting Interpreter: PowerShell · Execution · 1 event · 2026-11-10 03:12:30 to 2026-11-10 03:12:30</p></header>
+<p><strong>What was seen. </strong>PowerShell with encoded or download content on <code>ACC-WS-07.corp.example</code>, commands: 1</p>
+<p>PowerShell was started with a Base64-encoded command or with code that downloads and runs content. Both hide what the command does from a quick look.</p>
+<p><strong>Why it fired. </strong><code>event in [process_created, powershell_script] and command matches /powershell(\.exe)?[&quot;&#x27;]?\s.*[-/]e[a-z]{0,13}\s+[&quot;&#x27;]?[A-Za-z0-9+/=]{40,} | frombase64stri…/</code>; every matching event per host.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Record</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th><th>Command</th></tr></thead><tbody><tr><td>59</td><td>2026-11-10 03:12:30</td><td><code>ACC-WS-07.corp.example</code></td><td><code>Administrator</code></td><td>—</td><td><code>process_created</code></td><td><code>success</code></td><td><code>powershell.exe -NoP -W Hidden -Enc VwByAGkAdABlAC0ATwB1AHQAcAB1AHQAIAAnAGQAZQBtAG8AOgAgAHQAaABpAHMAIABzAHQAYQBuAGQAcwAgAGkAbgAgAGYAbwByACAAYQBuACAAZQBuAGMAbwBkA</code></td></tr></tbody></table></div>
+<p class="label">Raw records</p><pre>59: {&quot;TimeCreated&quot;:&quot;2026-11-09T22:12:30.2124920Z&quot;,&quot;EventID&quot;:4688,&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;Security&quot;,&quot;SubjectUserName&quot;:&quot;Administrator&quot;,&quot;SubjectDomainName&quot;:&quot;CORP&quot;,&quot;NewProcessName&quot;:&quot;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe&quot;,&quot;CommandLine&quot;:&quot;powershell.exe -NoP -W Hidden -Enc VwByAGkAdABlAC0ATwB1AHQAcAB1AHQAIAAnAGQAZQBtAG8AOgAgAHQAaABpAHMAIABzAHQAYQBuAGQAcwAgAGkAb</pre>
+<p><strong>What to check. </strong>Decode the command and read it. Find the parent process to see what launched it.</p>
+<p class="muted">Rule win-encoded-powershell from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1059/001/</p>
+</section>
+<section class="finding tone-high"><header><span class="badge">HIGH</span><h3><span class="num">4.</span>Account added to a privileged group</h3><p class="meta"><code>T1098</code> Account Manipulation · Privilege Escalation · 1 event · 2026-11-10 03:14:40 to 2026-11-10 03:14:40</p></header>
+<p><strong>What was seen. </strong><code>S-1-5-21-1004336348-1177238915-682003330-1124</code> was added to the group <code>Administrators</code></p>
+<p>An account was added to a group that grants administrative rights.</p>
+<p><strong>Why it fired. </strong><code>event = group_member_added and group in [sudo, wheel, adm, root, admin, docker, … (13 in total)]</code>; every matching event per user, group.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Record</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th><th>Group</th></tr></thead><tbody><tr><td>61</td><td>2026-11-10 03:14:40</td><td><code>ACC-WS-07.corp.example</code></td><td><code>S-1-5-21-1004336348-1177238915-682003330-1124</code></td><td>—</td><td><code>group_member_added</code></td><td><code>success</code></td><td><code>Administrators</code></td></tr></tbody></table></div>
+<p class="label">Raw records</p><pre>61: {&quot;TimeCreated&quot;:&quot;2026-11-09T22:14:40.0823040Z&quot;,&quot;EventID&quot;:4732,&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;Security&quot;,&quot;SubjectUserName&quot;:&quot;Administrator&quot;,&quot;SubjectDomainName&quot;:&quot;CORP&quot;,&quot;TargetUserName&quot;:&quot;Administrators&quot;,&quot;TargetDomainName&quot;:&quot;Builtin&quot;,&quot;MemberName&quot;:&quot;-&quot;,&quot;MemberSid&quot;:&quot;S-1-5-21-1004336348-1177238915-682003330-1124&quot;}</pre>
+<p><strong>What to check. </strong>Confirm the change with whoever owns access to that group and remove the membership if nobody asked for it.</p>
+<p class="muted">Rule privileged-group-change from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1098/</p>
+</section>
+<section class="finding tone-high"><header><span class="badge">HIGH</span><h3><span class="num">5.</span>Windows event log cleared</h3><p class="meta"><code>T1070.001</code> Indicator Removal: Clear Windows Event Logs · Defense Evasion · 1 event · 2026-11-10 03:38:17 to 2026-11-10 03:38:17</p></header>
+<p><strong>What was seen. </strong>An event log on <code>ACC-WS-07.corp.example</code> was cleared, events: 1</p>
+<p>An event log was cleared. Outside planned maintenance this is done to remove traces.</p>
+<p><strong>Why it fired. </strong><code>event = log_cleared</code>; every matching event per host.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Record</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th></tr></thead><tbody><tr><td>64</td><td>2026-11-10 03:38:17</td><td><code>ACC-WS-07.corp.example</code></td><td><code>Administrator</code></td><td>—</td><td><code>log_cleared</code></td><td><code>success</code></td></tr></tbody></table></div>
+<p class="label">Raw records</p><pre>64: {&quot;TimeCreated&quot;:&quot;2026-11-09T22:38:17.6587930Z&quot;,&quot;EventID&quot;:1102,&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;Security&quot;,&quot;SubjectUserName&quot;:&quot;Administrator&quot;,&quot;SubjectDomainName&quot;:&quot;CORP&quot;}</pre>
+<p><strong>What to check. </strong>Find out who cleared it and why. Recover earlier events from a log collector or a backup if there is one.</p>
+<p class="muted">Rule win-audit-log-cleared from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1070/001/</p>
+</section>
+<section class="finding tone-medium"><header><span class="badge">MEDIUM</span><h3><span class="num">6.</span>Administrative activity at night</h3><p class="meta"><code>T1078</code> Valid Accounts · Privilege Escalation · 2 events · 2026-11-10 03:08:53 to 2026-11-10 03:08:54</p></header>
+<p><strong>What was seen. </strong>Privileged actions by <code>Administrator</code> between 00:00 and 05:59: 2</p>
+<p>Privileged commands or administrator logins between 00:00 and 05:59. Change the hours to match your working day.</p>
+<p><strong>Why it fired. </strong><code>time of day between 00:00 and 05:59 and (event in [sudo, su] and result = success or event = login and result = success and user in [root, admin, administrator, Администратор] or event = special_privileges and user is recorded and user not in [SYSTEM, LOCAL SERVICE, NETWORK SERVICE, ANONYMOUS LOGON] and user does not match /\$$|^(DWM|UMFD)-\d+$/)</code>; every matching event per user.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Record</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th></tr></thead><tbody><tr><td>57</td><td>2026-11-10 03:08:53</td><td><code>ACC-WS-07.corp.example</code></td><td><code>Administrator</code></td><td><code>10.0.8.77</code></td><td><code>login</code></td><td><code>success</code></td></tr><tr><td>58</td><td>2026-11-10 03:08:54</td><td><code>ACC-WS-07.corp.example</code></td><td><code>Administrator</code></td><td>—</td><td><code>special_privileges</code></td><td><code>success</code></td></tr></tbody></table></div>
+<p class="label">Raw records</p><pre>57: {&quot;TimeCreated&quot;:&quot;2026-11-09T22:08:53.1833830Z&quot;,&quot;EventID&quot;:4624,&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;Security&quot;,&quot;SubjectUserName&quot;:&quot;-&quot;,&quot;TargetUserName&quot;:&quot;Administrator&quot;,&quot;TargetDomainName&quot;:&quot;CORP&quot;,&quot;LogonType&quot;:3,&quot;IpAddress&quot;:&quot;10.0.8.77&quot;,&quot;WorkstationName&quot;:&quot;WS-GUEST-03&quot;}
+58: {&quot;TimeCreated&quot;:&quot;2026-11-09T22:08:54.2556860Z&quot;,&quot;EventID&quot;:4672,&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;Security&quot;,&quot;SubjectUserName&quot;:&quot;Administrator&quot;,&quot;SubjectDomainName&quot;:&quot;CORP&quot;}</pre>
+<p><strong>What to check. </strong>Match the activity to a change ticket or an on-call shift. Without one, review every command the account ran in that session.</p>
+<p class="muted">Rule admin-night-activity from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1078/</p>
+</section>
+<section class="finding tone-medium"><header><span class="badge">MEDIUM</span><h3><span class="num">7.</span>Login from an address the account has not used before</h3><p class="meta"><code>T1078</code> Valid Accounts · Initial Access · 1 event · 2026-11-10 03:08:53 to 2026-11-10 03:08:53</p></header>
+<p><strong>What was seen. </strong><code>Administrator</code> logged in from <code>10.0.8.77</code>; earlier logins came from <code>10.0.8.10</code></p>
+<p>An account with an established login history logged in from an address that does not appear earlier in this log.</p>
+<p><strong>Why it fired. </strong><code>event = login and result = success and ip is recorded and user is recorded and user does not match /\$$/</code>; a value of ip not seen before per user, after at least 3 earlier matching events.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Record</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th></tr></thead><tbody><tr><td>57</td><td>2026-11-10 03:08:53</td><td><code>ACC-WS-07.corp.example</code></td><td><code>Administrator</code></td><td><code>10.0.8.77</code></td><td><code>login</code></td><td><code>success</code></td></tr></tbody></table></div>
+<p class="label">Raw records</p><pre>57: {&quot;TimeCreated&quot;:&quot;2026-11-09T22:08:53.1833830Z&quot;,&quot;EventID&quot;:4624,&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;Security&quot;,&quot;SubjectUserName&quot;:&quot;-&quot;,&quot;TargetUserName&quot;:&quot;Administrator&quot;,&quot;TargetDomainName&quot;:&quot;CORP&quot;,&quot;LogonType&quot;:3,&quot;IpAddress&quot;:&quot;10.0.8.77&quot;,&quot;WorkstationName&quot;:&quot;WS-GUEST-03&quot;}</pre>
+<p><strong>What to check. </strong>Ask the account owner whether the login was theirs. The history only covers this file, so an address from before the file starts looks new.</p>
+<p class="muted">Rule auth-new-source-for-user from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1078/</p>
+</section>
+<section class="finding tone-medium"><header><span class="badge">MEDIUM</span><h3><span class="num">8.</span>New user account created</h3><p class="meta"><code>T1136</code> Create Account · Persistence · 1 event · 2026-11-10 03:14:02 to 2026-11-10 03:14:02</p></header>
+<p><strong>What was seen. </strong>Account <code>helpdesk2</code> was created</p>
+<p>A user account was created. Attackers add accounts to keep access after the original entry point is closed.</p>
+<p><strong>Why it fired. </strong><code>event = account_created</code>; every matching event per user.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Record</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th></tr></thead><tbody><tr><td>60</td><td>2026-11-10 03:14:02</td><td><code>ACC-WS-07.corp.example</code></td><td><code>helpdesk2</code></td><td>—</td><td><code>account_created</code></td><td><code>success</code></td></tr></tbody></table></div>
+<p class="label">Raw records</p><pre>60: {&quot;TimeCreated&quot;:&quot;2026-11-09T22:14:02.4339610Z&quot;,&quot;EventID&quot;:4720,&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;Security&quot;,&quot;SubjectUserName&quot;:&quot;Administrator&quot;,&quot;SubjectDomainName&quot;:&quot;CORP&quot;,&quot;TargetUserName&quot;:&quot;helpdesk2&quot;,&quot;TargetDomainName&quot;:&quot;ACC-WS-07&quot;}</pre>
+<p><strong>What to check. </strong>Match the account to a request. Check who created it and what else that session did before and after.</p>
+<p class="muted">Rule account-created from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1136/</p>
+</section>
+<section class="finding tone-medium"><header><span class="badge">MEDIUM</span><h3><span class="num">9.</span>New Windows service installed</h3><p class="meta"><code>T1543.003</code> Create or Modify System Process: Windows Service · Persistence · 1 event · 2026-11-10 03:21:11 to 2026-11-10 03:21:11</p></header>
+<p><strong>What was seen. </strong>Service <code>UpdaterSvc</code> was installed: <code>C:\ProgramData\updater\upd.exe</code></p>
+<p>A service was installed. Services start with the system and usually run with SYSTEM rights, which makes them a common way to persist.</p>
+<p><strong>Why it fired. </strong><code>event = service_installed</code>; every matching event per service.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Record</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th><th>Command</th><th>Service</th></tr></thead><tbody><tr><td>62</td><td>2026-11-10 03:21:11</td><td><code>ACC-WS-07.corp.example</code></td><td>—</td><td>—</td><td><code>service_installed</code></td><td><code>success</code></td><td><code>C:\ProgramData\updater\upd.exe</code></td><td><code>UpdaterSvc</code></td></tr></tbody></table></div>
+<p class="label">Raw records</p><pre>62: {&quot;TimeCreated&quot;:&quot;2026-11-09T22:21:11.3806880Z&quot;,&quot;EventID&quot;:7045,&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;System&quot;,&quot;ProviderName&quot;:&quot;Service Control Manager&quot;,&quot;ServiceName&quot;:&quot;UpdaterSvc&quot;,&quot;ImagePath&quot;:&quot;C:\\ProgramData\\updater\\upd.exe&quot;,&quot;ServiceType&quot;:&quot;user mode service&quot;,&quot;StartType&quot;:&quot;auto start&quot;,&quot;AccountName&quot;:&quot;LocalSystem&quot;}</pre>
+<p><strong>What to check. </strong>Check the binary path and its signature. Paths under Temp, ProgramData or a user profile are a warning sign.</p>
+<p class="muted">Rule win-service-installed from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1543/003/</p>
+</section>
+<section class="finding tone-medium"><header><span class="badge">MEDIUM</span><h3><span class="num">10.</span>Scheduled task created</h3><p class="meta"><code>T1053.005</code> Scheduled Task/Job: Scheduled Task · Persistence · 1 event · 2026-11-10 03:23:48 to 2026-11-10 03:23:48</p></header>
+<p><strong>What was seen. </strong>Scheduled task <code>\UpdaterSync</code> was created</p>
+<p>A scheduled task was registered. Tasks are used to run a payload again after a reboot or at a set time.</p>
+<p><strong>Why it fired. </strong><code>event = scheduled_task_created</code>; every matching event per task.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Record</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th><th>Task</th></tr></thead><tbody><tr><td>63</td><td>2026-11-10 03:23:48</td><td><code>ACC-WS-07.corp.example</code></td><td><code>Administrator</code></td><td>—</td><td><code>scheduled_task_created</code></td><td><code>success</code></td><td><code>\UpdaterSync</code></td></tr></tbody></table></div>
+<p class="label">Raw records</p><pre>63: {&quot;TimeCreated&quot;:&quot;2026-11-09T22:23:48.7552940Z&quot;,&quot;EventID&quot;:4698,&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;Security&quot;,&quot;SubjectUserName&quot;:&quot;Administrator&quot;,&quot;SubjectDomainName&quot;:&quot;CORP&quot;,&quot;TaskName&quot;:&quot;\\UpdaterSync&quot;}</pre>
+<p><strong>What to check. </strong>Open the task definition and look at its action and the account it runs as.</p>
+<p class="muted">Rule win-scheduled-task-created from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1053/005/</p>
+</section>
+<h2>Events by type</h2>
+<div class="scroll"><table><thead><tr><th>Event</th><th>Result</th><th>Count</th></tr></thead><tbody><tr><td><code>login</code></td><td><code>failure</code></td><td>37</td></tr><tr><td><code>login</code></td><td><code>success</code></td><td>14</td></tr><tr><td><code>special_privileges</code></td><td><code>success</code></td><td>10</td></tr><tr><td><code>process_created</code></td><td><code>success</code></td><td>5</td></tr><tr><td><code>logoff</code></td><td>—</td><td>2</td></tr><tr><td><code>account_created</code></td><td><code>success</code></td><td>1</td></tr><tr><td><code>group_member_added</code></td><td><code>success</code></td><td>1</td></tr><tr><td><code>log_cleared</code></td><td><code>success</code></td><td>1</td></tr><tr><td><code>scheduled_task_created</code></td><td><code>success</code></td><td>1</td></tr><tr><td><code>service_installed</code></td><td><code>success</code></td><td>1</td></tr></tbody></table></div>
+<p class="muted">Every parsed event with its normalised fields is in events.csv.</p>
+<h2>Skipped records</h2>
+<p>2 records could not be read and were left out of the analysis.</p>
+<div class="scroll"><table><thead><tr><th>Record</th><th>Reason</th><th>Text</th></tr></thead><tbody><tr><td>13</td><td>unreadable timestamp</td><td><code>{&quot;TimeCreated&quot;:&quot;not a date&quot;,&quot;EventID&quot;:4624,&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;Security&quot;}</code></td></tr><tr><td>41</td><td>no event id</td><td><code>{&quot;Computer&quot;:&quot;ACC-WS-07.corp.example&quot;,&quot;Channel&quot;:&quot;Security&quot;,&quot;Message&quot;:&quot;record without an event id&quot;}</code></td></tr></tbody></table></div>
+<h2>Rules applied</h2>
+<div class="scroll"><table><thead><tr><th>Rule</th><th>Severity</th><th>ATT&amp;CK</th><th>Title</th><th>Findings</th></tr></thead><tbody><tr><td><code>auth-success-after-failures</code></td><td><span class="badge tone-critical">CRITICAL</span></td><td><code>T1110</code></td><td>Successful login after repeated failures from the same address</td><td>1</td></tr><tr><td><code>auth-password-guessing</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1110.001</code></td><td>Repeated failed logins from one address</td><td>1</td></tr><tr><td><code>auth-password-spraying</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1110.003</code></td><td>One address trying many different accounts</td><td>—</td></tr><tr><td><code>auth-new-source-for-user</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1078</code></td><td>Login from an address the account has not used before</td><td>1</td></tr><tr><td><code>auth-root-login</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1078.003</code></td><td>Direct root login over SSH</td><td>—</td></tr><tr><td><code>admin-night-activity</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1078</code></td><td>Administrative activity at night</td><td>1</td></tr><tr><td><code>sudo-denied</code></td><td><span class="badge tone-low">LOW</span></td><td><code>T1548.003</code></td><td>sudo attempt refused</td><td>—</td></tr><tr><td><code>account-created</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1136</code></td><td>New user account created</td><td>1</td></tr><tr><td><code>privileged-group-change</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1098</code></td><td>Account added to a privileged group</td><td>1</td></tr><tr><td><code>win-service-installed</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1543.003</code></td><td>New Windows service installed</td><td>1</td></tr><tr><td><code>win-scheduled-task-created</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1053.005</code></td><td>Scheduled task created</td><td>1</td></tr><tr><td><code>win-encoded-powershell</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1059.001</code></td><td>PowerShell started with an encoded or download command</td><td>1</td></tr><tr><td><code>win-audit-log-cleared</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1070.001</code></td><td>Windows event log cleared</td><td>1</td></tr><tr><td><code>web-secret-file-served</code></td><td><span class="badge tone-critical">CRITICAL</span></td><td><code>T1552.001</code></td><td>Secret or backup file was served to a client</td><td>—</td></tr><tr><td><code>web-injection-attempt</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1190</code></td><td>Injection or path traversal pattern in a request</td><td>—</td></tr><tr><td><code>web-sensitive-path-probe</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1595.003</code></td><td>Probing for admin panels and secret files</td><td>—</td></tr><tr><td><code>web-not-found-burst</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1595.003</code></td><td>Burst of 404 responses to one client</td><td>—</td></tr><tr><td><code>web-scanner-user-agent</code></td><td><span class="badge tone-low">LOW</span></td><td><code>T1595.002</code></td><td>Request from a known scanning tool</td><td>—</td></tr><tr><td><code>web-login-bruteforce</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1110.001</code></td><td>Repeated refused logins on a web form</td><td>—</td></tr><tr><td><code>web-login-after-refusals</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1110</code></td><td>Login form accepted a client after repeated refusals</td><td>—</td></tr><tr><td><code>web-server-error-burst</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1190</code></td><td>Burst of HTTP 5xx responses</td><td>—</td></tr></tbody></table></div>
+<p class="muted">A finding is a lead to verify, not a verdict. The report covers one file: anything outside it, and anything none of these rules describe, is not here.</p>
+<footer>soc-triage 0.1.0. First-pass triage of one file, not a replacement for a SIEM.</footer>
+</main>
+</body>
+</html>

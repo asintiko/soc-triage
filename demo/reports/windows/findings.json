@@ -1,0 +1,567 @@
+{
+  "tool": "soc-triage 0.1.0",
+  "input": {
+    "name": "windows-security.json",
+    "sha256": "77f7f7148c18174a2f9a18acbb9d0a2cb7ce783aee2472adfa741368753608a9",
+    "format": "windows"
+  },
+  "read": 75,
+  "events": 73,
+  "skipped": 2,
+  "findings": [
+    {
+      "rule": "auth-success-after-failures",
+      "title": "Successful login after repeated failures from the same address",
+      "severity": "critical",
+      "mitre": {
+        "id": "T1110",
+        "name": "Brute Force",
+        "tactic": "Credential Access",
+        "url": "https://attack.mitre.org/techniques/T1110/"
+      },
+      "subject": {
+        "ip": "10.0.8.77"
+      },
+      "events": 1,
+      "first_seen": "2026-11-10 03:08:53",
+      "last_seen": "2026-11-10 03:08:53",
+      "summary": "10.0.8.77 logged in as Administrator after 36 failed logins within 30 min",
+      "facts": {
+        "precursors": "36",
+        "values": "Administrator"
+      },
+      "conditions": [
+        "event = login",
+        "result = success",
+        "ip is recorded"
+      ],
+      "trigger": "a matching event preceded within 30 min by at least 5 events per ip where event = login and result = failure",
+      "evidence": [
+        {
+          "line": "55",
+          "time": "2026-11-10 03:08:41",
+          "host": "ACC-WS-07.corp.example",
+          "user": "Administrator",
+          "ip": "10.0.8.77",
+          "event": "login",
+          "result": "failure",
+          "source": "windows",
+          "event_id": "4625",
+          "channel": "Security",
+          "logon_type": "3",
+          "workstation": "WS-GUEST-03",
+          "domain": "CORP",
+          "status": "0xc000006d",
+          "sub_status": "0xc000006a",
+          "raw": "{\"TimeCreated\":\"2026-11-09T22:08:41.7236550Z\",\"EventID\":4625,\"Computer\":\"ACC-WS-07.corp.example\",\"Channel\":\"Security\",\"Status\":\"0xc000006d\",\"SubStatus\":\"0xc000006a\",\"SubjectUserName\":\"-\",\"TargetUserName\":\"Administrator\",\"TargetDomainName\":\"CORP\",\"LogonType\":3,\"IpAddress\":\"10.0.8.77\",\"WorkstationName\":\"WS-GUEST-03\"}"
+        },
+        {
+          "line": "56",
+          "time": "2026-11-10 03:08:49",
+          "host": "ACC-WS-07.corp.example",
+          "user": "Administrator",
+          "ip": "10.0.8.77",
+          "event": "login",
+          "result": "failure",
+          "source": "windows",
+          "event_id": "4625",
+          "channel": "Security",
+          "logon_type": "3",
+          "workstation": "WS-GUEST-03",
+          "domain": "CORP",
+          "status": "0xc000006d",
+          "sub_status": "0xc000006a",
+          "raw": "{\"TimeCreated\":\"2026-11-09T22:08:49.7950430Z\",\"EventID\":4625,\"Computer\":\"ACC-WS-07.corp.example\",\"Channel\":\"Security\",\"Status\":\"0xc000006d\",\"SubStatus\":\"0xc000006a\",\"SubjectUserName\":\"-\",\"TargetUserName\":\"Administrator\",\"TargetDomainName\":\"CORP\",\"LogonType\":3,\"IpAddress\":\"10.0.8.77\",\"WorkstationName\":\"WS-GUEST-03\"}"
+        },
+        {
+          "line": "57",
+          "time": "2026-11-10 03:08:53",
+          "host": "ACC-WS-07.corp.example",
+          "user": "Administrator",
+          "ip": "10.0.8.77",
+          "event": "login",
+          "result": "success",
+          "source": "windows",
+          "event_id": "4624",
+          "channel": "Security",
+          "logon_type": "3",
+          "workstation": "WS-GUEST-03",
+          "domain": "CORP",
+          "raw": "{\"TimeCreated\":\"2026-11-09T22:08:53.1833830Z\",\"EventID\":4624,\"Computer\":\"ACC-WS-07.corp.example\",\"Channel\":\"Security\",\"SubjectUserName\":\"-\",\"TargetUserName\":\"Administrator\",\"TargetDomainName\":\"CORP\",\"LogonType\":3,\"IpAddress\":\"10.0.8.77\",\"WorkstationName\":\"WS-GUEST-03\"}"
+        }
+      ]
+    },
+    {
+      "rule": "auth-password-guessing",
+      "title": "Repeated failed logins from one address",
+      "severity": "high",
+      "mitre": {
+        "id": "T1110.001",
+        "name": "Brute Force: Password Guessing",
+        "tactic": "Credential Access",
+        "url": "https://attack.mitre.org/techniques/T1110/001/"
+      },
+      "subject": {
+        "ip": "10.0.8.77"
+      },
+      "events": 36,
+      "first_seen": "2026-11-10 03:05:09",
+      "last_seen": "2026-11-10 03:08:49",
+      "summary": "36 failed logins from 10.0.8.77, up to 36 within 5 min; accounts: Administrator",
+      "facts": {
+        "peak": "36",
+        "values": "Administrator"
+      },
+      "conditions": [
+        "event = login",
+        "result = failure",
+        "ip is recorded"
+      ],
+      "trigger": "at least 10 matching events within 5 min per ip",
+      "evidence": [
+        {
+          "line": "20",
+          "time": "2026-11-10 03:05:09",
+          "host": "ACC-WS-07.corp.example",
+          "user": "Administrator",
+          "ip": "10.0.8.77",
+          "event": "login",
+          "result": "failure",
+          "source": "windows",
+          "event_id": "4625",
+          "channel": "Security",
+          "logon_type": "3",
+          "workstation": "WS-GUEST-03",
+          "domain": "CORP",
+          "status": "0xc000006d",
+          "sub_status": "0xc000006a",
+          "raw": "{\"TimeCreated\":\"2026-11-09T22:05:09.1183140Z\",\"EventID\":4625,\"Computer\":\"ACC-WS-07.corp.example\",\"Channel\":\"Security\",\"Status\":\"0xc000006d\",\"SubStatus\":\"0xc000006a\",\"SubjectUserName\":\"-\",\"TargetUserName\":\"Administrator\",\"TargetDomainName\":\"CORP\",\"LogonType\":3,\"IpAddress\":\"10.0.8.77\",\"WorkstationName\":\"WS-GUEST-03\"}"
+        },
+        {
+          "line": "21",
+          "time": "2026-11-10 03:05:14",
+          "host": "ACC-WS-07.corp.example",
+          "user": "Administrator",
+          "ip": "10.0.8.77",
+          "event": "login",
+          "result": "failure",
+          "source": "windows",
+          "event_id": "4625",
+          "channel": "Security",
+          "logon_type": "3",
+          "workstation": "WS-GUEST-03",
+          "domain": "CORP",
+          "status": "0xc000006d",
+          "sub_status": "0xc000006a",
+          "raw": "{\"TimeCreated\":\"2026-11-09T22:05:14.8268490Z\",\"EventID\":4625,\"Computer\":\"ACC-WS-07.corp.example\",\"Channel\":\"Security\",\"Status\":\"0xc000006d\",\"SubStatus\":\"0xc000006a\",\"SubjectUserName\":\"-\",\"TargetUserName\":\"Administrator\",\"TargetDomainName\":\"CORP\",\"LogonType\":3,\"IpAddress\":\"10.0.8.77\",\"WorkstationName\":\"WS-GUEST-03\"}"
+        },
+        {
+          "line": "22",
+          "time": "2026-11-10 03:05:21",
+          "host": "ACC-WS-07.corp.example",
+          "user": "Administrator",
+          "ip": "10.0.8.77",
+          "event": "login",
+          "result": "failure",
+          "source": "windows",
+          "event_id": "4625",
+          "channel": "Security",
+          "logon_type": "3",
+          "workstation": "WS-GUEST-03",
+          "domain": "CORP",
+          "status": "0xc000006d",
+          "sub_status": "0xc000006a",
+          "raw": "{\"TimeCreated\":\"2026-11-09T22:05:21.6103400Z\",\"EventID\":4625,\"Computer\":\"ACC-WS-07.corp.example\",\"Channel\":\"Security\",\"Status\":\"0xc000006d\",\"SubStatus\":\"0xc000006a\",\"SubjectUserName\":\"-\",\"TargetUserName\":\"Administrator\",\"TargetDomainName\":\"CORP\",\"LogonType\":3,\"IpAddress\":\"10.0.8.77\",\"WorkstationName\":\"WS-GUEST-03\"}"
+        },
+        {
+          "line": "23",
+          "time": "2026-11-10 03:05:29",
+          "host": "ACC-WS-07.corp.example",
+          "user": "Administrator",
+          "ip": "10.0.8.77",
+          "event": "login",
+          "result": "failure",
+          "source": "windows",
+          "event_id": "4625",
+          "channel": "Security",
+          "logon_type": "3",
+          "workstation": "WS-GUEST-03",
+          "domain": "CORP",
+          "status": "0xc000006d",
+          "sub_status": "0xc000006a",
+          "raw": "{\"TimeCreated\":\"2026-11-09T22:05:29.8293450Z\",\"EventID\":4625,\"Computer\":\"ACC-WS-07.corp.example\",\"Channel\":\"Security\",\"Status\":\"0xc000006d\",\"SubStatus\":\"0xc000006a\",\"SubjectUserName\":\"-\",\"TargetUserName\":\"Administrator\",\"TargetDomainName\":\"CORP\",\"LogonType\":3,\"IpAddress\":\"10.0.8.77\",\"WorkstationName\":\"WS-GUEST-03\"}"
+        },
+        {
+          "line": "24",
+          "time": "2026-11-10 03:05:36",
+          "host": "ACC-WS-07.corp.example",
+          "user": "Administrator",
+          "ip": "10.0.8.77",
+          "event": "login",
+          "result": "failure",
+          "source": "windows",
+          "event_id": "4625",
+          "channel": "Security",
+          "logon_type": "3",
+          "workstation": "WS-GUEST-03",
+          "domain": "CORP",
+          "status": "0xc000006d",
+          "sub_status": "0xc000006a",
+          "raw": "{\"TimeCreated\":\"2026-11-09T22:05:36.8622410Z\",\"EventID\":4625,\"Computer\":\"ACC-WS-07.corp.example\",\"Channel\":\"Security\",\"Status\":\"0xc000006d\",\"SubStatus\":\"0xc000006a\",\"SubjectUserName\":\"-\",\"TargetUserName\":\"Administrator\",\"TargetDomainName\":\"CORP\",\"LogonType\":3,\"IpAddress\":\"10.0.8.77\",\"WorkstationName\":\"WS-GUEST-03\"}"
+        }
+      ]
+    },
+    {
+      "rule": "win-encoded-powershell",
+      "title": "PowerShell started with an encoded or download command",
+      "severity": "high",
+      "mitre": {
+        "id": "T1059.001",
+        "name": "Command and Scripting Interpreter: PowerShell",
+        "tactic": "Execution",
+        "url": "https://attack.mitre.org/techniques/T1059/001/"
+      },
+      "subject": {
+        "host": "ACC-WS-07.corp.example"
+      },
+      "events": 1,
+      "first_seen": "2026-11-10 03:12:30",
+      "last_seen": "2026-11-10 03:12:30",
+      "summary": "PowerShell with encoded or download content on ACC-WS-07.corp.example, commands: 1",
+      "facts": {
+        "values": "powershell.exe -NoP -W Hidden -Enc VwByAGkAdABlAC0ATwB1AHQAcAB1AHQAIAAnAGQAZQBtAG8AOgAgAHQAaABpAHMAIABzAHQAYQBuAGQAcwAgAGkAbgAgAGYAbwByACAAYQBuACAAZQBuAGMAbwBkAGUAZAAgAGMAbwBtAG0AYQBuAGQAJwA="
+      },
+      "conditions": [
+        "event in [process_created, powershell_script]",
+        "command matches /powershell(\\.exe)?[\"']?\\s.*[-/]e[a-z]{0,13}\\s+[\"']?[A-Za-z0-9+/=]{40,} | frombase64stri…/"
+      ],
+      "trigger": "every matching event per host",
+      "evidence": [
+        {
+          "line": "59",
+          "time": "2026-11-10 03:12:30",
+          "host": "ACC-WS-07.corp.example",
+          "user": "Administrator",
+          "ip": "",
+          "event": "process_created",
+          "result": "success",
+          "source": "windows",
+          "event_id": "4688",
+          "channel": "Security",
+          "process": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "parent": "C:\\Windows\\System32\\wsmprovhost.exe",
+          "command": "powershell.exe -NoP -W Hidden -Enc VwByAGkAdABlAC0ATwB1AHQAcAB1AHQAIAAnAGQAZQBtAG8AOgAgAHQAaABpAHMAIABzAHQAYQBuAGQAcwAgAGkAbgAgAGYAbwByACAAYQBuACAAZQBuAGMAbwBkAGUAZAAgAGMAbwBtAG0AYQBuAGQAJwA=",
+          "raw": "{\"TimeCreated\":\"2026-11-09T22:12:30.2124920Z\",\"EventID\":4688,\"Computer\":\"ACC-WS-07.corp.example\",\"Channel\":\"Security\",\"SubjectUserName\":\"Administrator\",\"SubjectDomainName\":\"CORP\",\"NewProcessName\":\"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\",\"CommandLine\":\"powershell.exe -NoP -W Hidden -Enc VwByAGkAdABlAC0ATwB1AHQAcAB1AHQAIAAnAGQAZQBtAG8AOgAgAHQAaABpAHMAIABzAHQAYQBuAGQAcwAgAGkAb"
+        }
+      ]
+    },
+    {
+      "rule": "privileged-group-change",
+      "title": "Account added to a privileged group",
+      "severity": "high",
+      "mitre": {
+        "id": "T1098",
+        "name": "Account Manipulation",
+        "tactic": "Privilege Escalation",
+        "url": "https://attack.mitre.org/techniques/T1098/"
+      },
+      "subject": {
+        "user": "S-1-5-21-1004336348-1177238915-682003330-1124",
+        "group": "Administrators"
+      },
+      "events": 1,
+      "first_seen": "2026-11-10 03:14:40",
+      "last_seen": "2026-11-10 03:14:40",
+      "summary": "S-1-5-21-1004336348-1177238915-682003330-1124 was added to the group Administrators",
+      "facts": {},
+      "conditions": [
+        "event = group_member_added",
+        "group in [sudo, wheel, adm, root, admin, docker, … (13 in total)]"
+      ],
+      "trigger": "every matching event per user, group",
+      "evidence": [
+        {
+          "line": "61",
+          "time": "2026-11-10 03:14:40",
+          "host": "ACC-WS-07.corp.example",
+          "user": "S-1-5-21-1004336348-1177238915-682003330-1124",
+          "ip": "",
+          "event": "group_member_added",
+          "result": "success",
+          "source": "windows",
+          "event_id": "4732",
+          "group": "Administrators",
+          "actor": "Administrator",
+          "channel": "Security",
+          "domain": "Builtin",
+          "raw": "{\"TimeCreated\":\"2026-11-09T22:14:40.0823040Z\",\"EventID\":4732,\"Computer\":\"ACC-WS-07.corp.example\",\"Channel\":\"Security\",\"SubjectUserName\":\"Administrator\",\"SubjectDomainName\":\"CORP\",\"TargetUserName\":\"Administrators\",\"TargetDomainName\":\"Builtin\",\"MemberName\":\"-\",\"MemberSid\":\"S-1-5-21-1004336348-1177238915-682003330-1124\"}"
+        }
+      ]
+    },
+    {
+      "rule": "win-audit-log-cleared",
+      "title": "Windows event log cleared",
+      "severity": "high",
+      "mitre": {
+        "id": "T1070.001",
+        "name": "Indicator Removal: Clear Windows Event Logs",
+        "tactic": "Defense Evasion",
+        "url": "https://attack.mitre.org/techniques/T1070/001/"
+      },
+      "subject": {
+        "host": "ACC-WS-07.corp.example"
+      },
+      "events": 1,
+      "first_seen": "2026-11-10 03:38:17",
+      "last_seen": "2026-11-10 03:38:17",
+      "summary": "An event log on ACC-WS-07.corp.example was cleared, events: 1",
+      "facts": {},
+      "conditions": [
+        "event = log_cleared"
+      ],
+      "trigger": "every matching event per host",
+      "evidence": [
+        {
+          "line": "64",
+          "time": "2026-11-10 03:38:17",
+          "host": "ACC-WS-07.corp.example",
+          "user": "Administrator",
+          "ip": "",
+          "event": "log_cleared",
+          "result": "success",
+          "source": "windows",
+          "event_id": "1102",
+          "channel": "Security",
+          "raw": "{\"TimeCreated\":\"2026-11-09T22:38:17.6587930Z\",\"EventID\":1102,\"Computer\":\"ACC-WS-07.corp.example\",\"Channel\":\"Security\",\"SubjectUserName\":\"Administrator\",\"SubjectDomainName\":\"CORP\"}"
+        }
+      ]
+    },
+    {
+      "rule": "admin-night-activity",
+      "title": "Administrative activity at night",
+      "severity": "medium",
+      "mitre": {
+        "id": "T1078",
+        "name": "Valid Accounts",
+        "tactic": "Privilege Escalation",
+        "url": "https://attack.mitre.org/techniques/T1078/"
+      },
+      "subject": {
+        "user": "Administrator"
+      },
+      "events": 2,
+      "first_seen": "2026-11-10 03:08:53",
+      "last_seen": "2026-11-10 03:08:54",
+      "summary": "Privileged actions by Administrator between 00:00 and 05:59: 2",
+      "facts": {
+        "values": ""
+      },
+      "conditions": [
+        "time of day between 00:00 and 05:59",
+        "(event in [sudo, su] and result = success or event = login and result = success and user in [root, admin, administrator, Администратор] or event = special_privileges and user is recorded and user not in [SYSTEM, LOCAL SERVICE, NETWORK SERVICE, ANONYMOUS LOGON] and user does not match /\\$$|^(DWM|UMFD)-\\d+$/)"
+      ],
+      "trigger": "every matching event per user",
+      "evidence": [
+        {
+          "line": "57",
+          "time": "2026-11-10 03:08:53",
+          "host": "ACC-WS-07.corp.example",
+          "user": "Administrator",
+          "ip": "10.0.8.77",
+          "event": "login",
+          "result": "success",
+          "source": "windows",
+          "event_id": "4624",
+          "channel": "Security",
+          "logon_type": "3",
+          "workstation": "WS-GUEST-03",
+          "domain": "CORP",
+          "raw": "{\"TimeCreated\":\"2026-11-09T22:08:53.1833830Z\",\"EventID\":4624,\"Computer\":\"ACC-WS-07.corp.example\",\"Channel\":\"Security\",\"SubjectUserName\":\"-\",\"TargetUserName\":\"Administrator\",\"TargetDomainName\":\"CORP\",\"LogonType\":3,\"IpAddress\":\"10.0.8.77\",\"WorkstationName\":\"WS-GUEST-03\"}"
+        },
+        {
+          "line": "58",
+          "time": "2026-11-10 03:08:54",
+          "host": "ACC-WS-07.corp.example",
+          "user": "Administrator",
+          "ip": "",
+          "event": "special_privileges",
+          "result": "success",
+          "source": "windows",
+          "event_id": "4672",
+          "channel": "Security",
+          "raw": "{\"TimeCreated\":\"2026-11-09T22:08:54.2556860Z\",\"EventID\":4672,\"Computer\":\"ACC-WS-07.corp.example\",\"Channel\":\"Security\",\"SubjectUserName\":\"Administrator\",\"SubjectDomainName\":\"CORP\"}"
+        }
+      ]
+    },
+    {
+      "rule": "auth-new-source-for-user",
+      "title": "Login from an address the account has not used before",
+      "severity": "medium",
+      "mitre": {
+        "id": "T1078",
+        "name": "Valid Accounts",
+        "tactic": "Initial Access",
+        "url": "https://attack.mitre.org/techniques/T1078/"
+      },
+      "subject": {
+        "user": "Administrator"
+      },
+      "events": 1,
+      "first_seen": "2026-11-10 03:08:53",
+      "last_seen": "2026-11-10 03:08:53",
+      "summary": "Administrator logged in from 10.0.8.77; earlier logins came from 10.0.8.10",
+      "facts": {
+        "values": "10.0.8.77",
+        "known": "10.0.8.10"
+      },
+      "conditions": [
+        "event = login",
+        "result = success",
+        "ip is recorded",
+        "user is recorded",
+        "user does not match /\\$$/"
+      ],
+      "trigger": "a value of ip not seen before per user, after at least 3 earlier matching events",
+      "evidence": [
+        {
+          "line": "57",
+          "time": "2026-11-10 03:08:53",
+          "host": "ACC-WS-07.corp.example",
+          "user": "Administrator",
+          "ip": "10.0.8.77",
+          "event": "login",
+          "result": "success",
+          "source": "windows",
+          "event_id": "4624",
+          "channel": "Security",
+          "logon_type": "3",
+          "workstation": "WS-GUEST-03",
+          "domain": "CORP",
+          "raw": "{\"TimeCreated\":\"2026-11-09T22:08:53.1833830Z\",\"EventID\":4624,\"Computer\":\"ACC-WS-07.corp.example\",\"Channel\":\"Security\",\"SubjectUserName\":\"-\",\"TargetUserName\":\"Administrator\",\"TargetDomainName\":\"CORP\",\"LogonType\":3,\"IpAddress\":\"10.0.8.77\",\"WorkstationName\":\"WS-GUEST-03\"}"
+        }
+      ]
+    },
+    {
+      "rule": "account-created",
+      "title": "New user account created",
+      "severity": "medium",
+      "mitre": {
+        "id": "T1136",
+        "name": "Create Account",
+        "tactic": "Persistence",
+        "url": "https://attack.mitre.org/techniques/T1136/"
+      },
+      "subject": {
+        "user": "helpdesk2"
+      },
+      "events": 1,
+      "first_seen": "2026-11-10 03:14:02",
+      "last_seen": "2026-11-10 03:14:02",
+      "summary": "Account helpdesk2 was created",
+      "facts": {},
+      "conditions": [
+        "event = account_created"
+      ],
+      "trigger": "every matching event per user",
+      "evidence": [
+        {
+          "line": "60",
+          "time": "2026-11-10 03:14:02",
+          "host": "ACC-WS-07.corp.example",
+          "user": "helpdesk2",
+          "ip": "",
+          "event": "account_created",
+          "result": "success",
+          "source": "windows",
+          "event_id": "4720",
+          "actor": "Administrator",
+          "channel": "Security",
+          "domain": "ACC-WS-07",
+          "raw": "{\"TimeCreated\":\"2026-11-09T22:14:02.4339610Z\",\"EventID\":4720,\"Computer\":\"ACC-WS-07.corp.example\",\"Channel\":\"Security\",\"SubjectUserName\":\"Administrator\",\"SubjectDomainName\":\"CORP\",\"TargetUserName\":\"helpdesk2\",\"TargetDomainName\":\"ACC-WS-07\"}"
+        }
+      ]
+    },
+    {
+      "rule": "win-service-installed",
+      "title": "New Windows service installed",
+      "severity": "medium",
+      "mitre": {
+        "id": "T1543.003",
+        "name": "Create or Modify System Process: Windows Service",
+        "tactic": "Persistence",
+        "url": "https://attack.mitre.org/techniques/T1543/003/"
+      },
+      "subject": {
+        "service": "UpdaterSvc"
+      },
+      "events": 1,
+      "first_seen": "2026-11-10 03:21:11",
+      "last_seen": "2026-11-10 03:21:11",
+      "summary": "Service UpdaterSvc was installed: C:\\ProgramData\\updater\\upd.exe",
+      "facts": {
+        "values": "C:\\ProgramData\\updater\\upd.exe"
+      },
+      "conditions": [
+        "event = service_installed"
+      ],
+      "trigger": "every matching event per service",
+      "evidence": [
+        {
+          "line": "62",
+          "time": "2026-11-10 03:21:11",
+          "host": "ACC-WS-07.corp.example",
+          "user": "",
+          "ip": "",
+          "event": "service_installed",
+          "result": "success",
+          "source": "windows",
+          "event_id": "7045",
+          "channel": "System",
+          "provider": "Service Control Manager",
+          "command": "C:\\ProgramData\\updater\\upd.exe",
+          "service": "UpdaterSvc",
+          "raw": "{\"TimeCreated\":\"2026-11-09T22:21:11.3806880Z\",\"EventID\":7045,\"Computer\":\"ACC-WS-07.corp.example\",\"Channel\":\"System\",\"ProviderName\":\"Service Control Manager\",\"ServiceName\":\"UpdaterSvc\",\"ImagePath\":\"C:\\\\ProgramData\\\\updater\\\\upd.exe\",\"ServiceType\":\"user mode service\",\"StartType\":\"auto start\",\"AccountName\":\"LocalSystem\"}"
+        }
+      ]
+    },
+    {
+      "rule": "win-scheduled-task-created",
+      "title": "Scheduled task created",
+      "severity": "medium",
+      "mitre": {
+        "id": "T1053.005",
+        "name": "Scheduled Task/Job: Scheduled Task",
+        "tactic": "Persistence",
+        "url": "https://attack.mitre.org/techniques/T1053/005/"
+      },
+      "subject": {
+        "task": "\\UpdaterSync"
+      },
+      "events": 1,
+      "first_seen": "2026-11-10 03:23:48",
+      "last_seen": "2026-11-10 03:23:48",
+      "summary": "Scheduled task \\UpdaterSync was created",
+      "facts": {},
+      "conditions": [
+        "event = scheduled_task_created"
+      ],
+      "trigger": "every matching event per task",
+      "evidence": [
+        {
+          "line": "63",
+          "time": "2026-11-10 03:23:48",
+          "host": "ACC-WS-07.corp.example",
+          "user": "Administrator",
+          "ip": "",
+          "event": "scheduled_task_created",
+          "result": "success",
+          "source": "windows",
+          "event_id": "4698",
+          "channel": "Security",
+          "task": "\\UpdaterSync",
+          "raw": "{\"TimeCreated\":\"2026-11-09T22:23:48.7552940Z\",\"EventID\":4698,\"Computer\":\"ACC-WS-07.corp.example\",\"Channel\":\"Security\",\"SubjectUserName\":\"Administrator\",\"SubjectDomainName\":\"CORP\",\"TaskName\":\"\\\\UpdaterSync\"}"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,443 @@
+# правила для `analyzer logs`
+#
+# правило срабатывает на событиях, которые подошли под `match`.
+# без доп. ключей - на каждом таком событии; один из ключей меняет условие:
+#
+#   threshold:   {count: 10, window: 5m}               N событий за окно
+#   distinct:    {field: user, count: 6, window: 10m}  N разных значений поля за окно
+#   first_seen:  {field: ip, min_history: 3}           значение, которого у группы раньше не было
+#   preceded_by: {match: {...}, count: 5, window: 30m} событие после N других событий
+#
+# group_by - считать отдельно по каждому значению поля
+# show     - поле, значения которого попадут в summary как {values}
+#
+# поля есть у всех:  host, user, ip, event, result, source
+# веб-логи:          method, path, target, query, status, user_agent, referer
+# windows:           event_id, logon_type, command, process, group, service, task, actor
+# linux:             process, command, target_user, group, method, reason
+#
+# условие на поле:   поле: значение | [список] | $имя_списка | {оператор: значение}
+# операторы: eq, ne, in, not_in, contains, not_contains, startswith, endswith,
+#            regex, not_regex, gt, gte, lt, lte, cidr, not_cidr, exists
+# еще есть:  time_of_day: {between: ["00:00", "05:59"]}, weekday: [sat, sun],
+#            any: [...], all: [...], not: {...}
+
+lists:
+  admin_users: [root, admin, administrator, Администратор]
+  privileged_groups:
+    - sudo
+    - wheel
+    - adm
+    - root
+    - admin
+    - docker
+    - Administrators
+    - Domain Admins
+    - Enterprise Admins
+    - Schema Admins
+    - Backup Operators
+    - Remote Desktop Users
+    - Администраторы
+  system_accounts: [SYSTEM, LOCAL SERVICE, NETWORK SERVICE, ANONYMOUS LOGON]
+
+rules:
+  # входы: sshd на linux и логоны windows
+
+  - id: auth-success-after-failures
+    title: Successful login after repeated failures from the same address
+    severity: critical
+    mitre: {id: T1110, name: Brute Force, tactic: Credential Access}
+    description: >
+      An address that had just failed to log in several times then logged in
+      successfully. If the failures were password guessing, the guess worked.
+    response: >
+      Treat the account as compromised until shown otherwise: confirm with its
+      owner, review what the session did after this login, reset the password
+      and revoke its keys and sessions.
+    match:
+      event: login
+      result: success
+      ip: {exists: true}
+    group_by: ip
+    preceded_by:
+      match: {event: login, result: failure}
+      count: 5
+      window: 30m
+    show: user
+    summary: "{ip} logged in as {values} after {precursors} failed logins within {window}"
+
+  - id: auth-password-guessing
+    title: Repeated failed logins from one address
+    severity: high
+    mitre: {id: T1110.001, name: "Brute Force: Password Guessing", tactic: Credential Access}
+    description: >
+      One address produced many failed logins in a short time, the pattern of an
+      automated password-guessing run.
+    response: >
+      Check whether any login from this address succeeded. Block the address
+      and make sure the targeted accounts cannot be reached with a password alone.
+    match:
+      event: login
+      result: failure
+      ip: {exists: true}
+    group_by: ip
+    threshold: {count: 10, window: 5m}
+    show: user
+    summary: "{count} failed logins from {ip}, up to {peak} within {window}; accounts: {values}"
+
+  - id: auth-password-spraying
+    title: One address trying many different accounts
+    severity: high
+    mitre: {id: T1110.003, name: "Brute Force: Password Spraying", tactic: Credential Access}
+    description: >
+      One address failed to log in to many different accounts within a short
+      time. Trying a few passwords across many accounts avoids lockouts.
+    response: >
+      List the accounts that were tried and check each for a later successful
+      login from an unfamiliar address.
+    match:
+      event: login
+      result: failure
+      ip: {exists: true}
+      user: {exists: true}
+    group_by: ip
+    distinct: {field: user, count: 6, window: 10m}
+    summary: "{ip} tried {distinct} different accounts, up to {peak} within {window}: {values}"
+
+  - id: auth-new-source-for-user
+    title: Login from an address the account has not used before
+    severity: medium
+    mitre: {id: T1078, name: Valid Accounts, tactic: Initial Access}
+    description: >
+      An account with an established login history logged in from an address
+      that does not appear earlier in this log.
+    response: >
+      Ask the account owner whether the login was theirs. The history only
+      covers this file, so an address from before the file starts looks new.
+    match:
+      event: login
+      result: success
+      ip: {exists: true}
+      user: {exists: true, not_regex: '\$$'}
+    group_by: user
+    first_seen: {field: ip, min_history: 3}
+    summary: "{user} logged in from {values}; earlier logins came from {known}"
+
+  - id: auth-root-login
+    title: Direct root login over SSH
+    severity: medium
+    mitre: {id: T1078.003, name: "Valid Accounts: Local Accounts", tactic: Initial Access}
+    description: >
+      Someone logged in as root directly instead of through a personal account
+      and sudo, which leaves no record of who it was.
+    response: >
+      Confirm the login was expected, then set PermitRootLogin to no or
+      prohibit-password.
+    match:
+      source: linux_auth
+      event: login
+      result: success
+      user: root
+    group_by: ip
+    summary: "Direct root logins from {ip}: {count}"
+
+  - id: admin-night-activity
+    title: Administrative activity at night
+    severity: medium
+    mitre: {id: T1078, name: Valid Accounts, tactic: Privilege Escalation}
+    description: >
+      Privileged commands or administrator logins between 00:00 and 05:59.
+      Change the hours to match your working day.
+    response: >
+      Match the activity to a change ticket or an on-call shift. Without one,
+      review every command the account ran in that session.
+    match:
+      time_of_day: {between: ["00:00", "05:59"]}
+      any:
+        - {event: [sudo, su], result: success}
+        - {event: login, result: success, user: $admin_users}
+        - event: special_privileges
+          user: {exists: true, not_in: $system_accounts, not_regex: '\$$|^(DWM|UMFD)-\d+$'}
+    group_by: user
+    show: command
+    summary: "Privileged actions by {user} between 00:00 and 05:59: {count}"
+
+  - id: sudo-denied
+    title: sudo attempt refused
+    severity: low
+    mitre: {id: T1548.003, name: "Abuse Elevation Control Mechanism: Sudo and Sudo Caching", tactic: Privilege Escalation}
+    description: >
+      sudo refused a command: the user is not in sudoers, typed a wrong
+      password or asked for a command they are not allowed to run.
+    response: >
+      A single refusal is usually a mistake. Several from one account, or from
+      a service account, deserve a question to its owner.
+    match:
+      event: [sudo, su]
+      result: failure
+    group_by: user
+    show: command
+    summary: "sudo or su refused for {user}, attempts: {count}; command: {values}"
+
+  # учетки и закрепление
+
+  - id: account-created
+    title: New user account created
+    severity: medium
+    mitre: {id: T1136, name: Create Account, tactic: Persistence}
+    description: >
+      A user account was created. Attackers add accounts to keep access after
+      the original entry point is closed.
+    response: >
+      Match the account to a request. Check who created it and what else that
+      session did before and after.
+    match:
+      event: account_created
+    group_by: user
+    summary: "Account {user} was created"
+
+  - id: privileged-group-change
+    title: Account added to a privileged group
+    severity: high
+    mitre: {id: T1098, name: Account Manipulation, tactic: Privilege Escalation}
+    description: >
+      An account was added to a group that grants administrative rights.
+    response: >
+      Confirm the change with whoever owns access to that group and remove the
+      membership if nobody asked for it.
+    match:
+      event: group_member_added
+      group: $privileged_groups
+    group_by: [user, group]
+    summary: "{user} was added to the group {group}"
+
+  - id: win-service-installed
+    title: New Windows service installed
+    severity: medium
+    mitre: {id: T1543.003, name: "Create or Modify System Process: Windows Service", tactic: Persistence}
+    description: >
+      A service was installed. Services start with the system and usually run
+      with SYSTEM rights, which makes them a common way to persist.
+    response: >
+      Check the binary path and its signature. Paths under Temp, ProgramData or
+      a user profile are a warning sign.
+    match:
+      event: service_installed
+    group_by: service
+    show: command
+    summary: "Service {service} was installed: {values}"
+
+  - id: win-scheduled-task-created
+    title: Scheduled task created
+    severity: medium
+    mitre: {id: T1053.005, name: "Scheduled Task/Job: Scheduled Task", tactic: Persistence}
+    description: >
+      A scheduled task was registered. Tasks are used to run a payload again
+      after a reboot or at a set time.
+    response: >
+      Open the task definition and look at its action and the account it runs as.
+    match:
+      event: scheduled_task_created
+    group_by: task
+    summary: "Scheduled task {task} was created"
+
+  - id: win-encoded-powershell
+    title: PowerShell started with an encoded or download command
+    severity: high
+    mitre: {id: T1059.001, name: "Command and Scripting Interpreter: PowerShell", tactic: Execution}
+    description: >
+      PowerShell was started with a Base64-encoded command or with code that
+      downloads and runs content. Both hide what the command does from a quick look.
+    response: >
+      Decode the command and read it. Find the parent process to see what
+      launched it.
+    match:
+      event: [process_created, powershell_script]
+      command:
+        regex:
+          - 'powershell(\.exe)?["'']?\s.*[-/]e[a-z]{0,13}\s+["'']?[A-Za-z0-9+/=]{40,}'
+          - 'frombase64string\s*\('
+          - 'downloadstring\s*\(|downloadfile\s*\(|invoke-webrequest|\biwr\b|\biex\b|invoke-expression'
+    group_by: host
+    show: command
+    summary: "PowerShell with encoded or download content on {host}, commands: {count}"
+
+  - id: win-audit-log-cleared
+    title: Windows event log cleared
+    severity: high
+    mitre: {id: T1070.001, name: "Indicator Removal: Clear Windows Event Logs", tactic: Defense Evasion}
+    description: >
+      An event log was cleared. Outside planned maintenance this is done to
+      remove traces.
+    response: >
+      Find out who cleared it and why. Recover earlier events from a log
+      collector or a backup if there is one.
+    match:
+      event: log_cleared
+    group_by: host
+    summary: "An event log on {host} was cleared, events: {count}"
+
+  # веб-сервер
+
+  - id: web-secret-file-served
+    title: Secret or backup file was served to a client
+    severity: critical
+    mitre: {id: T1552.001, name: "Unsecured Credentials: Credentials In Files", tactic: Credential Access}
+    description: >
+      The server answered 200 to a request for a file that normally holds
+      secrets or a copy of the site: .env, .git, key files, dumps and archives.
+    response: >
+      Remove the file from the web root now. Rotate every secret it contains
+      and assume the content is known to the client that fetched it.
+    match:
+      event: http_request
+      status: [200, 206]
+      path:
+        regex: '(^|/)(\.env(\.[\w-]+)?|\.git/(config|HEAD|index)|\.htpasswd|\.aws/credentials|id_rsa|id_ed25519|[\w.-]*\.(sql|sqlite3?|bak|dump)|(backup|dump|db|site|www)[\w.-]*\.(zip|tar|tar\.gz|tgz|gz|rar|7z))$'
+    group_by: ip
+    show: path
+    summary: "{ip} was served {values}; successful responses: {count}"
+
+  - id: web-injection-attempt
+    title: Injection or path traversal pattern in a request
+    severity: high
+    mitre: {id: T1190, name: Exploit Public-Facing Application, tactic: Initial Access}
+    description: >
+      Request targets contain payloads for path traversal, SQL injection,
+      command injection or JNDI lookups.
+    response: >
+      Look at the status codes: a 200 on such a request needs a manual check of
+      what the application returned. Patch or add a WAF rule for the parameter.
+    match:
+      event: http_request
+      target:
+        regex:
+          - '\.\./|\.\.\\|%2e%2e[/%]'
+          - '/etc/passwd|/proc/self/environ|win\.ini'
+          - 'union[\s+]+(all[\s+]+)?select|[''"]\s*or\s+[''"]?\d+[''"]?\s*=\s*[''"]?\d+|sleep\(\d+\)|benchmark\('
+          - '<script|javascript:|onerror\s*='
+          - '[;|`]\s*(cat|wget|curl|id|whoami|nc)\b|\$\{jndi:'
+    group_by: ip
+    show: target
+    summary: "Requests with attack payloads from {ip}: {count}; examples: {values}"
+
+  - id: web-sensitive-path-probe
+    title: Probing for admin panels and secret files
+    severity: medium
+    mitre: {id: T1595.003, name: "Active Scanning: Wordlist Scanning", tactic: Reconnaissance}
+    description: >
+      A client asked for paths that exist only on misconfigured servers or on
+      software this site may not run, and was refused each time.
+    response: >
+      No action if every answer is 4xx. Check that none of the listed paths
+      returned 200 to anyone else.
+    match:
+      event: http_request
+      status: {gte: 400}
+      path:
+        regex: '(^|/)(\.env|\.git/|\.svn/|\.aws/|\.ssh/|\.htpasswd|\.DS_Store|wp-admin|wp-login\.php|xmlrpc\.php|phpmyadmin|pma|adminer(\.php)?|server-status|actuator|phpinfo\.php|config\.(php|json|ya?ml)|composer\.(json|lock)|vendor/phpunit|cgi-bin/|backup|[\w.-]*\.(sql|bak))'
+    group_by: ip
+    show: path
+    summary: "{ip} probed sensitive paths, requests: {count}; paths: {values}"
+
+  - id: web-not-found-burst
+    title: Burst of 404 responses to one client
+    severity: medium
+    mitre: {id: T1595.003, name: "Active Scanning: Wordlist Scanning", tactic: Reconnaissance}
+    description: >
+      One client received many 404 responses in a short time, which is what a
+      directory or file brute-force looks like from the server side.
+    response: >
+      Rate-limit or block the client. Broken links on your own pages produce
+      the same picture, so look at the paths first.
+    match:
+      event: http_request
+      status: 404
+    group_by: ip
+    threshold: {count: 30, window: 5m}
+    show: path
+    summary: "{count} responses with status 404 to {ip}, up to {peak} within {window}"
+
+  - id: web-scanner-user-agent
+    title: Request from a known scanning tool
+    severity: low
+    mitre: {id: T1595.002, name: "Active Scanning: Vulnerability Scanning", tactic: Reconnaissance}
+    description: >
+      The User-Agent names a scanning or exploitation tool. Tools can send any
+      User-Agent, so the absence of this finding proves nothing.
+    response: >
+      Expected on any public server. Worth a look only if the same address
+      appears in other findings.
+    match:
+      event: http_request
+      user_agent:
+        regex: 'sqlmap|nikto|nuclei|wpscan|masscan|zgrab|dirbuster|gobuster|feroxbuster|ffuf|nessus|openvas|acunetix|nmap scripting engine|hydra'
+    group_by: ip
+    show: user_agent
+    summary: "Requests from {ip} with a scanner User-Agent: {count}; {values}"
+
+  - id: web-login-bruteforce
+    title: Repeated refused logins on a web form
+    severity: high
+    mitre: {id: T1110.001, name: "Brute Force: Password Guessing", tactic: Credential Access}
+    description: >
+      One client sent many POST requests to a login path and was refused each
+      time. Only 401, 403 and 429 count: applications that answer 200 to a wrong
+      password need their own rule.
+    response: >
+      Check for a successful login from this client afterwards. Add rate
+      limiting or a lockout on the login endpoint.
+    match:
+      event: http_request
+      method: POST
+      status: [401, 403, 429]
+      path: {regex: '(^|/)(login|log-in|signin|sign-in|wp-login\.php|auth|session|token)(/|\.|$)'}
+    group_by: ip
+    threshold: {count: 20, window: 5m}
+    show: path
+    summary: "{count} refused logins from {ip} on {values}, up to {peak} within {window}"
+
+  - id: web-login-after-refusals
+    title: Login form accepted a client after repeated refusals
+    severity: high
+    mitre: {id: T1110, name: Brute Force, tactic: Credential Access}
+    description: >
+      A client that had just been refused on a login path many times then got
+      a redirect or a 200 from the same path. On most applications that means
+      the password was found.
+    response: >
+      Find the account behind the session and treat it as compromised: end its
+      sessions, reset the password and review what the client requested next.
+    match:
+      event: http_request
+      method: POST
+      status: [200, 302, 303]
+      path: {regex: '(^|/)(login|log-in|signin|sign-in|wp-login\.php|auth|session|token)(/|\.|$)'}
+    group_by: ip
+    preceded_by:
+      match:
+        method: POST
+        status: [401, 403, 429]
+        path: {regex: '(^|/)(login|log-in|signin|sign-in|wp-login\.php|auth|session|token)(/|\.|$)'}
+      count: 10
+      window: 30m
+    show: path
+    summary: "{ip} was accepted on {values} after {precursors} refused logins within {window}"
+
+  - id: web-server-error-burst
+    title: Burst of HTTP 5xx responses
+    severity: medium
+    mitre: {id: T1190, name: Exploit Public-Facing Application, tactic: Initial Access}
+    description: >
+      The server returned many 5xx errors within a few minutes. This is a lead,
+      not a verdict: an outage, a bad deploy and an exploitation attempt that
+      crashes the application all look the same here.
+    response: >
+      Read the application error log for the same minutes. If the errors come
+      from one client or one unusual path, treat it as an attack.
+    match:
+      event: http_request
+      status: {gte: 500}
+    threshold: {count: 20, window: 5m}
+    show: path
+    summary: "{count} responses with status 5xx, up to {peak} within {window}; paths: {values}"

@@ -1,0 +1,74 @@
+line,time,host,user,ip,event,result,source,details
+1,2026-11-09 08:01:00,ACC-WS-07.corp.example,SYSTEM,,login,success,windows,event_id=4624; actor=ACC-WS-07$; channel=Security; logon_type=5; domain=NT AUTHORITY
+2,2026-11-09 08:01:01,ACC-WS-07.corp.example,SYSTEM,,special_privileges,success,windows,event_id=4672; channel=Security
+3,2026-11-09 08:52:00,ACC-WS-07.corp.example,j.karimova,10.0.8.31,login,success,windows,event_id=4624; channel=Security; logon_type=2; workstation=ACC-WS-07; domain=CORP
+4,2026-11-09 08:53:00,ACC-WS-07.corp.example,j.karimova,,process_created,success,windows,event_id=4688; channel=Security; process=C:\Windows\explorer.exe; parent=C:\Windows\System32\userinit.exe; command=C:\Windows\explorer.exe
+5,2026-11-09 09:02:00,ACC-WS-07.corp.example,j.karimova,,process_created,success,windows,"event_id=4688; channel=Security; process=C:\Program Files\1cv8\common\1cestart.exe; parent=C:\Windows\explorer.exe; command=""C:\Program Files\1cv8\common\1cestart.exe"""
+6,2026-11-09 09:14:00,ACC-WS-07.corp.example,j.karimova,10.0.8.31,login,failure,windows,event_id=4625; channel=Security; logon_type=2; workstation=ACC-WS-07; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+7,2026-11-09 10:20:00,ACC-WS-07.corp.example,Administrator,10.0.8.10,login,success,windows,event_id=4624; channel=Security; logon_type=10; workstation=IT-ADM-01; domain=CORP
+8,2026-11-09 10:20:01,ACC-WS-07.corp.example,Administrator,,special_privileges,success,windows,event_id=4672; channel=Security
+9,2026-11-09 12:01:00,ACC-WS-07.corp.example,SYSTEM,,login,success,windows,event_id=4624; actor=ACC-WS-07$; channel=Security; logon_type=5; domain=NT AUTHORITY
+10,2026-11-09 12:01:01,ACC-WS-07.corp.example,SYSTEM,,special_privileges,success,windows,event_id=4672; channel=Security
+11,2026-11-09 13:04:00,ACC-WS-07.corp.example,j.karimova,10.0.8.31,login,success,windows,event_id=4624; channel=Security; logon_type=7; workstation=ACC-WS-07; domain=CORP
+12,2026-11-09 15:05:00,ACC-WS-07.corp.example,Administrator,10.0.8.10,login,success,windows,event_id=4624; channel=Security; logon_type=10; workstation=IT-ADM-01; domain=CORP
+14,2026-11-09 15:05:01,ACC-WS-07.corp.example,Administrator,,special_privileges,success,windows,event_id=4672; channel=Security
+15,2026-11-09 16:40:00,ACC-WS-07.corp.example,Administrator,10.0.8.10,login,success,windows,event_id=4624; channel=Security; logon_type=10; workstation=IT-ADM-01; domain=CORP
+16,2026-11-09 16:40:01,ACC-WS-07.corp.example,Administrator,,special_privileges,success,windows,event_id=4672; channel=Security
+17,2026-11-09 17:01:00,ACC-WS-07.corp.example,SYSTEM,,login,success,windows,event_id=4624; actor=ACC-WS-07$; channel=Security; logon_type=5; domain=NT AUTHORITY
+18,2026-11-09 17:01:01,ACC-WS-07.corp.example,SYSTEM,,special_privileges,success,windows,event_id=4672; channel=Security
+19,2026-11-09 18:03:00,ACC-WS-07.corp.example,j.karimova,,logoff,,windows,event_id=4634; channel=Security; logon_type=2; domain=CORP
+20,2026-11-10 03:05:09,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+21,2026-11-10 03:05:14,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+22,2026-11-10 03:05:21,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+23,2026-11-10 03:05:29,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+24,2026-11-10 03:05:36,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+25,2026-11-10 03:05:44,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+26,2026-11-10 03:05:50,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+27,2026-11-10 03:05:57,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+28,2026-11-10 03:06:06,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+29,2026-11-10 03:06:10,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+30,2026-11-10 03:06:16,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+31,2026-11-10 03:06:23,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+32,2026-11-10 03:06:30,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+33,2026-11-10 03:06:34,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+34,2026-11-10 03:06:39,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+35,2026-11-10 03:06:46,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+36,2026-11-10 03:06:54,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+37,2026-11-10 03:07:01,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+38,2026-11-10 03:07:09,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+39,2026-11-10 03:07:16,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+40,2026-11-10 03:07:21,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+42,2026-11-10 03:07:29,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+43,2026-11-10 03:07:37,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+44,2026-11-10 03:07:42,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+45,2026-11-10 03:07:46,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+46,2026-11-10 03:07:50,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+47,2026-11-10 03:07:59,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+48,2026-11-10 03:08:03,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+49,2026-11-10 03:08:09,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+50,2026-11-10 03:08:14,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+51,2026-11-10 03:08:22,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+52,2026-11-10 03:08:26,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+53,2026-11-10 03:08:32,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+54,2026-11-10 03:08:37,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+55,2026-11-10 03:08:41,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+56,2026-11-10 03:08:49,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,failure,windows,event_id=4625; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP; status=0xc000006d; sub_status=0xc000006a
+57,2026-11-10 03:08:53,ACC-WS-07.corp.example,Administrator,10.0.8.77,login,success,windows,event_id=4624; channel=Security; logon_type=3; workstation=WS-GUEST-03; domain=CORP
+58,2026-11-10 03:08:54,ACC-WS-07.corp.example,Administrator,,special_privileges,success,windows,event_id=4672; channel=Security
+59,2026-11-10 03:12:30,ACC-WS-07.corp.example,Administrator,,process_created,success,windows,event_id=4688; channel=Security; process=C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe; parent=C:\Windows\System32\wsmprovhost.exe; command=powershell.exe -NoP -W Hidden -Enc VwByAGkAdABlAC0ATwB1AHQAcAB1AHQAIAAnAGQAZQBtAG8AOgAgAHQAaABpAHMAIABzAHQAYQBuAGQAcwAgAGkAbgAgAGYAbwByACAAYQBuACAAZQBuAGMAbwBkAGUAZAAgAGMAbwBtAG0AYQBuAGQAJwA=
+60,2026-11-10 03:14:02,ACC-WS-07.corp.example,helpdesk2,,account_created,success,windows,event_id=4720; actor=Administrator; channel=Security; domain=ACC-WS-07
+61,2026-11-10 03:14:40,ACC-WS-07.corp.example,S-1-5-21-1004336348-1177238915-682003330-1124,,group_member_added,success,windows,event_id=4732; group=Administrators; actor=Administrator; channel=Security; domain=Builtin
+62,2026-11-10 03:21:11,ACC-WS-07.corp.example,,,service_installed,success,windows,event_id=7045; channel=System; provider=Service Control Manager; command=C:\ProgramData\updater\upd.exe; service=UpdaterSvc
+63,2026-11-10 03:23:48,ACC-WS-07.corp.example,Administrator,,scheduled_task_created,success,windows,event_id=4698; channel=Security; task=\UpdaterSync
+64,2026-11-10 03:38:17,ACC-WS-07.corp.example,Administrator,,log_cleared,success,windows,event_id=1102; channel=Security
+65,2026-11-10 08:01:00,ACC-WS-07.corp.example,SYSTEM,,login,success,windows,event_id=4624; actor=ACC-WS-07$; channel=Security; logon_type=5; domain=NT AUTHORITY
+66,2026-11-10 08:01:01,ACC-WS-07.corp.example,SYSTEM,,special_privileges,success,windows,event_id=4672; channel=Security
+67,2026-11-10 08:52:00,ACC-WS-07.corp.example,j.karimova,10.0.8.31,login,success,windows,event_id=4624; channel=Security; logon_type=2; workstation=ACC-WS-07; domain=CORP
+68,2026-11-10 08:53:00,ACC-WS-07.corp.example,j.karimova,,process_created,success,windows,event_id=4688; channel=Security; process=C:\Windows\explorer.exe; parent=C:\Windows\System32\userinit.exe; command=C:\Windows\explorer.exe
+69,2026-11-10 09:02:00,ACC-WS-07.corp.example,j.karimova,,process_created,success,windows,"event_id=4688; channel=Security; process=C:\Program Files\1cv8\common\1cestart.exe; parent=C:\Windows\explorer.exe; command=""C:\Program Files\1cv8\common\1cestart.exe"""
+70,2026-11-10 12:01:00,ACC-WS-07.corp.example,SYSTEM,,login,success,windows,event_id=4624; actor=ACC-WS-07$; channel=Security; logon_type=5; domain=NT AUTHORITY
+71,2026-11-10 12:01:01,ACC-WS-07.corp.example,SYSTEM,,special_privileges,success,windows,event_id=4672; channel=Security
+72,2026-11-10 13:04:00,ACC-WS-07.corp.example,j.karimova,10.0.8.31,login,success,windows,event_id=4624; channel=Security; logon_type=7; workstation=ACC-WS-07; domain=CORP
+73,2026-11-10 17:01:00,ACC-WS-07.corp.example,SYSTEM,,login,success,windows,event_id=4624; actor=ACC-WS-07$; channel=Security; logon_type=5; domain=NT AUTHORITY
+74,2026-11-10 17:01:01,ACC-WS-07.corp.example,SYSTEM,,special_privileges,success,windows,event_id=4672; channel=Security
+75,2026-11-10 18:03:00,ACC-WS-07.corp.example,j.karimova,,logoff,,windows,event_id=4634; channel=Security; logon_type=2; domain=CORP

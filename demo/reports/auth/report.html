@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Log triage: auth.log</title>
+<style>
+:root {
+  --ink: #16181d; --muted: #5b6370; --line: #e3e5e8; --page: #f6f6f4; --paper: #ffffff; --wash: #f3f4f6;
+  --critical: #b42318; --high: #c2410c; --medium: #946200; --low: #33658a; --info: #5b6370; --ok: #2f6b3a;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 15px/1.55 var(--sans); }
+main { max-width: 1040px; margin: 0 auto; padding: 56px 40px 72px; background: var(--paper); min-height: 100vh;
+  border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
+.top { padding-bottom: 28px; border-bottom: 2px solid var(--ink); margin-bottom: 28px; }
+.kicker { margin: 0 0 10px; color: var(--muted); font-size: 13px; }
+h1 { margin: 0; font-size: 34px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 650; overflow-wrap: anywhere; }
+h1 code { font-size: 0.92em; background: none; padding: 0; }
+.sub { margin: 12px 0 0; color: var(--muted); }
+h2 { margin: 48px 0 14px; font-size: 20px; letter-spacing: -0.01em; }
+h3 { margin: 28px 0 10px; font-size: 16px; }
+p { margin: 0 0 12px; max-width: 76ch; }
+p.muted { color: var(--muted); font-size: 14px; }
+code { font: 13px/1.5 var(--mono); background: var(--wash); padding: 1px 5px; border-radius: 3px; overflow-wrap: anywhere; }
+strong { font-weight: 650; }
+.facts { display: flex; flex-wrap: wrap; gap: 1px; margin: 0; background: var(--line); border: 1px solid var(--line); }
+.facts div { flex: 1 1 200px; padding: 12px 14px; background: var(--paper); min-width: 0; }
+.facts div.wide { flex-basis: 100%; }
+.facts dt { color: var(--muted); font-size: 12.5px; margin-bottom: 2px; }
+.facts dd { margin: 0; font-size: 15px; overflow-wrap: anywhere; }
+.facts dd code { background: none; padding: 0; }
+.scroll { overflow-x: auto; margin: 0 0 16px; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th { text-align: left; font-weight: 600; color: var(--muted); font-size: 12.5px; padding: 7px 10px 7px 0;
+  border-bottom: 1px solid var(--ink); white-space: nowrap; }
+td { padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+td code { background: none; padding: 0; }
+table.wide td { min-width: 72px; }
+figure { margin: 0 0 20px; border: 1px solid var(--line); padding: 8px; }
+figure svg { display: block; width: 100%; height: auto; }
+pre { margin: 0 0 16px; padding: 12px 14px; background: var(--wash); font: 12.5px/1.6 var(--mono); overflow-x: auto;
+  white-space: pre-wrap; overflow-wrap: anywhere; border-left: 2px solid var(--line); }
+.label { margin: 14px 0 6px; color: var(--muted); font-size: 12.5px; }
+.badge { display: inline-block; font-size: 11.5px; font-weight: 650; line-height: 1; padding: 4px 7px 3px;
+  border: 1px solid currentColor; border-radius: 3px; white-space: nowrap; letter-spacing: 0.02em; }
+.tone-critical { --tone: var(--critical); } .tone-high { --tone: var(--high); } .tone-medium { --tone: var(--medium); }
+.tone-low { --tone: var(--low); } .tone-info { --tone: var(--info); } .tone-ok { --tone: var(--ok); }
+.badge { color: var(--tone, var(--muted)); }
+.callout { border-left: 4px solid var(--tone, var(--muted)); background: var(--wash); padding: 16px 18px; margin: 0 0 24px; }
+.callout .verdict { display: block; font-size: 22px; font-weight: 650; letter-spacing: -0.01em; color: var(--tone); margin-bottom: 4px; }
+.callout p { margin: 0; }
+.finding { margin: 0 0 36px; padding: 18px 0 0 18px; border-left: 4px solid var(--tone, var(--muted));
+  border-top: 1px solid var(--line); }
+.finding > header { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: baseline; margin-bottom: 12px; }
+.finding > header h3 { margin: 0; font-size: 18px; letter-spacing: -0.01em; }
+.finding > header .meta { grid-column: 2; margin: 0; color: var(--muted); font-size: 13.5px; }
+.finding .num { color: var(--muted); font-variant-numeric: tabular-nums; margin-right: 6px; }
+footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+@media (max-width: 720px) { main { padding: 32px 18px 48px; border: 0; } h1 { font-size: 26px; } }
+@media print {
+  body { background: #fff; font-size: 12px; } main { border: 0; padding: 0; max-width: none; }
+  .finding, figure, table { break-inside: avoid; } pre { white-space: pre-wrap; }
+}
+</style>
+</head>
+<body>
+<main>
+<header class="top"><p class="kicker">Log triage report</p><h1><code>auth.log</code></h1><p class="sub">Linux auth.log / syslog · 2026-11-09 00:17:01 to 2026-11-10 23:17:02</p></header>
+<div class="callout tone-critical"><span class="verdict">11 findings: 1 critical, 4 high, 5 medium, 1 low</span><p>Start with: <code>203.0.113.45</code> logged in as <code>deploy, svc-update</code> after 141 failed logins within 30 min.</p></div>
+<dl class="facts"><div><dt>Lines read</dt><dd>556</dd></div><div><dt>Events parsed</dt><dd>553</dd></div><div><dt>Lines skipped</dt><dd>2</dd></div><div><dt>Rules applied</dt><dd>21 from built-in default.yaml</dd></div><div><dt>Clock</dt><dd>as recorded in the log</dd></div><div class="wide"><dt>SHA-256 of the input</dt><dd><code>7d8ce8a7e587bcad489bfd70697929a39a899de3f093111efceaa30f406496ed</code></dd></div></dl>
+<h2>Findings</h2>
+<div class="scroll"><table><thead><tr><th>#</th><th>Severity</th><th>Finding</th><th>Subject</th><th>ATT&amp;CK</th><th>Events</th><th>First seen</th></tr></thead><tbody><tr><td>1</td><td><span class="badge tone-critical">CRITICAL</span></td><td>Successful login after repeated failures from the same address</td><td><code>203.0.113.45</code></td><td><code>T1110</code></td><td>2</td><td>2026-11-10 02:24:40</td></tr><tr><td>2</td><td><span class="badge tone-high">HIGH</span></td><td>Repeated failed logins from one address</td><td><code>203.0.113.45</code></td><td><code>T1110.001</code></td><td>141</td><td>2026-11-10 02:10:03</td></tr><tr><td>3</td><td><span class="badge tone-high">HIGH</span></td><td>Repeated failed logins from one address</td><td><code>198.51.100.23</code></td><td><code>T1110.001</code></td><td>21</td><td>2026-11-10 01:52:04</td></tr><tr><td>4</td><td><span class="badge tone-high">HIGH</span></td><td>One address trying many different accounts</td><td><code>198.51.100.23</code></td><td><code>T1110.003</code></td><td>21</td><td>2026-11-10 01:52:04</td></tr><tr><td>5</td><td><span class="badge tone-high">HIGH</span></td><td>Account added to a privileged group</td><td><code>svc-update, sudo</code></td><td><code>T1098</code></td><td>1</td><td>2026-11-10 02:26:31</td></tr><tr><td>6</td><td><span class="badge tone-medium">MEDIUM</span></td><td>Administrative activity at night</td><td><code>deploy</code></td><td><code>T1078</code></td><td>3</td><td>2026-11-10 02:26:10</td></tr><tr><td>7</td><td><span class="badge tone-medium">MEDIUM</span></td><td>Direct root login over SSH</td><td><code>10.0.5.12</code></td><td><code>T1078.003</code></td><td>1</td><td>2026-11-09 11:02:00</td></tr><tr><td>8</td><td><span class="badge tone-medium">MEDIUM</span></td><td>Login from an address the account has not used before</td><td><code>deploy</code></td><td><code>T1078</code></td><td>1</td><td>2026-11-10 02:24:40</td></tr><tr><td>9</td><td><span class="badge tone-medium">MEDIUM</span></td><td>New user account created</td><td><code>svc-update</code></td><td><code>T1136</code></td><td>1</td><td>2026-11-10 02:26:10</td></tr><tr><td>10</td><td><span class="badge tone-medium">MEDIUM</span></td><td>Administrative activity at night</td><td><code>svc-update</code></td><td><code>T1078</code></td><td>1</td><td>2026-11-10 02:30:02</td></tr><tr><td>11</td><td><span class="badge tone-low">LOW</span></td><td>sudo attempt refused</td><td><code>backup</code></td><td><code>T1548.003</code></td><td>1</td><td>2026-11-09 14:02:00</td></tr></tbody></table></div>
+<h2>Timeline and sources</h2>
+<figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" width="960" height="280" role="img" aria-label="Events over time, 1 h per bar" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12">
+<title>Events over time, 1 h per bar</title>
+<rect width="960" height="280" fill="#ffffff"/>
+<text x="20" y="24" font-size="14" font-weight="600" fill="#16181d">Events over time, 1 h per bar</text>
+<text x="940" y="24" text-anchor="end" fill="#5b6370">other events</text>
+<rect x="847" y="14" width="10" height="10" fill="#b4bcc8"/>
+<text x="829" y="24" text-anchor="end" fill="#5b6370">failed or refused</text>
+<rect x="704" y="14" width="10" height="10" fill="#c2410c"/>
+<line x1="56" x2="940" y1="240.0" y2="240.0" stroke="#e6e8eb"/>
+<text x="48" y="244.0" text-anchor="end" fill="#5b6370">0</text>
+<line x1="56" x2="940" y1="145.0" y2="145.0" stroke="#e6e8eb"/>
+<text x="48" y="149.0" text-anchor="end" fill="#5b6370">100</text>
+<line x1="56" x2="940" y1="50.0" y2="50.0" stroke="#e6e8eb"/>
+<text x="48" y="54.0" text-anchor="end" fill="#5b6370">200</text>
+<rect x="56.0" y="238.1" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="74.4" y="238.1" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="92.8" y="238.1" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="111.2" y="232.4" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="111.2" y="234.3" width="17.4" height="5.7" fill="#c2410c"/>
+<rect x="129.7" y="238.1" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="148.1" y="229.6" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="148.1" y="231.4" width="17.4" height="8.6" fill="#c2410c"/>
+<rect x="166.5" y="238.1" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="184.9" y="229.6" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="184.9" y="231.4" width="17.4" height="8.6" fill="#c2410c"/>
+<rect x="203.3" y="235.2" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="203.3" y="237.2" width="17.4" height="2.9" fill="#c2410c"/>
+<rect x="221.8" y="232.4" width="17.4" height="7.6" fill="#b4bcc8"/>
+<rect x="240.2" y="221.9" width="17.4" height="9.5" fill="#b4bcc8"/>
+<rect x="240.2" y="231.4" width="17.4" height="8.6" fill="#c2410c"/>
+<rect x="258.6" y="227.7" width="17.4" height="12.3" fill="#b4bcc8"/>
+<rect x="277.0" y="235.2" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="277.0" y="237.2" width="17.4" height="2.9" fill="#c2410c"/>
+<rect x="295.4" y="223.8" width="17.4" height="7.6" fill="#b4bcc8"/>
+<rect x="295.4" y="231.4" width="17.4" height="8.6" fill="#c2410c"/>
+<rect x="313.8" y="227.7" width="17.4" height="2.8" fill="#b4bcc8"/>
+<rect x="313.8" y="230.5" width="17.4" height="9.5" fill="#c2410c"/>
+<rect x="332.2" y="232.4" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="332.2" y="234.3" width="17.4" height="5.7" fill="#c2410c"/>
+<rect x="350.7" y="220.1" width="17.4" height="8.5" fill="#b4bcc8"/>
+<rect x="350.7" y="228.6" width="17.4" height="11.4" fill="#c2410c"/>
+<rect x="369.1" y="229.6" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="369.1" y="231.4" width="17.4" height="8.6" fill="#c2410c"/>
+<rect x="387.5" y="232.4" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="387.5" y="234.3" width="17.4" height="5.7" fill="#c2410c"/>
+<rect x="405.9" y="235.2" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="405.9" y="237.2" width="17.4" height="2.9" fill="#c2410c"/>
+<rect x="424.3" y="235.2" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="424.3" y="237.2" width="17.4" height="2.9" fill="#c2410c"/>
+<rect x="442.8" y="229.6" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="442.8" y="231.4" width="17.4" height="8.6" fill="#c2410c"/>
+<rect x="461.2" y="235.2" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="461.2" y="237.2" width="17.4" height="2.9" fill="#c2410c"/>
+<rect x="479.6" y="235.2" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="479.6" y="237.2" width="17.4" height="2.9" fill="#c2410c"/>
+<rect x="498.0" y="238.1" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="516.4" y="202.9" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="516.4" y="204.8" width="17.4" height="35.1" fill="#c2410c"/>
+<rect x="534.8" y="55.7" width="17.4" height="25.7" fill="#b4bcc8"/>
+<rect x="534.8" y="81.3" width="17.4" height="158.7" fill="#c2410c"/>
+<rect x="553.2" y="235.2" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="553.2" y="237.2" width="17.4" height="2.9" fill="#c2410c"/>
+<rect x="571.7" y="238.1" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="590.1" y="232.4" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="590.1" y="234.3" width="17.4" height="5.7" fill="#c2410c"/>
+<rect x="608.5" y="238.1" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="626.9" y="238.1" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="645.3" y="229.6" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="645.3" y="231.4" width="17.4" height="8.6" fill="#c2410c"/>
+<rect x="663.8" y="232.4" width="17.4" height="7.6" fill="#b4bcc8"/>
+<rect x="682.2" y="224.8" width="17.4" height="9.5" fill="#b4bcc8"/>
+<rect x="682.2" y="234.3" width="17.4" height="5.7" fill="#c2410c"/>
+<rect x="700.6" y="231.4" width="17.4" height="8.6" fill="#b4bcc8"/>
+<rect x="719.0" y="238.1" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="737.4" y="223.8" width="17.4" height="7.6" fill="#b4bcc8"/>
+<rect x="737.4" y="231.4" width="17.4" height="8.6" fill="#c2410c"/>
+<rect x="755.8" y="237.2" width="17.4" height="2.9" fill="#b4bcc8"/>
+<rect x="774.2" y="238.1" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="792.7" y="231.4" width="17.4" height="8.6" fill="#b4bcc8"/>
+<rect x="811.1" y="238.1" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="829.5" y="235.2" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="829.5" y="237.2" width="17.4" height="2.9" fill="#c2410c"/>
+<rect x="847.9" y="238.1" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="866.3" y="235.2" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="866.3" y="237.2" width="17.4" height="2.9" fill="#c2410c"/>
+<rect x="884.8" y="235.2" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="884.8" y="237.2" width="17.4" height="2.9" fill="#c2410c"/>
+<rect x="903.2" y="238.1" width="17.4" height="1.9" fill="#b4bcc8"/>
+<rect x="921.6" y="238.1" width="17.4" height="1.9" fill="#b4bcc8"/>
+<text x="56.0" y="264" text-anchor="start" fill="#5b6370">09 Nov 00:00</text>
+<text x="231.0" y="264" text-anchor="middle" fill="#5b6370">09 Nov 09:00</text>
+<text x="415.1" y="264" text-anchor="middle" fill="#5b6370">09 Nov 19:00</text>
+<text x="580.9" y="264" text-anchor="middle" fill="#5b6370">10 Nov 04:00</text>
+<text x="765.0" y="264" text-anchor="middle" fill="#5b6370">10 Nov 14:00</text>
+<text x="940.0" y="264" text-anchor="end" fill="#5b6370">10 Nov 23:00</text>
+</svg></figure>
+<figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" width="960" height="320" role="img" aria-label="Busiest source addresses" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12">
+<title>Busiest source addresses</title>
+<rect width="960" height="320" fill="#ffffff"/>
+<text x="20" y="24" font-size="14" font-weight="600" fill="#16181d">Busiest source addresses</text>
+<text x="940" y="24" text-anchor="end" fill="#5b6370">other events</text>
+<rect x="847" y="14" width="10" height="10" fill="#b4bcc8"/>
+<text x="829" y="24" text-anchor="end" fill="#5b6370">failed or refused</text>
+<rect x="704" y="14" width="10" height="10" fill="#c2410c"/>
+<text x="130" y="61" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">203.0.113.45</text>
+<rect x="142.2" y="50" width="7.4" height="16" fill="#b4bcc8"/>
+<rect x="149.6" y="50" width="610.8" height="16" fill="#c2410c"/>
+<text x="768.4" y="62" fill="#5b6370">166, 164 failed or refused</text>
+<text x="130" y="87" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">198.51.100.23</text>
+<rect x="142.2" y="76" width="137.8" height="16" fill="#c2410c"/>
+<text x="288.0" y="88" fill="#5b6370">37, 37 failed or refused</text>
+<text x="130" y="113" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">198.51.100.202</text>
+<rect x="142.2" y="102" width="33.5" height="16" fill="#c2410c"/>
+<text x="183.7" y="114" fill="#5b6370">9, 9 failed or refused</text>
+<text x="130" y="139" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">10.0.5.20</text>
+<rect x="142.2" y="128" width="22.3" height="16" fill="#b4bcc8"/>
+<text x="172.5" y="140" fill="#5b6370">6</text>
+<text x="130" y="165" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">192.0.2.191</text>
+<rect x="142.2" y="154" width="22.3" height="16" fill="#c2410c"/>
+<text x="172.5" y="166" fill="#5b6370">6, 6 failed or refused</text>
+<text x="130" y="191" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">192.0.2.227</text>
+<rect x="142.2" y="180" width="22.3" height="16" fill="#c2410c"/>
+<text x="172.5" y="192" fill="#5b6370">6, 6 failed or refused</text>
+<text x="130" y="217" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">192.0.2.233</text>
+<rect x="142.2" y="206" width="22.3" height="16" fill="#c2410c"/>
+<text x="172.5" y="218" fill="#5b6370">6, 6 failed or refused</text>
+<text x="130" y="243" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">192.0.2.243</text>
+<rect x="142.2" y="232" width="22.3" height="16" fill="#c2410c"/>
+<text x="172.5" y="244" fill="#5b6370">6, 6 failed or refused</text>
+<text x="130" y="269" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">198.51.100.105</text>
+<rect x="142.2" y="258" width="22.3" height="16" fill="#c2410c"/>
+<text x="172.5" y="270" fill="#5b6370">6, 6 failed or refused</text>
+<text x="130" y="295" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" fill="#16181d">198.51.100.139</text>
+<rect x="142.2" y="284" width="22.3" height="16" fill="#c2410c"/>
+<text x="172.5" y="296" fill="#5b6370">6, 6 failed or refused</text>
+</svg></figure>
+<h2>Details</h2>
+<section class="finding tone-critical"><header><span class="badge">CRITICAL</span><h3><span class="num">1.</span>Successful login after repeated failures from the same address</h3><p class="meta"><code>T1110</code> Brute Force · Credential Access · 2 events · 2026-11-10 02:24:40 to 2026-11-10 02:29:15</p></header>
+<p><strong>What was seen. </strong><code>203.0.113.45</code> logged in as <code>deploy, svc-update</code> after 141 failed logins within 30 min</p>
+<p>An address that had just failed to log in several times then logged in successfully. If the failures were password guessing, the guess worked.</p>
+<p><strong>Why it fired. </strong><code>event = login and result = success and ip is recorded</code>; a matching event preceded within 30 min by at least 5 events per ip where event = login and result = failure.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th></tr></thead><tbody><tr><td>406</td><td>2026-11-10 02:23:44</td><td><code>web-01</code></td><td><code>root</code></td><td><code>203.0.113.45</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>407</td><td>2026-11-10 02:23:48</td><td><code>web-01</code></td><td><code>deploy</code></td><td><code>203.0.113.45</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>408</td><td>2026-11-10 02:24:40</td><td><code>web-01</code></td><td><code>deploy</code></td><td><code>203.0.113.45</code></td><td><code>login</code></td><td><code>success</code></td></tr><tr><td>425</td><td>2026-11-10 02:29:15</td><td><code>web-01</code></td><td><code>svc-update</code></td><td><code>203.0.113.45</code></td><td><code>login</code></td><td><code>success</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>406: 2026-11-10T02:23:44.666551+05:00 web-01 sshd[7299]: Failed password for root from 203.0.113.45 port 33379 ssh2
+407: 2026-11-10T02:23:48.514322+05:00 web-01 sshd[7305]: Failed password for deploy from 203.0.113.45 port 57978 ssh2
+408: 2026-11-10T02:24:40.623178+05:00 web-01 sshd[7314]: Accepted password for deploy from 203.0.113.45 port 54538 ssh2
+425: 2026-11-10T02:29:15.392504+05:00 web-01 sshd[7399]: Accepted password for svc-update from 203.0.113.45 port 41077 ssh2</pre>
+<p><strong>What to check. </strong>Treat the account as compromised until shown otherwise: confirm with its owner, review what the session did after this login, reset the password and revoke its keys and sessions.</p>
+<p class="muted">Rule auth-success-after-failures from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1110/</p>
+</section>
+<section class="finding tone-high"><header><span class="badge">HIGH</span><h3><span class="num">2.</span>Repeated failed logins from one address</h3><p class="meta"><code>T1110.001</code> Brute Force: Password Guessing · Credential Access · 141 events · 2026-11-10 02:10:03 to 2026-11-10 02:23:48</p></header>
+<p><strong>What was seen. </strong>141 failed logins from <code>203.0.113.45</code>, up to 55 within 5 min; accounts: <code>deploy, root</code></p>
+<p>One address produced many failed logins in a short time, the pattern of an automated password-guessing run.</p>
+<p><strong>Why it fired. </strong><code>event = login and result = failure and ip is recorded</code>; at least 10 matching events within 5 min per ip.</p>
+<p class="muted">Evidence: 5 of 141 matching events</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th></tr></thead><tbody><tr><td>242</td><td>2026-11-10 02:10:03</td><td><code>web-01</code></td><td><code>deploy</code></td><td><code>203.0.113.45</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>243</td><td>2026-11-10 02:10:09</td><td><code>web-01</code></td><td><code>deploy</code></td><td><code>203.0.113.45</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>244</td><td>2026-11-10 02:10:13</td><td><code>web-01</code></td><td><code>deploy</code></td><td><code>203.0.113.45</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>245</td><td>2026-11-10 02:10:19</td><td><code>web-01</code></td><td><code>deploy</code></td><td><code>203.0.113.45</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>246</td><td>2026-11-10 02:10:23</td><td><code>web-01</code></td><td><code>root</code></td><td><code>203.0.113.45</code></td><td><code>login</code></td><td><code>failure</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>242: 2026-11-10T02:10:03.130104+05:00 web-01 sshd[4354]: Failed password for deploy from 203.0.113.45 port 52477 ssh2
+243: 2026-11-10T02:10:09.667812+05:00 web-01 sshd[4390]: Failed password for deploy from 203.0.113.45 port 53289 ssh2
+244: 2026-11-10T02:10:13.437588+05:00 web-01 sshd[4408]: Failed password for deploy from 203.0.113.45 port 43292 ssh2
+245: 2026-11-10T02:10:19.942076+05:00 web-01 sshd[4411]: Failed password for deploy from 203.0.113.45 port 35937 ssh2
+246: 2026-11-10T02:10:23.799766+05:00 web-01 sshd[4435]: Failed password for root from 203.0.113.45 port 54358 ssh2</pre>
+<p><strong>What to check. </strong>Check whether any login from this address succeeded. Block the address and make sure the targeted accounts cannot be reached with a password alone.</p>
+<p class="muted">Rule auth-password-guessing from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1110/001/</p>
+</section>
+<section class="finding tone-high"><header><span class="badge">HIGH</span><h3><span class="num">3.</span>Repeated failed logins from one address</h3><p class="meta"><code>T1110.001</code> Brute Force: Password Guessing · Credential Access · 21 events · 2026-11-10 01:52:04 to 2026-11-10 01:57:21</p></header>
+<p><strong>What was seen. </strong>21 failed logins from <code>198.51.100.23</code>, up to 20 within 5 min; accounts: <code>admin, alice, deploy, ftpuser, git and 6 more</code></p>
+<p>One address produced many failed logins in a short time, the pattern of an automated password-guessing run.</p>
+<p><strong>Why it fired. </strong><code>event = login and result = failure and ip is recorded</code>; at least 10 matching events within 5 min per ip.</p>
+<p class="muted">Evidence: 5 of 21 matching events</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th></tr></thead><tbody><tr><td>206</td><td>2026-11-10 01:52:04</td><td><code>web-01</code></td><td><code>admin</code></td><td><code>198.51.100.23</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>208</td><td>2026-11-10 01:52:21</td><td><code>web-01</code></td><td><code>admin</code></td><td><code>198.51.100.23</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>210</td><td>2026-11-10 01:52:38</td><td><code>web-01</code></td><td><code>test</code></td><td><code>198.51.100.23</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>212</td><td>2026-11-10 01:52:53</td><td><code>web-01</code></td><td><code>test</code></td><td><code>198.51.100.23</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>214</td><td>2026-11-10 01:53:15</td><td><code>web-01</code></td><td><code>oracle</code></td><td><code>198.51.100.23</code></td><td><code>login</code></td><td><code>failure</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>206: 2026-11-10T01:52:04.135688+05:00 web-01 sshd[3859]: Failed password for invalid user admin from 198.51.100.23 port 53888 ssh2
+208: 2026-11-10T01:52:21.414774+05:00 web-01 sshd[3875]: Failed password for invalid user admin from 198.51.100.23 port 52966 ssh2
+210: 2026-11-10T01:52:38.957275+05:00 web-01 sshd[3912]: Failed password for invalid user test from 198.51.100.23 port 50404 ssh2
+212: 2026-11-10T01:52:53.728299+05:00 web-01 sshd[3931]: Failed password for invalid user test from 198.51.100.23 port 44159 ssh2
+214: 2026-11-10T01:53:15.255348+05:00 web-01 sshd[3945]: Failed password for invalid user oracle from 198.51.100.23 port 49436 ssh2</pre>
+<p><strong>What to check. </strong>Check whether any login from this address succeeded. Block the address and make sure the targeted accounts cannot be reached with a password alone.</p>
+<p class="muted">Rule auth-password-guessing from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1110/001/</p>
+</section>
+<section class="finding tone-high"><header><span class="badge">HIGH</span><h3><span class="num">4.</span>One address trying many different accounts</h3><p class="meta"><code>T1110.003</code> Brute Force: Password Spraying · Credential Access · 21 events · 2026-11-10 01:52:04 to 2026-11-10 01:57:21</p></header>
+<p><strong>What was seen. </strong><code>198.51.100.23</code> tried 11 different accounts, up to 11 within 10 min: <code>admin, alice, deploy, ftpuser, git and 6 more</code></p>
+<p>One address failed to log in to many different accounts within a short time. Trying a few passwords across many accounts avoids lockouts.</p>
+<p><strong>Why it fired. </strong><code>event = login and result = failure and ip is recorded and user is recorded</code>; at least 6 different values of user within 10 min per ip.</p>
+<p class="muted">Evidence: 5 of 21 matching events</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th></tr></thead><tbody><tr><td>206</td><td>2026-11-10 01:52:04</td><td><code>web-01</code></td><td><code>admin</code></td><td><code>198.51.100.23</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>210</td><td>2026-11-10 01:52:38</td><td><code>web-01</code></td><td><code>test</code></td><td><code>198.51.100.23</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>214</td><td>2026-11-10 01:53:15</td><td><code>web-01</code></td><td><code>oracle</code></td><td><code>198.51.100.23</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>218</td><td>2026-11-10 01:53:39</td><td><code>web-01</code></td><td><code>postgres</code></td><td><code>198.51.100.23</code></td><td><code>login</code></td><td><code>failure</code></td></tr><tr><td>222</td><td>2026-11-10 01:54:04</td><td><code>web-01</code></td><td><code>ubuntu</code></td><td><code>198.51.100.23</code></td><td><code>login</code></td><td><code>failure</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>206: 2026-11-10T01:52:04.135688+05:00 web-01 sshd[3859]: Failed password for invalid user admin from 198.51.100.23 port 53888 ssh2
+210: 2026-11-10T01:52:38.957275+05:00 web-01 sshd[3912]: Failed password for invalid user test from 198.51.100.23 port 50404 ssh2
+214: 2026-11-10T01:53:15.255348+05:00 web-01 sshd[3945]: Failed password for invalid user oracle from 198.51.100.23 port 49436 ssh2
+218: 2026-11-10T01:53:39.703692+05:00 web-01 sshd[4000]: Failed password for invalid user postgres from 198.51.100.23 port 36865 ssh2
+222: 2026-11-10T01:54:04.774743+05:00 web-01 sshd[4039]: Failed password for invalid user ubuntu from 198.51.100.23 port 58970 ssh2</pre>
+<p><strong>What to check. </strong>List the accounts that were tried and check each for a later successful login from an unfamiliar address.</p>
+<p class="muted">Rule auth-password-spraying from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1110/003/</p>
+</section>
+<section class="finding tone-high"><header><span class="badge">HIGH</span><h3><span class="num">5.</span>Account added to a privileged group</h3><p class="meta"><code>T1098</code> Account Manipulation · Privilege Escalation · 1 event · 2026-11-10 02:26:31 to 2026-11-10 02:26:31</p></header>
+<p><strong>What was seen. </strong><code>svc-update</code> was added to the group <code>sudo</code></p>
+<p>An account was added to a group that grants administrative rights.</p>
+<p><strong>Why it fired. </strong><code>event = group_member_added and group in [sudo, wheel, adm, root, admin, docker, … (13 in total)]</code>; every matching event per user, group.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th><th>Group</th></tr></thead><tbody><tr><td>416</td><td>2026-11-10 02:26:31</td><td><code>web-01</code></td><td><code>svc-update</code></td><td>—</td><td><code>group_member_added</code></td><td><code>success</code></td><td><code>sudo</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>416: 2026-11-10T02:26:31.500000+05:00 web-01 usermod[7363]: add &#x27;svc-update&#x27; to group &#x27;sudo&#x27;</pre>
+<p><strong>What to check. </strong>Confirm the change with whoever owns access to that group and remove the membership if nobody asked for it.</p>
+<p class="muted">Rule privileged-group-change from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1098/</p>
+</section>
+<section class="finding tone-medium"><header><span class="badge">MEDIUM</span><h3><span class="num">6.</span>Administrative activity at night</h3><p class="meta"><code>T1078</code> Valid Accounts · Privilege Escalation · 3 events · 2026-11-10 02:26:10 to 2026-11-10 02:27:02</p></header>
+<p><strong>What was seen. </strong>Privileged actions by <code>deploy</code> between 00:00 and 05:59: 3</p>
+<p>Privileged commands or administrator logins between 00:00 and 05:59. Change the hours to match your working day.</p>
+<p><strong>Why it fired. </strong><code>time of day between 00:00 and 05:59 and (event in [sudo, su] and result = success or event = login and result = success and user in [root, admin, administrator, Администратор] or event = special_privileges and user is recorded and user not in [SYSTEM, LOCAL SERVICE, NETWORK SERVICE, ANONYMOUS LOGON] and user does not match /\$$|^(DWM|UMFD)-\d+$/)</code>; every matching event per user.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th><th>Command</th></tr></thead><tbody><tr><td>413</td><td>2026-11-10 02:26:10</td><td><code>web-01</code></td><td><code>deploy</code></td><td>—</td><td><code>sudo</code></td><td><code>success</code></td><td><code>/usr/sbin/useradd -m -s /bin/bash svc-update</code></td></tr><tr><td>418</td><td>2026-11-10 02:26:31</td><td><code>web-01</code></td><td><code>deploy</code></td><td>—</td><td><code>sudo</code></td><td><code>success</code></td><td><code>/usr/sbin/usermod -aG sudo svc-update</code></td></tr><tr><td>421</td><td>2026-11-10 02:27:02</td><td><code>web-01</code></td><td><code>deploy</code></td><td>—</td><td><code>sudo</code></td><td><code>success</code></td><td><code>/usr/bin/passwd svc-update</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>413: 2026-11-10T02:26:10.806124+05:00 web-01 sudo:   deploy : TTY=pts/1 ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/sbin/useradd -m -s /bin/bash svc-update
+418: 2026-11-10T02:26:31.789671+05:00 web-01 sudo:   deploy : TTY=pts/1 ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/sbin/usermod -aG sudo svc-update
+421: 2026-11-10T02:27:02.211574+05:00 web-01 sudo:   deploy : TTY=pts/1 ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/passwd svc-update</pre>
+<p><strong>What to check. </strong>Match the activity to a change ticket or an on-call shift. Without one, review every command the account ran in that session.</p>
+<p class="muted">Rule admin-night-activity from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1078/</p>
+</section>
+<section class="finding tone-medium"><header><span class="badge">MEDIUM</span><h3><span class="num">7.</span>Direct root login over SSH</h3><p class="meta"><code>T1078.003</code> Valid Accounts: Local Accounts · Initial Access · 1 event · 2026-11-09 11:02:00 to 2026-11-09 11:02:00</p></header>
+<p><strong>What was seen. </strong>Direct root logins from <code>10.0.5.12</code>: 1</p>
+<p>Someone logged in as root directly instead of through a personal account and sudo, which leaves no record of who it was.</p>
+<p><strong>Why it fired. </strong><code>source = linux_auth and event = login and result = success and user = root</code>; every matching event per ip.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th></tr></thead><tbody><tr><td>73</td><td>2026-11-09 11:02:00</td><td><code>web-01</code></td><td><code>root</code></td><td><code>10.0.5.12</code></td><td><code>login</code></td><td><code>success</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>73: 2026-11-09T11:02:00.990315+05:00 web-01 sshd[2734]: Accepted publickey for root from 10.0.5.12 port 47893 ssh2: ED25519 SHA256:rrso9g+pgE+RC9ug7ZvjzmbG0Im9Lp+oruXJWgxNbD7</pre>
+<p><strong>What to check. </strong>Confirm the login was expected, then set PermitRootLogin to no or prohibit-password.</p>
+<p class="muted">Rule auth-root-login from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1078/003/</p>
+</section>
+<section class="finding tone-medium"><header><span class="badge">MEDIUM</span><h3><span class="num">8.</span>Login from an address the account has not used before</h3><p class="meta"><code>T1078</code> Valid Accounts · Initial Access · 1 event · 2026-11-10 02:24:40 to 2026-11-10 02:24:40</p></header>
+<p><strong>What was seen. </strong><code>deploy</code> logged in from <code>203.0.113.45</code>; earlier logins came from <code>10.0.5.20</code></p>
+<p>An account with an established login history logged in from an address that does not appear earlier in this log.</p>
+<p><strong>Why it fired. </strong><code>event = login and result = success and ip is recorded and user is recorded and user does not match /\$$/</code>; a value of ip not seen before per user, after at least 3 earlier matching events.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th></tr></thead><tbody><tr><td>408</td><td>2026-11-10 02:24:40</td><td><code>web-01</code></td><td><code>deploy</code></td><td><code>203.0.113.45</code></td><td><code>login</code></td><td><code>success</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>408: 2026-11-10T02:24:40.623178+05:00 web-01 sshd[7314]: Accepted password for deploy from 203.0.113.45 port 54538 ssh2</pre>
+<p><strong>What to check. </strong>Ask the account owner whether the login was theirs. The history only covers this file, so an address from before the file starts looks new.</p>
+<p class="muted">Rule auth-new-source-for-user from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1078/</p>
+</section>
+<section class="finding tone-medium"><header><span class="badge">MEDIUM</span><h3><span class="num">9.</span>New user account created</h3><p class="meta"><code>T1136</code> Create Account · Persistence · 1 event · 2026-11-10 02:26:10 to 2026-11-10 02:26:10</p></header>
+<p><strong>What was seen. </strong>Account <code>svc-update</code> was created</p>
+<p>A user account was created. Attackers add accounts to keep access after the original entry point is closed.</p>
+<p><strong>Why it fired. </strong><code>event = account_created</code>; every matching event per user.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th></tr></thead><tbody><tr><td>412</td><td>2026-11-10 02:26:10</td><td><code>web-01</code></td><td><code>svc-update</code></td><td>—</td><td><code>account_created</code></td><td><code>success</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>412: 2026-11-10T02:26:10.640000+05:00 web-01 useradd[7329]: new user: name=svc-update, UID=1004, GID=1004, home=/home/svc-update, shell=/bin/bash, from=/dev/pts/1</pre>
+<p><strong>What to check. </strong>Match the account to a request. Check who created it and what else that session did before and after.</p>
+<p class="muted">Rule account-created from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1136/</p>
+</section>
+<section class="finding tone-medium"><header><span class="badge">MEDIUM</span><h3><span class="num">10.</span>Administrative activity at night</h3><p class="meta"><code>T1078</code> Valid Accounts · Privilege Escalation · 1 event · 2026-11-10 02:30:02 to 2026-11-10 02:30:02</p></header>
+<p><strong>What was seen. </strong>Privileged actions by <code>svc-update</code> between 00:00 and 05:59: 1</p>
+<p>Privileged commands or administrator logins between 00:00 and 05:59. Change the hours to match your working day.</p>
+<p><strong>Why it fired. </strong><code>time of day between 00:00 and 05:59 and (event in [sudo, su] and result = success or event = login and result = success and user in [root, admin, administrator, Администратор] or event = special_privileges and user is recorded and user not in [SYSTEM, LOCAL SERVICE, NETWORK SERVICE, ANONYMOUS LOGON] and user does not match /\$$|^(DWM|UMFD)-\d+$/)</code>; every matching event per user.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th><th>Command</th></tr></thead><tbody><tr><td>428</td><td>2026-11-10 02:30:02</td><td><code>web-01</code></td><td><code>svc-update</code></td><td>—</td><td><code>sudo</code></td><td><code>success</code></td><td><code>/usr/bin/crontab -l</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>428: 2026-11-10T02:30:02.210112+05:00 web-01 sudo:   svc-update : TTY=pts/2 ; PWD=/home/svc-update ; USER=root ; COMMAND=/usr/bin/crontab -l</pre>
+<p><strong>What to check. </strong>Match the activity to a change ticket or an on-call shift. Without one, review every command the account ran in that session.</p>
+<p class="muted">Rule admin-night-activity from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1078/</p>
+</section>
+<section class="finding tone-low"><header><span class="badge">LOW</span><h3><span class="num">11.</span>sudo attempt refused</h3><p class="meta"><code>T1548.003</code> Abuse Elevation Control Mechanism: Sudo and Sudo Caching · Privilege Escalation · 1 event · 2026-11-09 14:02:00 to 2026-11-09 14:02:00</p></header>
+<p><strong>What was seen. </strong>sudo or su refused for <code>backup</code>, attempts: 1; command: <code>/usr/bin/cat /etc/shadow</code></p>
+<p>sudo refused a command: the user is not in sudoers, typed a wrong password or asked for a command they are not allowed to run.</p>
+<p><strong>Why it fired. </strong><code>event in [sudo, su] and result = failure</code>; every matching event per user.</p>
+<p class="muted">Evidence</p>
+<div class="scroll"><table class="wide"><thead><tr><th>Line</th><th>Time</th><th>Host</th><th>User</th><th>IP</th><th>Event</th><th>Result</th><th>Command</th></tr></thead><tbody><tr><td>108</td><td>2026-11-09 14:02:00</td><td><code>web-01</code></td><td><code>backup</code></td><td>—</td><td><code>sudo</code></td><td><code>failure</code></td><td><code>/usr/bin/cat /etc/shadow</code></td></tr></tbody></table></div>
+<p class="label">Raw lines</p><pre>108: 2026-11-09T14:02:00.220855+05:00 web-01 sudo:   backup : user NOT in sudoers ; TTY=pts/2 ; PWD=/var/backups ; USER=root ; COMMAND=/usr/bin/cat /etc/shadow</pre>
+<p><strong>What to check. </strong>A single refusal is usually a mistake. Several from one account, or from a service account, deserve a question to its owner.</p>
+<p class="muted">Rule sudo-denied from built-in default.yaml. Technique: https://attack.mitre.org/techniques/T1548/003/</p>
+</section>
+<h2>Events by type</h2>
+<div class="scroll"><table><thead><tr><th>Event</th><th>Result</th><th>Count</th></tr></thead><tbody><tr><td><code>login</code></td><td><code>failure</code></td><td>214</td></tr><tr><td><code>preauth_disconnect</code></td><td><code>failure</code></td><td>75</td></tr><tr><td><code>session_closed</code></td><td>—</td><td>75</td></tr><tr><td><code>session_opened</code></td><td>—</td><td>75</td></tr><tr><td><code>invalid_user</code></td><td><code>failure</code></td><td>68</td></tr><tr><td><code>other</code></td><td>—</td><td>15</td></tr><tr><td><code>sudo</code></td><td><code>success</code></td><td>14</td></tr><tr><td><code>login</code></td><td><code>success</code></td><td>13</td></tr><tr><td><code>account_created</code></td><td><code>success</code></td><td>1</td></tr><tr><td><code>group_member_added</code></td><td><code>success</code></td><td>1</td></tr><tr><td><code>password_changed</code></td><td><code>success</code></td><td>1</td></tr><tr><td><code>sudo</code></td><td><code>failure</code></td><td>1</td></tr></tbody></table></div>
+<p class="muted">Every parsed event with its normalised fields is in events.csv.</p>
+<h2>Skipped lines</h2>
+<p>2 lines could not be read and were left out of the analysis.</p>
+<div class="scroll"><table><thead><tr><th>Line</th><th>Reason</th><th>Text</th></tr></thead><tbody><tr><td>141</td><td>not a syslog line</td><td><code>2026-11-09T11:4</code></td></tr><tr><td>521</td><td>not a syslog line</td><td><code>tail: /var/log/auth.log: file truncated</code></td></tr></tbody></table></div>
+<h2>Rules applied</h2>
+<div class="scroll"><table><thead><tr><th>Rule</th><th>Severity</th><th>ATT&amp;CK</th><th>Title</th><th>Findings</th></tr></thead><tbody><tr><td><code>auth-success-after-failures</code></td><td><span class="badge tone-critical">CRITICAL</span></td><td><code>T1110</code></td><td>Successful login after repeated failures from the same address</td><td>1</td></tr><tr><td><code>auth-password-guessing</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1110.001</code></td><td>Repeated failed logins from one address</td><td>2</td></tr><tr><td><code>auth-password-spraying</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1110.003</code></td><td>One address trying many different accounts</td><td>1</td></tr><tr><td><code>auth-new-source-for-user</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1078</code></td><td>Login from an address the account has not used before</td><td>1</td></tr><tr><td><code>auth-root-login</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1078.003</code></td><td>Direct root login over SSH</td><td>1</td></tr><tr><td><code>admin-night-activity</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1078</code></td><td>Administrative activity at night</td><td>2</td></tr><tr><td><code>sudo-denied</code></td><td><span class="badge tone-low">LOW</span></td><td><code>T1548.003</code></td><td>sudo attempt refused</td><td>1</td></tr><tr><td><code>account-created</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1136</code></td><td>New user account created</td><td>1</td></tr><tr><td><code>privileged-group-change</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1098</code></td><td>Account added to a privileged group</td><td>1</td></tr><tr><td><code>win-service-installed</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1543.003</code></td><td>New Windows service installed</td><td>—</td></tr><tr><td><code>win-scheduled-task-created</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1053.005</code></td><td>Scheduled task created</td><td>—</td></tr><tr><td><code>win-encoded-powershell</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1059.001</code></td><td>PowerShell started with an encoded or download command</td><td>—</td></tr><tr><td><code>win-audit-log-cleared</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1070.001</code></td><td>Windows event log cleared</td><td>—</td></tr><tr><td><code>web-secret-file-served</code></td><td><span class="badge tone-critical">CRITICAL</span></td><td><code>T1552.001</code></td><td>Secret or backup file was served to a client</td><td>—</td></tr><tr><td><code>web-injection-attempt</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1190</code></td><td>Injection or path traversal pattern in a request</td><td>—</td></tr><tr><td><code>web-sensitive-path-probe</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1595.003</code></td><td>Probing for admin panels and secret files</td><td>—</td></tr><tr><td><code>web-not-found-burst</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1595.003</code></td><td>Burst of 404 responses to one client</td><td>—</td></tr><tr><td><code>web-scanner-user-agent</code></td><td><span class="badge tone-low">LOW</span></td><td><code>T1595.002</code></td><td>Request from a known scanning tool</td><td>—</td></tr><tr><td><code>web-login-bruteforce</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1110.001</code></td><td>Repeated refused logins on a web form</td><td>—</td></tr><tr><td><code>web-login-after-refusals</code></td><td><span class="badge tone-high">HIGH</span></td><td><code>T1110</code></td><td>Login form accepted a client after repeated refusals</td><td>—</td></tr><tr><td><code>web-server-error-burst</code></td><td><span class="badge tone-medium">MEDIUM</span></td><td><code>T1190</code></td><td>Burst of HTTP 5xx responses</td><td>—</td></tr></tbody></table></div>
+<p class="muted">A finding is a lead to verify, not a verdict. The report covers one file: anything outside it, and anything none of these rules describe, is not here.</p>
+<footer>soc-triage 0.1.0. First-pass triage of one file, not a replacement for a SIEM.</footer>
+</main>
+</body>
+</html>
