@@ -111,3 +111,84 @@ def test_defang():
     text = defang_text("Mail a.b@evil.example or open http://203.0.113.77/o.gif, see report.pdf from 198.51.100.4")
     assert text == "Mail a.b[@]evil[.]example or open hxxp://203[.]0[.]113[.]77/o.gif, see report.pdf from 198[.]51[.]100[.]4"
     assert defang_text(text) == text
+
+
+def mail(headers: str, body: str = "hello", content_type: str = "text/plain") -> bytes:
+    text = f"{headers.strip()}\nMIME-Version: 1.0\nContent-Type: {content_type}; charset=utf-8\n\n{body}\n"
+    return text.encode("utf-8")
+
+
+def test_ms_auth_header():
+    # exchange online пишет результаты без имени сервера в начале
+    message = parse_eml(mail(
+        "From: Shop <news@shop.example>\n"
+        "Authentication-Results: spf=none (sender IP is 192.0.2.44) smtp.mailfrom=bulk.example; "
+        "dkim=none (message not signed) header.d=none;dmarc=none action=none header.from=shop.example;compauth=fail reason=001"
+    ))
+    assert message.auth_server == ""
+    assert [(r.method, r.result) for r in message.auth] == [("spf", "none"), ("dkim", "none"), ("dmarc", "none"), ("compauth", "fail")]
+    assert message.envelope_from == "bulk.example"
+
+    found = {indicator.id: indicator for indicator in find_indicators(message)}
+    assert found["auth-nothing-passed"].evidence == ["spf=none", "dkim=none", "dmarc=none", "compauth=fail"]
+    assert "dkim-none" not in found and "return-path-mismatch" in found
+
+
+def test_sender_address_fallbacks():
+    cases = {
+        "From: Big Sale - Today Only! ,_<promo@shop.example>": ("Big Sale - Today Only!", "promo@shop.example"),
+        'From: "Rewards Center" <"no-reply@Shop.example">': ("Rewards Center", "no-reply@shop.example"),
+        "From: Voucher, <service@shop.example.>, Office, <other@shop.example>": ("Voucher", "service@shop.example"),
+    }
+    for header, expected in cases.items():
+        message = parse_eml(mail(header))
+        assert (message.from_name, message.from_address) == expected, header
+
+
+def test_8bit_subject():
+    message = parse_eml("From: a@shop.example\nSubject: Seu cartão — 500€\n\nx\n".encode("utf-8"))
+    assert message.subject == "Seu cartão — 500€"
+
+
+def test_hidden_characters():
+    gap = "\U000e0139"
+    subject = gap.join("Account") + " " + gap.join("locked")
+    message = parse_eml(mail(f"From: Support <help@shop.example>\nSubject: {subject}"))
+    found = {indicator.id: indicator for indicator in find_indicators(message)}
+    assert found["hidden-characters"].weight == "strong"
+    assert found["hidden-characters"].evidence == ["subject: 11 invisible characters inside words"]
+
+    # сердечко со своим селектором варианта - обычное письмо, не маскировка
+    harmless = parse_eml(mail("From: Shop <news@shop.example>\nSubject: We \u2764\ufe0f you 1\ufe0f\u20e3 gift"))
+    assert "hidden-characters" not in ids(find_indicators(harmless))
+
+
+def test_styled_letters():
+    bold = "".join(chr(0x1D5D4 + ord(char) - ord("A")) if char.isupper() else char for char in "OPEN NOW")
+    message = parse_eml(mail(f"From: Team <team@shop.example>\nSubject: {bold}"))
+    (indicator,) = [item for item in find_indicators(message) if item.id == "styled-letters"]
+    assert indicator.evidence == ["subject: 7 styled letters, reads as OPEN NOW"]
+
+
+def test_sender_domain_without_tld():
+    message = parse_eml(mail("From: Notice <alert@agency123456>\nSubject: fine"))
+    assert "sender-domain-invalid" in ids(find_indicators(message))
+
+
+def test_display_name_brand():
+    fake = parse_eml(mail("From: PayPal Billing <billing@garage-service.example>"))
+    assert "display-name-brand" in ids(find_indicators(fake))
+    glued = parse_eml(mail("From: Microsoft365 Team <team@garage-service.example>"))
+    assert "display-name-brand" in ids(find_indicators(glued))
+    real = parse_eml(mail("From: PayPal <service@paypal.com>"))
+    assert "display-name-brand" not in ids(find_indicators(real))
+    word = parse_eml(mail("From: Pineapple Farm <hi@farm.example>"))
+    assert "display-name-brand" not in ids(find_indicators(word))
+
+
+def test_html_in_text_part():
+    body = '<table><tr><td><a href="http://192.0.2.9/pay">Update billing details</a></td></tr></table>'
+    message = parse_eml(mail("From: Billing <billing@shop.example>", body))
+    assert message.text == "Update billing details"
+    assert message.links[0].texts == ["Update billing details"]
+    assert {"link-ip-host", "credential-request"} <= ids(find_indicators(message))

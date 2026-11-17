@@ -184,10 +184,16 @@ def build_document(analysis: EmlAnalysis) -> Document:
 
     blocks.append(Heading("Sender authentication"))
     if any(result.source == "Authentication-Results" for result in message.auth):
-        blocks.append(Para([
-            "As recorded by the receiving server ", code_or_dash(_host(message.auth_server)),
-            " in the Authentication-Results header. Nothing was checked against DNS again.",
-        ]))
+        if message.auth_server:
+            blocks.append(Para([
+                "As recorded by the receiving server ", Code(_host(message.auth_server)),
+                " in the Authentication-Results header. Nothing was checked against DNS again.",
+            ]))
+        else:
+            blocks.append(Para(
+                "As recorded in the Authentication-Results header; the server that wrote it did not name itself. "
+                "Nothing was checked against DNS again."
+            ))
     elif message.auth:
         blocks.append(Para("Only a Received-SPF header is present; DKIM and DMARC results were not recorded."))
     else:

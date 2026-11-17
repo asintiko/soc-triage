@@ -4,7 +4,7 @@ import re
 from dataclasses import dataclass
 from urllib.parse import urlsplit
 
-from .parse import Link, Message, domain_of, is_ip, registrable_domain
+from .parse import Link, Message, domain_of, hidden_in_words, is_ip, plain, registrable_domain, styled_letters
 
 WEIGHTS = {"strong": 3, "medium": 2, "weak": 1}
 
@@ -30,8 +30,16 @@ URGENCY = (
 CREDENTIAL_REQUESTS = (
     "verify your account", "confirm your account", "confirm your identity", "update your payment",
     "enter your password", "login details", "sign in to confirm", "validate your account",
+    "billing details", "billing information", "payment details", "update your billing",
     "подтвердите", "введите пароль", "данные карты", "подтверждения личности",
 )
+# имена, которыми чаще всего прикрываются; сверяем с доменом отправителя
+BRANDS = (
+    "microsoft", "office 365", "outlook", "onedrive", "paypal", "apple", "icloud", "amazon", "netflix",
+    "google", "facebook", "instagram", "whatsapp", "linkedin", "dropbox", "docusign", "dhl", "fedex",
+    "binance", "coinbase", "metamask",
+)
+_PASSED = ("pass", "bestguesspass")
 _CREDENTIAL_PATH = re.compile(r"(?i)(log-?in|sign-?in|verify|account|password|secure|update|confirm|auth|wallet|bank)")
 _DOMAIN_IN_TEXT = re.compile(r"(?i)(?<![\w.-])((?:[a-z0-9-]+\.)+[a-z]{2,})\b")
 
@@ -77,9 +85,66 @@ def _text_domain(text: str) -> str:
     return registrable_domain(match.group(1)) if match else ""
 
 
+def _from_domain(message: Message) -> str:
+    return registrable_domain(plain(domain_of(message.from_address)))
+
+
+def _nothing_passed(message: Message) -> list[str]:
+    # ни spf, ни dkim, ни dmarc не прошли (и хотя бы два из них записаны)
+    seen = []
+    for method in ("spf", "dkim", "dmarc"):
+        results = _auth(message, method)
+        if any(result.result in _PASSED for result in results):
+            return []
+        if results:
+            seen.append(f"{method}={results[0].result}")
+    if len(seen) < 2:
+        return []
+    return seen + [f"compauth={result.result}" for result in _auth(message, "compauth")]
+
+
+def _disguise_checks(message: Message) -> list[Indicator]:
+    found: list[Indicator] = []
+    places = (
+        ("subject", message.subject), ("sender name", message.from_name),
+        ("link text", " ".join(text for link in message.links for text in link.texts)),
+        ("body", message.body_text),
+    )
+    hidden = [(label, hidden_in_words(text)) for label, text in places]
+    if sum(count for _, count in hidden) >= 2:
+        found.append(Indicator(
+            "hidden-characters", "strong", "Invisible characters hidden inside words to get past filters",
+            [f"{label}: {count} invisible characters inside words" for label, count in hidden if count],
+        ))
+    styled = [(label, styled_letters(text)) for label, text in
+              (("subject", message.subject), ("sender name", message.from_name), ("sender address", message.from_address))]
+    if sum(count for _, count in styled) >= 3:
+        found.append(Indicator(
+            "styled-letters", "medium", "Letters replaced with look-alike Unicode symbols",
+            [f"{label}: {count} styled letters, reads as {plain(text)[:80]}" for (label, count), (_, text) in
+             zip(styled, (("", message.subject), ("", message.from_name), ("", message.from_address))) if count],
+        ))
+
+    domain = plain(domain_of(message.from_address))
+    name = plain(message.from_name).casefold()
+    for brand in BRANDS:
+        if re.search(rf"(?<![a-z]){re.escape(brand)}(?![a-z])", name) and brand.split()[0] not in domain:
+            found.append(Indicator(
+                "display-name-brand", "medium", "Sender name uses a well-known brand, the address is on an unrelated domain",
+                [f"sender name {plain(message.from_name)[:80]}", f"actual address {message.from_address}"],
+            ))
+            break
+    if message.from_address and "." not in domain and not is_ip(domain):
+        found.append(Indicator(
+            "sender-domain-invalid", "medium", "Sender domain is not a real internet domain",
+            [f"From {message.from_address}"],
+        ))
+    return found
+
+
 def _header_checks(message: Message) -> list[Indicator]:
     found: list[Indicator] = []
-    from_domain = registrable_domain(domain_of(message.from_address))
+    from_domain = _from_domain(message)
 
     for result in _auth(message, "spf"):
         if result.result in ("fail", "softfail"):
@@ -106,17 +171,26 @@ def _header_checks(message: Message) -> list[Indicator]:
             ))
             break
 
+    hard = {"spf-fail", "spf-softfail", "dkim-fail", "dmarc-fail"} & {indicator.id for indicator in found}
+    empty = _nothing_passed(message)
+    if empty and not hard:
+        found = [indicator for indicator in found if indicator.id != "dkim-none"]
+        found.append(Indicator(
+            "auth-nothing-passed", "medium", "No sender authentication passed: SPF, DKIM and DMARC all came back empty",
+            empty,
+        ))
+
     reply_domain = registrable_domain(domain_of(message.reply_to)) if message.reply_to else ""
     if reply_domain and from_domain and reply_domain != from_domain:
         found.append(Indicator(
             "reply-to-mismatch", "medium", "Replies go to a different domain than the sender",
             [f"From {message.from_address}", f"Reply-To {message.reply_to}"],
         ))
-    return_domain = registrable_domain(domain_of(message.return_path)) if message.return_path else ""
+    return_domain = registrable_domain(domain_of(message.envelope_from)) if message.envelope_from else ""
     if return_domain and from_domain and return_domain != from_domain:
         found.append(Indicator(
             "return-path-mismatch", "weak", "Envelope sender is on a different domain than From",
-            [f"From {message.from_address}", f"Return-Path {message.return_path}"],
+            [f"From {message.from_address}", f"envelope sender {message.envelope_from}"],
         ))
 
     shown = _DOMAIN_IN_TEXT.findall(message.from_name)
@@ -177,7 +251,7 @@ def _link_notes(link: Link, from_domain: str) -> list[tuple[str, str, str, str]]
 
 
 def _link_checks(message: Message) -> list[Indicator]:
-    from_domain = registrable_domain(domain_of(message.from_address))
+    from_domain = _from_domain(message)
     grouped: dict[str, Indicator] = {}
     for link in message.links:
         for identifier, weight, title, evidence in _link_notes(link, from_domain):
@@ -228,7 +302,7 @@ def _attachment_checks(message: Message) -> list[Indicator]:
 
 
 def _content_checks(message: Message) -> list[Indicator]:
-    text = f"{message.subject}\n{message.text}".casefold()
+    text = plain(f"{message.subject}\n{message.body_text}").casefold()
     found: list[Indicator] = []
     urgency = [phrase for phrase in URGENCY if phrase in text]
     if urgency:
@@ -243,14 +317,17 @@ def _content_checks(message: Message) -> list[Indicator]:
 
 
 def find_indicators(message: Message) -> list[Indicator]:
-    found = _header_checks(message) + _link_checks(message) + _attachment_checks(message) + _content_checks(message)
+    found = (
+        _header_checks(message) + _disguise_checks(message) + _link_checks(message)
+        + _attachment_checks(message) + _content_checks(message)
+    )
     order = {"strong": 0, "medium": 1, "weak": 2}
     return sorted(found, key=lambda indicator: order[indicator.weight])
 
 
 def link_flags(message: Message) -> dict[str, list[str]]:
     # пометки по каждой ссылке для таблицы
-    from_domain = registrable_domain(domain_of(message.from_address))
+    from_domain = _from_domain(message)
     return {link.url: [title for _, _, title, _ in _link_notes(link, from_domain)] for link in message.links}
 
 

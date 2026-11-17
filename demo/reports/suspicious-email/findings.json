@@ -110,7 +110,7 @@
       "title": "Envelope sender is on a different domain than From",
       "evidence": [
         "From security[@]examplebank[.]example",
-        "Return-Path bounce-7731[@]mail[.]promo-sender[.]test"
+        "envelope sender bounce-7731[@]mail[.]promo-sender[.]test"
       ]
     },
     {
@@ -129,7 +129,8 @@
       "title": "Asks the reader to confirm an account or enter credentials",
       "evidence": [
         "\"confirm your account\"",
-        "\"confirm your identity\""
+        "\"confirm your identity\"",
+        "\"sign in to confirm\""
       ]
     }
   ],

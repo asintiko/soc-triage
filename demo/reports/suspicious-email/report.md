@@ -33,9 +33,9 @@ From `Example Bank Security <security[@]examplebank[.]example>` · file `suspici
 | **medium** | The message carries an HTML form | `forms: 1, in attachment Statement_November.pdf.html` |
 | **medium** | HTML or SVG attachment, a common carrier for fake login pages | `Statement_November.pdf.html` |
 | **weak** | No DKIM signature | `dkim=none` |
-| **weak** | Envelope sender is on a different domain than From | `From security[@]examplebank[.]example`; `Return-Path bounce-7731[@]mail[.]promo-sender[.]test` |
+| **weak** | Envelope sender is on a different domain than From | `From security[@]examplebank[.]example`; `envelope sender bounce-7731[@]mail[.]promo-sender[.]test` |
 | **weak** | Pressure to act quickly | `"within 24 hours"`; `"action required"`; `"will be suspended"` |
-| **weak** | Asks the reader to confirm an account or enter credentials | `"confirm your account"`; `"confirm your identity"` |
+| **weak** | Asks the reader to confirm an account or enter credentials | `"confirm your account"`; `"confirm your identity"`; `"sign in to confirm"` |
 
 Strong counts 3, medium 2, weak 1. The message is called phishing only with at least three indicators, one of them strong, and a score of 6 or more.
 

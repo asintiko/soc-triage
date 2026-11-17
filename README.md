@@ -198,7 +198,8 @@ What `analyzer eml` looks at:
 
 | Area | Checks |
 | --- | --- |
-| Sender | SPF, DKIM and DMARC as recorded in `Authentication-Results` (or `Received-SPF`); Reply-To and Return-Path on another domain; a display name that shows a different address; missing Message-ID |
+| Sender | SPF, DKIM and DMARC as recorded in `Authentication-Results` (or `Received-SPF`), including the case where none of them passed; Reply-To and envelope sender on another domain; a display name that shows a different address or a well-known brand on an unrelated domain; a sender domain that is not a real internet domain; missing Message-ID |
+| Disguise | invisible characters hidden inside words; letters replaced with look-alike Unicode symbols |
 | Links | text that shows one address while the link leads to another; bare IP hosts; `user@host` tricks; punycode hosts; URL shorteners; the sender's name inside someone else's domain; login links on other domains; forms, including forms inside HTML attachments |
 | Attachments | SHA-256, SHA-1 and MD5; double extensions; executables and scripts; disk images; macro-enabled documents; HTML and SVG; archives |
 | Text | pressure to act quickly; requests to confirm an account or enter credentials (English and Russian phrases) |
@@ -206,6 +207,26 @@ What `analyzer eml` looks at:
 Each indicator has a weight: strong 3, medium 2, weak 1. The verdict is "Likely phishing" only with at least three
 indicators, one of them strong, and a score of 6 or more. Anything less is "Suspicious, needs a manual look" or
 "No phishing indicators found", and the report says which signs the verdict rests on.
+
+## Checked on real mail
+
+The checks were run on 60 real messages from [Phishing Pot](https://github.com/rf-peixoto/phishing_pot)
+(commit `78be141`), a collection of phishing and spam received by honeypot addresses, maintained by
+[rf-peixoto](https://www.linkedin.com/in/rf-peixoto) and licensed CC BY-NC 4.0. The samples are not part of this
+repository.
+
+| | Likely phishing | Suspicious | Not flagged |
+| --- | --- | --- | --- |
+| First run | 9 | 30 | 21 |
+| After the fixes below | 16 | 31 | 13 |
+
+The first run showed real gaps: the Microsoft form of `Authentication-Results` was read wrongly, sender addresses
+with commas or quotes were lost, and nothing looked for invisible characters or look-alike letters. Those were
+fixed and covered with tests on synthetic messages. The second row is measured on the same 60 messages the fixes
+were made from, so it is not an independent estimate.
+
+The 13 that are still not flagged pass SPF, DKIM and DMARC and use no technical trick: casino, prize and payout
+offers sent from the senders' own domains. The tool does not judge what a message offers.
 
 ## What the reports are safe against
 
@@ -223,6 +244,7 @@ The input is written by someone else, possibly an attacker, so nothing from it i
 - History for "new address" starts with the file: an address from before its first line looks new.
 - SPF, DKIM and DMARC are read from the headers, not verified again. Headers below the receiving server's own can
   be forged.
+- Mail that passes every authentication check and uses no technical trick is not flagged, whatever it offers.
 - The registrable domain is worked out from a short built-in list of two-label suffixes, not the full Public
   Suffix List.
 - Windows message text is parsed in English only; exports with named fields work in any language.
@@ -236,7 +258,7 @@ pip install -e ".[dev]"
 pytest
 ```
 
-67 tests cover the three parsers, including broken lines, every way a rule can fire, rule file
+75 tests cover the three parsers, including broken lines, every way a rule can fire, rule file
 validation, the `.eml` checks and the verdict, defanging, and the safety of the HTML, Markdown and CSV output.
 One of them compares a fresh run on the demo files with the reports committed in `demo/reports`. CI runs the suite
 on Linux and Windows.

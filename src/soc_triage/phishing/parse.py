@@ -6,6 +6,7 @@ import email.utils
 import hashlib
 import ipaddress
 import re
+import unicodedata
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from html.parser import HTMLParser
@@ -18,6 +19,17 @@ _RECEIVED_BY = re.compile(r"(?is)\bby\s+(\S+)")
 _RECEIVED_WITH = re.compile(r"(?is)\bwith\s+(\S+)")
 _AUTH_RESULT = re.compile(r"(?i)^\s*([a-z][a-z0-9-]*)\s*=\s*([a-z]+)")
 _AUTH_PROPERTY = re.compile(r"(?i)\b((?:header|smtp|policy)\.[a-z0-9_-]+)=([^\s;()]+)")
+
+# невидимые символы: мягкий перенос, нулевой ширины, управляющие направлением, селекторы вариантов, теги
+_INVISIBLE = "[\u00ad\u034f\u115f\u1160\u180b-\u180e\u200b-\u200f\u202a-\u202e\u2060-\u2064\u2066-\u206f\u3164\ufe00-\ufe0f\ufeff\U000e0001\U000e0020-\U000e007f\U000e0100-\U000e01ef]"
+_LETTER = "[A-Za-zА-Яа-яЁё0-9]"
+_INVISIBLE_ANY = re.compile(_INVISIBLE)
+_INVISIBLE_IN_WORD = re.compile(f"(?<={_LETTER}){_INVISIBLE}+(?={_LETTER})")
+# буквы из математических, полноширинных и обведенных алфавитов
+_STYLED = re.compile("[\U0001d400-\U0001d7ff\uff21-\uff3a\uff41-\uff5a\u24b6-\u24e9\U0001f130-\U0001f189]")
+_ANGLE_ADDRESS = re.compile(r'<\s*"?([^<>"\s]+@[^<>"\s]*)"?\s*>')
+_BARE_ADDRESS = re.compile(r'[^\s<>"(),;:]+@[^\s<>"(),;:]+')
+_MARKUP = re.compile(r"(?i)<(html|body|table|div|p|a|br)\b")
 
 # двухуровневые публичные суффиксы; короткий список, не весь PSL
 _TWO_LABEL_SUFFIXES = frozenset(
@@ -73,6 +85,9 @@ class Message:
     return_path: str = ""
     date: datetime | None = None
     date_raw: str = ""
+    from_header: str = ""
+    envelope_from: str = ""
+    body_text: str = ""
     message_id: str = ""
     mailer: str = ""
     originating_ip: str = ""
@@ -121,6 +136,39 @@ def domain_of(address: str) -> str:
     return address.rpartition("@")[2].lower().strip("> ")
 
 
+def plain(text: str) -> str:
+    # как текст выглядит для человека: без невидимых символов, стилизованные буквы -> обычные
+    return _INVISIBLE_ANY.sub("", unicodedata.normalize("NFKC", text))
+
+
+def hidden_in_words(text: str) -> int:
+    return len(_INVISIBLE_IN_WORD.findall(text))
+
+
+def styled_letters(text: str) -> int:
+    return len(_STYLED.findall(text))
+
+
+def _headers(parsed, name: str) -> list[str]:
+    # 8-битные заголовки без кодировки приходят с суррогатами, читаем их как utf-8
+    values = []
+    for key, value in parsed.raw_items():
+        if key.lower() != name.lower():
+            continue
+        value = str(value)
+        try:
+            value = value.encode("ascii", "surrogateescape").decode("utf-8", "replace")
+        except UnicodeEncodeError:
+            pass
+        values.append(value)
+    return values
+
+
+def _header(parsed, name: str) -> str | None:
+    values = _headers(parsed, name)
+    return values[0] if values else None
+
+
 def _decode(value) -> str:
     if value is None:
         return ""
@@ -135,8 +183,14 @@ def _decode(value) -> str:
 def _address(value) -> tuple[str, str]:
     if value is None:
         return "", ""
-    name, address = email.utils.parseaddr(" ".join(str(value).split()))
-    return _decode(name), address.strip().lower()
+    text = " ".join(str(value).split())
+    name, address = email.utils.parseaddr(text)
+    if "@" not in address:
+        # запятые в имени, кавычки внутри <> и т.п. - берем адрес регуляркой
+        match = _ANGLE_ADDRESS.search(text) or _BARE_ADDRESS.search(text)
+        if match:
+            name, address = text[: match.start()], match.group(match.lastindex or 0)
+    return _decode(name).strip(" \"',_"), address.strip(" .\"'<>").lower()
 
 
 def _date(value: str) -> datetime | None:
@@ -171,9 +225,13 @@ def _auth_results(value: str, source: str) -> tuple[str, list[AuthResult]]:
     # разбор Authentication-Results (RFC 8601)
     without_comments = re.sub(r"\([^()]*\)", " ", value)
     parts = [part.strip() for part in without_comments.split(";")]
-    server = parts[0].split()[0] if parts and parts[0] else ""
+    server = ""
+    # microsoft не пишет имя сервера, заголовок начинается сразу с spf=...
+    if parts and parts[0] and not _AUTH_RESULT.match(parts[0]):
+        server = parts[0].split()[0]
+        parts = parts[1:]
     results = []
-    for part in parts[1:]:
+    for part in parts:
         match = _AUTH_RESULT.match(part)
         if not match:
             continue
@@ -308,31 +366,34 @@ def _text_of(part) -> str:
 def parse_eml(data: bytes) -> Message:
     parsed = email.message_from_bytes(data)
     message = Message(sha256=hashlib.sha256(data).hexdigest(), size=len(data))
-    message.subject = _decode(parsed.get("Subject"))
-    message.from_name, message.from_address = _address(parsed.get("From"))
-    message.to = ", ".join(address for _, address in email.utils.getaddresses([str(v) for v in parsed.get_all("To") or []]))
-    message.reply_to = _address(parsed.get("Reply-To"))[1]
-    message.return_path = _address(parsed.get("Return-Path"))[1]
-    message.date_raw = _decode(parsed.get("Date"))
+    message.subject = _decode(_header(parsed, "Subject"))
+    message.from_header = _decode(_header(parsed, "From"))
+    message.from_name, message.from_address = _address(_header(parsed, "From"))
+    message.to = ", ".join(address for _, address in email.utils.getaddresses(_headers(parsed, "To")))
+    message.reply_to = _address(_header(parsed, "Reply-To"))[1]
+    message.return_path = _address(_header(parsed, "Return-Path"))[1]
+    message.date_raw = _decode(_header(parsed, "Date"))
     message.date = _date(message.date_raw) if message.date_raw else None
-    message.message_id = _decode(parsed.get("Message-ID")).strip("<>")
-    message.mailer = _decode(parsed.get("X-Mailer") or parsed.get("User-Agent"))
-    message.originating_ip = _decode(parsed.get("X-Originating-IP")).strip("[] ")
+    message.message_id = _decode(_header(parsed, "Message-ID")).strip("<>")
+    message.mailer = _decode(_header(parsed, "X-Mailer") or _header(parsed, "User-Agent"))
+    message.originating_ip = _decode(_header(parsed, "X-Originating-IP")).strip("[] ")
 
-    hops = [_hop(_decode(value)) for value in parsed.get_all("Received") or []]
+    hops = [_hop(_decode(value)) for value in _headers(parsed, "Received")]
     message.hops = list(reversed(hops))
 
-    headers = parsed.get_all("Authentication-Results") or []
+    headers = _headers(parsed, "Authentication-Results")
     if headers:
         message.auth_server, message.auth = _auth_results(_decode(headers[0]), "Authentication-Results")
     if not any(result.method == "spf" for result in message.auth):
-        received_spf = _decode(parsed.get("Received-SPF"))
+        received_spf = _decode(_header(parsed, "Received-SPF"))
         if received_spf:
             verdict = received_spf.split()[0].lower()
             message.auth.append(AuthResult("spf", verdict, {}, "Received-SPF"))
+    mail_from = [result.properties.get("smtp.mailfrom", "") for result in message.auth if result.method == "spf"]
+    message.envelope_from = message.return_path or next((value for value in mail_from if value), "")
 
     collector = _LinkCollector()
-    plain: list[str] = []
+    plain_parts: list[str] = []
     for part in parsed.walk():
         if part.is_multipart():
             continue
@@ -357,12 +418,17 @@ def parse_eml(data: bytes) -> Message:
                 collector.add_html(payload.decode("utf-8", errors="replace"), f"attachment {filename or '(no name)'}")
         elif content_type == "text/plain":
             text = _text_of(part)
-            plain.append(text)
-            collector.add_text(text, "text body")
+            if _MARKUP.search(text):
+                # разметка в текстовой части: читаем ее как html
+                collector.add_html(text, "text body")
+            else:
+                plain_parts.append(text)
+                collector.add_text(text, "text body")
         elif content_type == "text/html":
             collector.add_html(_text_of(part), "HTML body")
     message.links = list(collector.links.values())
     message.mail_links = collector.mail
     message.html_forms = collector.forms
-    message.text = "\n".join(plain).strip() or "\n".join(collector.text).strip()
+    message.text = "\n".join(plain_parts).strip() or "\n".join(collector.text).strip()
+    message.body_text = "\n".join(plain_parts + collector.text)
     return message
