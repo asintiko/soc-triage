@@ -156,7 +156,7 @@ def test_hidden_characters():
     message = parse_eml(mail(f"From: Support <help@shop.example>\nSubject: {subject}"))
     found = {indicator.id: indicator for indicator in find_indicators(message)}
     assert found["hidden-characters"].weight == "strong"
-    assert found["hidden-characters"].evidence == ["subject: 11 invisible characters inside words"]
+    assert found["hidden-characters"].evidence == ["subject: 11 invisible characters in 11 places inside words"]
 
     # сердечко со своим селектором варианта - обычное письмо, не маскировка
     harmless = parse_eml(mail("From: Shop <news@shop.example>\nSubject: We \u2764\ufe0f you 1\ufe0f\u20e3 gift"))

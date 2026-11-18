@@ -141,8 +141,10 @@ def plain(text: str) -> str:
     return _INVISIBLE_ANY.sub("", unicodedata.normalize("NFKC", text))
 
 
-def hidden_in_words(text: str) -> int:
-    return len(_INVISIBLE_IN_WORD.findall(text))
+def hidden_in_words(text: str) -> tuple[int, int]:
+    # сколько мест внутри слов и сколько в них символов
+    runs = _INVISIBLE_IN_WORD.findall(text)
+    return len(runs), sum(len(run) for run in runs)
 
 
 def styled_letters(text: str) -> int:

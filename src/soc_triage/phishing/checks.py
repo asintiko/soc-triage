@@ -110,11 +110,11 @@ def _disguise_checks(message: Message) -> list[Indicator]:
         ("link text", " ".join(text for link in message.links for text in link.texts)),
         ("body", message.body_text),
     )
-    hidden = [(label, hidden_in_words(text)) for label, text in places]
-    if sum(count for _, count in hidden) >= 2:
+    hidden = [(label, *hidden_in_words(text)) for label, text in places]
+    if sum(spots for _, spots, _ in hidden) >= 2:
         found.append(Indicator(
             "hidden-characters", "strong", "Invisible characters hidden inside words to get past filters",
-            [f"{label}: {count} invisible characters inside words" for label, count in hidden if count],
+            [f"{label}: {count} invisible characters in {spots} places inside words" for label, spots, count in hidden if spots],
         ))
     styled = [(label, styled_letters(text)) for label, text in
               (("subject", message.subject), ("sender name", message.from_name), ("sender address", message.from_address))]
